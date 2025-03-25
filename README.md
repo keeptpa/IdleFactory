@@ -8,3 +8,8 @@ So I did, it indeed difficult, to use blazor to make a game(?)
 I'm not sure how far I could go.
 ## It looks bad
 Sorry, I'm not good at either programming and web design, but at least I would check these thing could work as intend.  
+  
+  
+  
+## Thanks
+Some svgs from https://www.svgrepo.com/
