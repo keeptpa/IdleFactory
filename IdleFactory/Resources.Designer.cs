@@ -150,6 +150,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to History.
+        /// </summary>
+        internal static string notify_history {
+            get {
+                return ResourceManager.GetString("notify_history", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resources.
         /// </summary>
         internal static string resource {

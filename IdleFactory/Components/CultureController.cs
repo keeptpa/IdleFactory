@@ -12,7 +12,10 @@ public class CultureController : Controller
             var cookieName = CookieRequestCultureProvider.DefaultCookieName;
             var cookieValue = CookieRequestCultureProvider.MakeCookieValue(requestCulture);
 
-            HttpContext.Response.Cookies.Append(cookieName, cookieValue);
+            HttpContext.Response.Cookies.Append(cookieName, cookieValue, new CookieOptions()
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(30),
+            });
         }
 
         return LocalRedirect(redirectUri);

@@ -47,4 +47,7 @@
     <data name="action.mine" xml:space="preserve">
         <value>采矿</value>
     </data>
+    <data name="notify_history" xml:space="preserve">
+        <value>历史日志</value>
+    </data>
 </root>
