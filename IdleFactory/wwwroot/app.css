@@ -74,3 +74,10 @@ h1:focus {
     border-bottom: 1px solid #d6d5d5 ;
     padding-left: 2rem ;
 }
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Auto-adjust */
+    gap: 10px; /* Space between buttons */
+    padding: 10px;
+}

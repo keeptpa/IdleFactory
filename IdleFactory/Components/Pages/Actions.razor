@@ -1,4 +1,4 @@
-﻿@page "/counter"
+﻿@page "/actions"
 @using IdleFactory.Modules
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
@@ -8,10 +8,14 @@
 
 <PageTitle>Actions..</PageTitle>
 
-@foreach (var action in SingletonHolder.GetSingleton<ModuleHolder>().GetModule<ActionModule>().GetAllAction())
-{
-    <button class="btn btn-primary" @onclick="() => { action.OnAction(curPlayerName);}">@Localizer[action.actionName]</button>
-}
+<div class="button-grid">
+    @foreach (var action in SingletonHolder.GetSingleton<ModuleHolder>().GetModule<ActionModule>().GetAllAction())
+    {
+        <button class="btn btn-primary" @onclick="() => { action.OnAction(curPlayerName);}">
+            @Localizer[action.actionName]
+        </button>
+    }
+</div>
 
 @code {
     private string curPlayerName = "";

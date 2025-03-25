@@ -18,14 +18,8 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="hi_str" xml:space="preserve">
-        <value>Hi</value>
-    </data>
     <data name="action_area" xml:space="preserve">
         <value>Actions</value>
-    </data>
-    <data name="home" xml:space="preserve">
-        <value>Home</value>
     </data>
     <data name="settings" xml:space="preserve">
         <value>Settings</value>
@@ -36,25 +30,46 @@
     <data name="resource" xml:space="preserve">
         <value>Resources</value>
     </data>
-    <data name="item.woodlog" xml:space="preserve">
-        <value>Wood Log</value>
-    </data>
     <data name="notify.getRes" xml:space="preserve">
         <value>{0} gets {1} of {2}.</value>
     </data>
     <data name="culture" xml:space="preserve">
         <value>en-US</value>
     </data>
-    <data name="item.stone" xml:space="preserve">
-        <value>Stone</value>
-    </data>
-    <data name="item.ironOre" xml:space="preserve">
-        <value>Iron Ore</value>
-    </data>
     <data name="action.mine" xml:space="preserve">
         <value>Mining</value>
     </data>
     <data name="notify_history" xml:space="preserve">
         <value>History</value>
+    </data>
+    <data name="building_area" xml:space="preserve">
+        <value>Buildings</value>
+    </data>
+    <data name="item.stone" xml:space="preserve">
+        <value>Stone</value>
+    </data>
+    <data name="item.woodlog" xml:space="preserve">
+        <value>Wood Log</value>
+    </data>
+    <data name="item.ironOre" xml:space="preserve">
+        <value>Iron Ore</value>
+    </data>
+    <data name="building.workbench" xml:space="preserve">
+        <value>Workbench</value>
+    </data>
+    <data name="building.workbench.description" xml:space="preserve">
+        <value>Basic workbench. You could do some simple job here.</value>
+    </data>
+    <data name="str.back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="str.building" xml:space="preserve">
+        <value>Buildings</value>
+    </data>
+    <data name="str.buildingDetail" xml:space="preserve">
+        <value>Building Detail</value>
+    </data>
+    <data name="home_area" xml:space="preserve">
+        <value>Home</value>
     </data>
 </root>

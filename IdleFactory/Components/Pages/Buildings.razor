@@ -1,0 +1,51 @@
+﻿@page "/Buildings"
+@using IdleFactory.Game.Building.Base
+@using IdleFactory.Modules
+@using IdleFactory.State
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+
+@inject IStringLocalizer<Resources> Localizer
+@inject NavigationManager NavigationManager
+
+<h3>@Localizer["str.building"]</h3>
+@foreach (var building in buildings)
+{
+    <p>@Localizer[building.ID] <button class="btn btn-primary" @onclick= "() => {OnDetailClick(building);}"> @Localizer["str.buildingDetail"]</button> </p> 
+
+}
+
+@code {
+    List<BuildingBase> buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildings();
+    ExecutionContext context;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Utils.GetModule<UpdateModule>().Update += Update;
+        context = ExecutionContext.Capture();
+
+    }
+
+    private void Update()
+    {
+        buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildings();
+        var current = ExecutionContext.Capture();
+        try
+        {
+            ExecutionContext.Restore(context);
+            InvokeAsync(StateHasChanged);
+        }
+        finally
+        {
+            ExecutionContext.Restore(current);
+        }
+    }
+
+    private void OnDetailClick(BuildingBase build)
+    {
+        var buildIndex = build.GetIndex();
+        NavigationManager.NavigateTo($"/BuildingDetails/{buildIndex}");
+    }
+}

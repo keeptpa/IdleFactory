@@ -1,0 +1,38 @@
+﻿@page "/BuildingDetails/{buildingIndex}"
+@using IdleFactory.Game.Building.Base
+@using IdleFactory.Modules
+@using IdleFactory.State
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+
+@inject IStringLocalizer<Resources> Localizer
+@inject NavigationManager NavigationManager
+
+<h3>@Localizer["str.buildingDetail"]</h3>
+
+@if (building != null)
+{
+    <p>@Localizer[building.ID]</p>
+    <p>@Localizer[building.Description]</p>
+}
+else
+{
+    <p>Building not found.</p>
+}
+<button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
+@code {
+    [Parameter] public string buildingIndex { get; set; }
+    private BuildingBase? building;
+
+    protected override void OnInitialized()
+    {
+        building = Utils.GetBuildingWithIndex(int.Parse(buildingIndex));
+        base.OnInitialized();
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/Buildings");
+    }
+}

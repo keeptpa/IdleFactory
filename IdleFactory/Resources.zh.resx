@@ -11,14 +11,8 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="hi_str" xml:space="preserve">
-        <value>嗨！</value>
-    </data>
     <data name="action_area" xml:space="preserve">
         <value>行动</value>
-    </data>
-    <data name="home" xml:space="preserve">
-        <value>总览</value>
     </data>
     <data name="settings" xml:space="preserve">
         <value>设置</value>
@@ -29,25 +23,46 @@
     <data name="resource" xml:space="preserve">
         <value>资源</value>
     </data>
-    <data name="item.woodlog" xml:space="preserve">
-        <value>原木</value>
-    </data>
     <data name="notify.getRes" xml:space="preserve">
         <value>{0} 获得了 {1} 个 {2}.</value>
     </data>
     <data name="culture" xml:space="preserve">
         <value>zh</value>
     </data>
-    <data name="item.stone" xml:space="preserve">
-        <value>石材</value>
-    </data>
-    <data name="item.ironOre" xml:space="preserve">
-        <value>铁矿石</value>
-    </data>
     <data name="action.mine" xml:space="preserve">
         <value>采矿</value>
     </data>
     <data name="notify_history" xml:space="preserve">
         <value>历史日志</value>
+    </data>
+    <data name="building_area" xml:space="preserve">
+        <value>建筑</value>
+    </data>
+    <data name="item.stone" xml:space="preserve">
+        <value>石材</value>
+    </data>
+    <data name="item.woodlog" xml:space="preserve">
+        <value>木材</value>
+    </data>
+    <data name="item.ironOre" xml:space="preserve">
+        <value>铁矿石</value>
+    </data>
+    <data name="building.workbench" xml:space="preserve">
+        <value>制造台</value>
+    </data>
+    <data name="building.workbench.description" xml:space="preserve">
+        <value>最基础的制造台，你可以在这里进行一些简单的工作。</value>
+    </data>
+    <data name="str.back" xml:space="preserve">
+        <value>返回</value>
+    </data>
+    <data name="str.building" xml:space="preserve">
+        <value>建筑物</value>
+    </data>
+    <data name="str.buildingDetail" xml:space="preserve">
+        <value>建筑细节</value>
+    </data>
+    <data name="home_area" xml:space="preserve">
+        <value>总览</value>
     </data>
 </root>

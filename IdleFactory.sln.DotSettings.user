@@ -21,11 +21,19 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AServiceProvider_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003Fce37be1a06b16c6faa02038d2cc477dd3bca5b217ceeb41c5f2ad45c1bf9_003FServiceProvider_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ATask_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F8789586b575d44528c2aa18853f6eb96f3e8f8d3f4fa7eb9d6a56b54b49d7_003FTask_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AThrowHelper_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003Fc7102cd0ffb8973777e61b1942c3fffac7e14016a511d055c3adf73ff91748_003FThrowHelper_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FItemLang/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FItemLang/@EntryIndexRemoved">True</s:Boolean>
+	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002Flang/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002Flang/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FLanguage_002FItemLang/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FLanguage_002FItemLang/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FLanguage_002FResources/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FLanguage_002FResources/@EntryIndexRemoved">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FResource/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FResource/@EntryIndexRemoved">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FResources/@EntryIndexedValue">True</s:Boolean>
+	
 	
 	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=IdleFactory_002FResources_002Flang/@EntryIndexedValue">False</s:Boolean>

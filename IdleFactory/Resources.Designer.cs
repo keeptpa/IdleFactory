@@ -87,6 +87,33 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buildings.
+        /// </summary>
+        internal static string building_area {
+            get {
+                return ResourceManager.GetString("building_area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workbench.
+        /// </summary>
+        internal static string building_workbench {
+            get {
+                return ResourceManager.GetString("building.workbench", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic workbench. You could do some simple job here..
+        /// </summary>
+        internal static string building_workbench_description {
+            get {
+                return ResourceManager.GetString("building.workbench.description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to en-US.
         /// </summary>
         internal static string culture {
@@ -96,20 +123,11 @@ namespace IdleFactory {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hi.
-        /// </summary>
-        internal static string hi_str {
-            get {
-                return ResourceManager.GetString("hi_str", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
-        internal static string home {
+        internal static string home_area {
             get {
-                return ResourceManager.GetString("home", resourceCulture);
+                return ResourceManager.GetString("home_area", resourceCulture);
             }
         }
         
@@ -173,6 +191,33 @@ namespace IdleFactory {
         internal static string settings {
             get {
                 return ResourceManager.GetString("settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string str_back {
+            get {
+                return ResourceManager.GetString("str.back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buildings.
+        /// </summary>
+        internal static string str_building {
+            get {
+                return ResourceManager.GetString("str.building", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Building Detail.
+        /// </summary>
+        internal static string str_buildingDetail {
+            get {
+                return ResourceManager.GetString("str.buildingDetail", resourceCulture);
             }
         }
     }

@@ -2,8 +2,10 @@
 using System.Text.RegularExpressions;
 using System.Web;
 using IdleFactory.Components;
+using IdleFactory.Game.Building.Base;
 using IdleFactory.Game.DataBase.Base;
 using IdleFactory.Modules;
+using IdleFactory.State;
 
 namespace IdleFactory.Util;
 
@@ -65,5 +67,17 @@ public class Utils
             }
         }
         return result;
+    }
+
+    public static BuildingBase? GetBuildingWithIndex(int buildingIndex)
+    {
+        var state = SingletonHolder.GetSingleton<GameStateHolder>();
+        var buildingList = state.GetAllBuildings();
+        if (buildingList.Count >= buildingIndex)
+        {
+            return buildingList[buildingIndex];
+
+        }
+        return null;
     }
 }
