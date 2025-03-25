@@ -1,0 +1,23 @@
+﻿@page "/counter"
+@using IdleFactory.Modules
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+@inject IStringLocalizer<Resources> Localizer
+@inject ICookie cookie
+
+<PageTitle>Actions..</PageTitle>
+
+@foreach (var action in SingletonHolder.GetSingleton<ModuleHolder>().GetModule<ActionModule>().GetAllAction())
+{
+    <button class="btn btn-primary" @onclick="() => { action.OnAction(curPlayerName);}">@Localizer[action.actionName]</button>
+}
+
+@code {
+    private string curPlayerName = "";
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        curPlayerName = await cookie.GetValue("id");
+    }
+}

@@ -1,0 +1,40 @@
+﻿@using System.Globalization
+@using IdleFactory.Modules
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+@inject IStringLocalizer<Resources> Localizer
+@inject ICookie cookie
+
+@if (notify.IsValid())
+{
+    <p>@Utils.GetFormattedTime(notify.timeStamp) - @Utils.DynamicStringFormat(Localizer[notify.notifyString], Utils.TryLocalizeArg(notify.parameters))</p>
+}
+
+
+@code
+{
+    NotifyItem notify;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        // Subscribe to the Update event of the UpdateModule
+        var context = ExecutionContext.Capture();
+        Utils.GetModule<UpdateModule>().Update += () =>
+        {
+            var current = ExecutionContext.Capture();
+            try
+            {
+                notify = Utils.GetModule<NotificationModule>().GetCurNotify();
+
+                ExecutionContext.Restore(context);
+                InvokeAsync(StateHasChanged);
+            }
+            finally
+            {
+                ExecutionContext.Restore(current);
+            }
+        };
+    }
+}

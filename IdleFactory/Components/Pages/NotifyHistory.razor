@@ -1,0 +1,47 @@
+﻿@page "/NotifyHistory"
+@using IdleFactory.Modules
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+<h3>NotifyHistory</h3>
+@rendermode InteractiveServer
+@inject IStringLocalizer<Resources> Localizer
+
+<div>
+    <div>
+        @foreach (var message in notifyHistory)
+        {
+            @if (message.IsValid())
+            {
+                <p>@Utils.GetFormattedTime(message.timeStamp) - @Utils.DynamicStringFormat(Localizer[message.notifyString], Utils.TryLocalizeArg(message.parameters))</p>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    List<NotifyItem> notifyHistory = new List<NotifyItem>();
+    ExecutionContext context;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Utils.GetModule<UpdateModule>().Update += Update;
+        context = ExecutionContext.Capture();
+
+    }
+
+    private void Update()
+    {
+        notifyHistory = Utils.GetModule<NotificationModule>().GetHistory();
+        var current = ExecutionContext.Capture();
+        try
+        {
+            ExecutionContext.Restore(context);
+            InvokeAsync(StateHasChanged);
+        }
+        finally
+        {
+            ExecutionContext.Restore(current);
+        }
+    }
+
+}

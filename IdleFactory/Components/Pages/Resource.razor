@@ -1,0 +1,14 @@
+﻿@page "/resource"
+@using IdleFactory.State
+@using IdleFactory.Util
+<h3>Resource</h3>
+<a></a>
+@foreach(var item in _gameStateHolder.GetAllResources())
+{
+    <p> @item.Value.Name, @item.Value.Quantity</p>
+}
+
+@code {
+    private GameStateHolder _gameStateHolder = SingletonHolder.GetSingleton<GameStateHolder>();
+    
+}

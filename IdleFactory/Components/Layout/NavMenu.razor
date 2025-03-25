@@ -1,0 +1,44 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> Localizer
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">IdleFactory</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="nav flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-factory-nav-menu" aria-hidden="true"></span> @Localizer["home"]
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="resource">
+                <span class="bi bi-woodlog-nav-menu" aria-hidden="true"></span> @Localizer["resource"]
+            </NavLink>
+        </div>
+        
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="bi bi-pickaxe-nav-menu" aria-hidden="true"></span> @Localizer["action_area"]
+            </NavLink>
+        </div>
+        
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="NotifyHistory">
+                <span class="bi bi-log-nav-menu" aria-hidden="true"></span> @Localizer["action_area"]
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="setting">
+                <span class="bi bi-gear-nav-menu" aria-hidden="true"></span> @Localizer["settings"]
+            </NavLink>
+        </div>
+    </nav>
+</div>

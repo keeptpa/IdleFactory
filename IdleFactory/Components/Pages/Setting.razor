@@ -1,0 +1,64 @@
+﻿@page "/setting"
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Microsoft.Extensions.Localization
+@inject NavigationManager Navigation
+@inject IStringLocalizer<Resources> localizer
+@rendermode InteractiveServer
+@inject ICookie cookie
+<h3>Setting</h3>
+
+<select @bind="Culture">
+    <option value="zh">ZH</option>
+    <option value="en-US">EN</option>
+</select>
+<p>Current Language: @Culture</p>
+
+<div>ID: <textarea @bind="ID"></textarea></div>
+@code {
+    private CultureInfo Culture
+    {
+        get
+        {
+            return CultureInfo.CurrentCulture;
+        }
+        set
+        {
+            if (CultureInfo.CurrentCulture != value)
+            {
+                var uri = new Uri(Navigation.Uri)
+                    .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+                var cultureEscaped = Uri.EscapeDataString(value.Name);
+                var uriEscaped = Uri.EscapeDataString(uri);
+
+                var fullUri = $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}";
+                Navigation.NavigateTo(fullUri, forceLoad: true);
+            }
+            StateHasChanged();
+        }
+    }
+
+    private string _id;
+
+    public string ID
+    {
+        get => _id;
+        set
+        {
+            _id = value;
+            cookie.SetValue("id", value);
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        Culture = CultureInfo.CurrentCulture;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        ID = await cookie.GetValue("id");
+    }
+
+}
