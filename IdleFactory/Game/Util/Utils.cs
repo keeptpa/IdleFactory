@@ -5,7 +5,8 @@ using IdleFactory.Components;
 using IdleFactory.Components.Pages;
 using IdleFactory.Game.Building.Base;
 using IdleFactory.Game.DataBase.Base;
-using IdleFactory.Modules;
+using IdleFactory.Game.Modules;
+using IdleFactory.Game.Modules.Base;
 using IdleFactory.State;
 using Microsoft.AspNetCore.Components;
 
@@ -15,7 +16,7 @@ public class Utils
 {
     public static string GetNameFromId(string id)
     {
-        return Resources.ResourceManager.GetString(id) ?? id;
+        return Resources.ResourceManager.GetString(id) ?? Resources.ResourceManager.GetString(id.Replace("item", "building")) ?? id;
     }
     
     public static T? GetModule<T>() where T : ModuleBase
@@ -35,8 +36,11 @@ public class Utils
     
     public static string GetFormattedTime(long timeStamp)
     {
-        DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds(timeStamp).UtcDateTime;
-        return dateTime.ToString("MM/dd HH:mm");
+        DateTime localDateTime = DateTimeOffset.FromUnixTimeSeconds(timeStamp).LocalDateTime;
+
+        // Format as HH:MM:SS
+        string formattedTime = localDateTime.ToString("HH:mm:ss");
+        return formattedTime;
     }
     
     public static string DynamicStringFormat(string formatString, string[] args)
@@ -59,7 +63,7 @@ public class Utils
         for (int i = 0; i < args.Length; i++)
         {
             var arg = args[i];
-            if (arg.StartsWith("item"))
+            if (arg.StartsWith("item") || arg.StartsWith("building"))
             {
                 result[i] = GetNameFromId(arg);
             }

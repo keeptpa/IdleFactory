@@ -1,6 +1,6 @@
-﻿using IdleFactory.Util;
+﻿using IdleFactory.Game.Modules.Base;
 
-namespace IdleFactory.Modules;
+namespace IdleFactory.Game.Modules;
 
 public struct NotifyItem()
 {

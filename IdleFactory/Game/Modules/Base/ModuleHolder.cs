@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using IdleFactory.Util;
 
-namespace IdleFactory.Modules;
+namespace IdleFactory.Game.Modules.Base;
 public class ModuleHolder : SingletonBase
 {
     private Dictionary<string, ModuleBase> _modules = new Dictionary<string, ModuleBase>();
@@ -14,7 +14,7 @@ public class ModuleHolder : SingletonBase
     {
         if(_modules.Count > 0){return;}
         
-        var moduleList = Assembly.GetAssembly(typeof(ModuleHolder))?.GetTypes().Where(t => t is { Namespace: "IdleFactory.Modules", IsClass: true } && t.IsSubclassOf(typeof(ModuleBase))).ToList();
+        var moduleList = Assembly.GetAssembly(typeof(ModuleHolder))?.GetTypes().Where(t => t is { Namespace: "IdleFactory.Game.Modules", IsClass: true } && t.IsSubclassOf(typeof(ModuleBase))).ToList();
         
         moduleList.Sort((x, y) => x.GetCustomAttribute<LoadOrderAttribute>().order.CompareTo(y.GetCustomAttribute<LoadOrderAttribute>().order));
         foreach (var module in moduleList)

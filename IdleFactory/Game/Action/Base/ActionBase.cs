@@ -1,4 +1,4 @@
-﻿using IdleFactory.Modules;
+﻿using IdleFactory.Game.Modules;
 using IdleFactory.Util;
 
 namespace IdleFactory.Game.Action.Base;

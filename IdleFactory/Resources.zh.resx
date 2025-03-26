@@ -68,7 +68,13 @@
     <data name="str.build" xml:space="preserve">
         <value>建造</value>
     </data>
+    <data name="notify.build" xml:space="preserve">
+        <value>{0} 建造了 {1}</value>
+    </data>
     <data name="str.buildingRetrieve" xml:space="preserve">
-        <value>撤销建筑</value>
+        <value>拆除</value>
+    </data>
+    <data name="notify.buildingRetrieve" xml:space="preserve">
+        <value>{0} 拆除了 {1}</value>
     </data>
 </root>

@@ -1,8 +1,8 @@
 ﻿using IdleFactory.Game.Building.Base;
 
-namespace IdleFactory.Building;
+namespace IdleFactory.Game.Building;
 
-public class Workbench : BuildingBase
+public class Workbench : WorkMachineBase
 {
     public Workbench()
     {

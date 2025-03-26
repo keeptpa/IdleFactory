@@ -159,6 +159,24 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} builds a {1}.
+        /// </summary>
+        internal static string notify_build {
+            get {
+                return ResourceManager.GetString("notify.build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} retrieves building of {1}.
+        /// </summary>
+        internal static string notify_buildingRetrieve {
+            get {
+                return ResourceManager.GetString("notify.buildingRetrieve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} gets {1} of {2}..
         /// </summary>
         internal static string notify_getRes {
@@ -222,7 +240,7 @@ namespace IdleFactory {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retrieve Building.
+        ///   Looks up a localized string similar to Retrive.
         /// </summary>
         internal static string str_buildingRetrieve {
             get {

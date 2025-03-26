@@ -1,6 +1,7 @@
-﻿using IdleFactory.Util;
+﻿using IdleFactory.Game.Modules.Base;
+using IdleFactory.Util;
 
-namespace IdleFactory.Modules;
+namespace IdleFactory.Game.Modules;
 
 [LoadOrder(0)]
 public class UpdateModule : ModuleBase

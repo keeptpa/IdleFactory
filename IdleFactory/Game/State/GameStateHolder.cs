@@ -1,14 +1,24 @@
-﻿using IdleFactory.Building;
-using IdleFactory.Game.Building.Base;
+﻿using IdleFactory.Game.Building.Base;
+using IdleFactory.Game.Modules;
 using IdleFactory.Util;
 
 namespace IdleFactory.State;
 
 public class GameStateHolder : SingletonBase
 {
-    private Dictionary<string, ResourceItemBase> _resources = new Dictionary<string, ResourceItemBase>();
+    //Every building has an item form, which ID replace "building" to "item" in their ID
+    //e.g. building.workbench -> item.workbench
+    //This mapping is stored in BuildingItemAdapterModule
+    //So this module also provides a method to get a building instance from an item ID (if available)
+    private Dictionary<string, ResourceItemBase> _resources = new Dictionary<string, ResourceItemBase>()
+    {
+        { "item.workbench", new ResourceItemBase()
+        {
+            ID = "item.workbench",
+            Quantity = 1,
+        } }
+    };
     private List<BuildingBase> _buildings = new List<BuildingBase>(){};
-    private List<BuildingBase> _buildingInventory = new List<BuildingBase>(){new Workbench(), new Workbench()};
     
     public Dictionary<string,int> resSingleGetQuantity = new Dictionary<string, int>();
 
@@ -31,16 +41,32 @@ public class GameStateHolder : SingletonBase
         {
             resource.Quantity += count;
         }
-    }
 
+        if (resource.Quantity <= 0)
+        {
+            _resources.Remove(id);
+        }
+    }
     public ResourceItemBase? GetResource(string id)
     {
         return _resources.GetValueOrDefault(id);
     }
 
-    public Dictionary<string, ResourceItemBase> GetAllResources()
+    public Dictionary<string, ResourceItemBase> GetAllResources(bool includeBuilding = false)
     {
-        return _resources;
+        if(!includeBuilding)
+        {
+            return _resources.Where(x => !x.Value.IsBuilding()).ToDictionary();
+        }
+        else
+        {
+            return _resources;
+        }
+    }
+
+    public Dictionary<string, ResourceItemBase> GetAllBuildingsNotPlaced()
+    {
+        return _resources.Where(x => x.Value.IsBuilding()).ToDictionary();
     }
 
     #endregion
@@ -51,41 +77,31 @@ public class GameStateHolder : SingletonBase
     {
         _buildings.Add(building);
     }
+
+    public void RemoveBuilding(BuildingBase building)
+    {
+        _buildings.Remove(building);
+    }
+    
     public List<BuildingBase> GetAllBuildingsPlaced()
     {
         return _buildings;
     }
-    public List<BuildingBase> GetAllBuildingsNotPlaced()
-    {
-        return _buildingInventory;
-    }
 
-    public void AddBuildingInventory(BuildingBase building)
+    public bool TryBuild(ResourceItemBase buildingItem)
     {
-            _buildingInventory.Add(building);
-    }
-
-    public bool Build(BuildingBase building)
-    {
-        if (!GetAllBuildingsPlaced().Contains(building) && GetAllBuildingsNotPlaced().Contains(building))
+        if (buildingItem.IsBuilding() && _resources.ContainsKey(buildingItem.ID) && _resources[buildingItem.ID].Quantity >= 1)
         {
-            GetAllBuildingsNotPlaced().Remove(building);
-            AddBuilding(building);
+            var building = Utils.GetModule<BuildingItemAdapterModule>().GetBuildingFromItemID<BuildingBase>(buildingItem.ID);
+            var state = SingletonHolder.GetSingleton<GameStateHolder>();
+            state.AddBuilding(building);
+            state.AddResource(buildingItem.ID, -1);
+            
+            
             return true;
         }
 
         return false;
-    } 
-    
-    public bool Retrieve(BuildingBase buildingBase)
-    {
-        if (GetAllBuildingsPlaced().Contains(buildingBase) && !GetAllBuildingsNotPlaced().Contains(buildingBase))
-        {
-            GetAllBuildingsPlaced().Remove(buildingBase);
-            AddBuildingInventory(buildingBase);
-            return true;
-        }
-        return false; 
     }
     #endregion
 }

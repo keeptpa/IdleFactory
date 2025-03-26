@@ -75,7 +75,13 @@
     <data name="str.build" xml:space="preserve">
         <value>Build</value>
     </data>
+    <data name="notify.build" xml:space="preserve">
+        <value>{0} builds a {1}</value>
+    </data>
     <data name="str.buildingRetrieve" xml:space="preserve">
-        <value>Retrieve Building</value>
+        <value>Retrive</value>
+    </data>
+    <data name="notify.buildingRetrieve" xml:space="preserve">
+        <value>{0} retrieves building of {1}</value>
     </data>
 </root>

@@ -1,5 +1,5 @@
 ﻿using System.Timers;
-using IdleFactory.Modules;
+using IdleFactory.Game.Modules.Base;
 using IdleFactory.State;
 using IdleFactory.Util;
 

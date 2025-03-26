@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using IdleFactory.Game.DataBase.Base;
+using IdleFactory.Game.Modules.Base;
 using IdleFactory.Util;
 using Newtonsoft.Json;
 
-namespace IdleFactory.Modules;
+namespace IdleFactory.Game.Modules;
 
 [LoadOrder(1)]
 public class DataBaseModule : ModuleBase

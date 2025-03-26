@@ -15,15 +15,16 @@ public class BuildingBase
         return allBuildings.IndexOf(this);
     }
 
-    public virtual void Build()
+    public virtual bool Retrieve()
     {
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
-        state.Build(this);
-    }
+        if (state.GetAllBuildingsPlaced().Contains(this))
+        {
+            state.AddResource(this.ID.Replace("building", "item"), 1);
+            state.RemoveBuilding(this);
+            return true;
+        }
 
-    public virtual void Retrieve()
-    {
-        var state = SingletonHolder.GetSingleton<GameStateHolder>();
-        state.Retrieve(this);
+        return false;
     }
 }

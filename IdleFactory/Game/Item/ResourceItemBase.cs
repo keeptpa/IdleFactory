@@ -1,4 +1,7 @@
-﻿namespace IdleFactory;
+﻿using IdleFactory.Game.Modules;
+using IdleFactory.Util;
+
+namespace IdleFactory;
 
 public enum ItemID
 {
@@ -8,4 +11,8 @@ public class ResourceItemBase
 {
     public string ID { get; set; }
     public int Quantity { get; set; }
+    public bool IsBuilding()
+    {
+        return Utils.GetModule<BuildingItemAdapterModule>().HasMappedBuilding(ID);
+    }
 }

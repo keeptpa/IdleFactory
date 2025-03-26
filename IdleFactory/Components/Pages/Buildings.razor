@@ -1,6 +1,6 @@
 ﻿@page "/Buildings"
 @using IdleFactory.Game.Building.Base
-@using IdleFactory.Modules
+@using IdleFactory.Game.Modules
 @using IdleFactory.State
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
@@ -8,6 +8,7 @@
 @inherits BaseRefreshablePage
 @inject IStringLocalizer<Resources> Localizer
 @inject NavigationManager NavigationManager
+@inject ICookie cookie
 
 <h3>@Localizer["str.building"]</h3>
 
@@ -17,13 +18,20 @@
         <button class="btn btn-primary"
                 @onclick="() => {OnDetailClick(building);}"> @Localizer["str.buildingDetail"]</button>
         <button class="btn btn-primary"
-                @onclick="() => {building.Retrieve(); SafeStateHasChanged();}"> @Localizer["str.buildingRetrieve"]</button>
+                @onclick="() => {OnRetriveClick(building);}"> @Localizer["str.buildingRetrieve"]</button>
     </p>
 }
 
 @code {
     List<BuildingBase> buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced();
 
+    private string curPlayerName = "";
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        curPlayerName = await cookie.GetValue("id");
+    }
+    
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -41,5 +49,19 @@
     {
         var buildIndex = build.GetIndex();
         NavigationManager.NavigateTo($"/{build.DetailSubPath}/{buildIndex}");
+    }
+    
+    private void OnRetriveClick(BuildingBase build)
+    {
+        var isSuccess = build.Retrieve();
+        if (isSuccess)
+        {
+            Utils.GetModule<NotificationModule>().SetNotify(new NotifyItem()
+            {
+                notifyString = "notify.buildingRetrieve",
+                parameters = new string[] {curPlayerName, build.ID}
+            });
+            SafeStateHasChanged();
+        }
     }
 }

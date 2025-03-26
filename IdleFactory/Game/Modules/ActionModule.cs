@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
 using IdleFactory.Game.Action.Base;
+using IdleFactory.Game.Modules.Base;
 using IdleFactory.Util;
 
-namespace IdleFactory.Modules;
+namespace IdleFactory.Game.Modules;
 
 [LoadOrder(5)]
 public class ActionModule : ModuleBase

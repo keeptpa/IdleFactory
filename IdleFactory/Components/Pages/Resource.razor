@@ -1,10 +1,14 @@
 ﻿@page "/resource"
+@using IdleFactory.Game.Building.Base
+@using IdleFactory.Game.Modules
 @using IdleFactory.State
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
 @inherits BaseRefreshablePage
 @inject IStringLocalizer<Resources> Localizer
 @rendermode InteractiveServer
+@inject ICookie cookie
+
 @*<h3>@Localizer["str.building"]</h3>
 @foreach(var item in _gameStateHolder.GetAllBuildingsNotPlaced())
 {
@@ -31,10 +35,10 @@
                         {
                             <div class="row border border-primary">
                                 <div class="col">
-                                    <div class="list-item">@Localizer[item.ID]</div>
+                                    <div class="list-item">@Utils.GetNameFromId(item.Value.ID)</div>
                                 </div>
                                 <div class="col">
-                                    <button class="btn btn-primary" style="margin-top: 0.2rem" @onclick="() => { item.Build(); }">@Localizer["str.build"]</button>
+                                    <button class="btn btn-primary" style="margin-top: 0.2rem" @onclick="() => { OnClickBuild(item.Value); }">@Localizer["str.build"]</button>
                                 </div>
                             </div>
                         }
@@ -62,6 +66,13 @@
 </div>
 
 @code {
+    private string curPlayerName = "";
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        curPlayerName = await cookie.GetValue("id");
+    }
+    
     private int curTab = 1;
     private GameStateHolder _gameStateHolder = SingletonHolder.GetSingleton<GameStateHolder>();
 
@@ -81,5 +92,19 @@
     {
         curTab = tab;
         SafeStateHasChanged();
+    }
+
+    private void OnClickBuild(ResourceItemBase buildingItem)
+    {
+        var state = SingletonHolder.GetSingleton<GameStateHolder>();
+        var isSuccessful = state.TryBuild(buildingItem);
+        if (isSuccessful)
+        {
+            Utils.GetModule<NotificationModule>().SetNotify(new NotifyItem()
+            {
+                notifyString = "notify.build",
+                parameters = new string[] {curPlayerName, buildingItem.ID }
+            });
+        }
     }
 }
