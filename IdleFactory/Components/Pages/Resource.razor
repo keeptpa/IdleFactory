@@ -23,23 +23,39 @@
     </div>
     <div class="tab-content">
         <div class="scrollable-list">
-            @switch (curTab)
-            {
-                case 1:
-                    @foreach(var item in _gameStateHolder.GetAllBuildingsNotPlaced())
-                    {
-                        <div class="list-item">@Localizer[item.ID] <button class="btn-primary" @onclick="() => {item.Build();}">@Localizer["str.build"]</button></div> 
-                    }
-                    break;
-                case 2:
-                    @foreach(var item in _gameStateHolder.GetAllResources())
-                    {
-                        <div class="list-item">@item.Value.Quantity * @Utils.GetNameFromId(item.Value.ID)</div>
-                    }
-                    break;
-                default:
-                    break;
-            }
+            <div class="container">
+                @switch (curTab)
+                {
+                    case 1:
+                        @foreach(var item in _gameStateHolder.GetAllBuildingsNotPlaced())
+                        {
+                            <div class="row border border-primary">
+                                <div class="col">
+                                    <div class="list-item">@Localizer[item.ID]</div>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-primary" style="margin-top: 0.2rem" @onclick="() => { item.Build(); }">@Localizer["str.build"]</button>
+                                </div>
+                            </div>
+                        }
+                        break;
+                    case 2:
+                        @foreach(var item in _gameStateHolder.GetAllResources())
+                        {
+                            <div class="row border border-primary">
+                                <div class="col">
+                                    <div class="list-item">@Utils.GetNameFromId(item.Value.ID)</div>
+                                </div>
+                                <div class="col">
+                                    <div class="list-item">@item.Value.Quantity</div>
+                                </div>
+                            </div>
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            </div>
             @*<div class="list-item">Sawmill</div>*@
         </div>
     </div>

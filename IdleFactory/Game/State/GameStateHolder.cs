@@ -8,7 +8,7 @@ public class GameStateHolder : SingletonBase
 {
     private Dictionary<string, ResourceItemBase> _resources = new Dictionary<string, ResourceItemBase>();
     private List<BuildingBase> _buildings = new List<BuildingBase>(){};
-    private List<BuildingBase> _buildingInventory = new List<BuildingBase>(){new Workbench()};
+    private List<BuildingBase> _buildingInventory = new List<BuildingBase>(){new Workbench(), new Workbench()};
     
     public Dictionary<string,int> resSingleGetQuantity = new Dictionary<string, int>();
 
