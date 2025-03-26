@@ -24,7 +24,6 @@ builder.Services.AddControllersWithViews()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
 builder.Services.AddScoped<ICookie, Cookie>();
-builder.Services.AddScoped<NavigationService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

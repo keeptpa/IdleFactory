@@ -10,14 +10,19 @@
 @inject NavigationManager NavigationManager
 
 <h3>@Localizer["str.building"]</h3>
+
 @foreach (var building in buildings)
 {
-    <p>@Localizer[building.ID] <button class="btn btn-primary" @onclick= "() => {OnDetailClick(building);}"> @Localizer["str.buildingDetail"]</button> </p> 
-
+    <p>@Localizer[building.ID]
+        <button class="btn btn-primary"
+                @onclick="() => {OnDetailClick(building);}"> @Localizer["str.buildingDetail"]</button>
+        <button class="btn btn-primary"
+                @onclick="() => {building.Retrieve(); SafeStateHasChanged();}"> @Localizer["str.buildingRetrieve"]</button>
+    </p>
 }
 
 @code {
-    List<BuildingBase> buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildings();
+    List<BuildingBase> buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced();
 
     protected override void OnInitialized()
     {
@@ -28,13 +33,13 @@
     protected override void OnTimer(object? state)
     {
         base.OnTimer(state);
-        buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildings();
+        buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced();
         SafeStateHasChanged();
     }
 
     private void OnDetailClick(BuildingBase build)
     {
         var buildIndex = build.GetIndex();
-        NavigationManager.NavigateTo($"/WorkbenchDetail/{buildIndex}");
+        NavigationManager.NavigateTo($"/{build.DetailSubPath}/{buildIndex}");
     }
 }

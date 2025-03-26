@@ -27,9 +27,6 @@
     <data name="action.chop" xml:space="preserve">
         <value>Chop Trees</value>
     </data>
-    <data name="resource" xml:space="preserve">
-        <value>Resources</value>
-    </data>
     <data name="notify.getRes" xml:space="preserve">
         <value>{0} gets {1} of {2}.</value>
     </data>
@@ -71,5 +68,14 @@
     </data>
     <data name="home_area" xml:space="preserve">
         <value>Home</value>
+    </data>
+    <data name="str.resources" xml:space="preserve">
+        <value>Resources</value>
+    </data>
+    <data name="str.build" xml:space="preserve">
+        <value>Build</value>
+    </data>
+    <data name="str.buildingRetrieve" xml:space="preserve">
+        <value>Retrieve Building</value>
     </data>
 </root>

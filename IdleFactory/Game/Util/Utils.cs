@@ -74,7 +74,7 @@ public class Utils
     public static BuildingBase? GetBuildingWithIndex(int buildingIndex)
     {
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
-        var buildingList = state.GetAllBuildings();
+        var buildingList = state.GetAllBuildingsPlaced();
         if (buildingList.Count >= buildingIndex)
         {
             return buildingList[buildingIndex];

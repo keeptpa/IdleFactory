@@ -81,3 +81,36 @@ h1:focus {
     gap: 10px; /* Space between buttons */
     padding: 10px;
 }
+
+.resources-container {
+    border: 1px solid #ddd;
+}
+.tab-navigation {
+    display: flex;
+    background-color: #f0f0f0;
+}
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+.tab-btn.active {
+    background-color: #e0e0e0;
+    font-weight: bold;
+}
+.tab-content {
+    padding: 10px;
+}
+.scrollable-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.list-item {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.list-item:last-child {
+    border-bottom: none;
+}

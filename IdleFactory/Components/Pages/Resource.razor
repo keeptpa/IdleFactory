@@ -1,14 +1,69 @@
 ﻿@page "/resource"
 @using IdleFactory.State
 @using IdleFactory.Util
-<h3>Resource</h3>
-<a></a>
+@using Microsoft.Extensions.Localization
+@inherits BaseRefreshablePage
+@inject IStringLocalizer<Resources> Localizer
+@rendermode InteractiveServer
+@*<h3>@Localizer["str.building"]</h3>
+@foreach(var item in _gameStateHolder.GetAllBuildingsNotPlaced())
+{
+    <p>@Localizer[item.ID]</p>
+}
+<h3>@Localizer["str.resources"]</h3>
 @foreach(var item in _gameStateHolder.GetAllResources())
 {
     <p> @item.Value.Name, @item.Value.Quantity</p>
-}
+}*@
+
+<div class="resources-container">
+    <div class="tab-navigation">
+        <button class=@((curTab == 1) ? "tab-btn active" : "tab-btn") @onclick="() => {OnSwitchTab(1);}">Buildings</button>
+        <button class=@((curTab == 2) ? "tab-btn active" : "tab-btn") @onclick="() => {OnSwitchTab(2);}">Resources</button>
+    </div>
+    <div class="tab-content">
+        <div class="scrollable-list">
+            @switch (curTab)
+            {
+                case 1:
+                    @foreach(var item in _gameStateHolder.GetAllBuildingsNotPlaced())
+                    {
+                        <div class="list-item">@Localizer[item.ID] <button class="btn-primary" @onclick="() => {item.Build();}">@Localizer["str.build"]</button></div> 
+                    }
+                    break;
+                case 2:
+                    @foreach(var item in _gameStateHolder.GetAllResources())
+                    {
+                        <div class="list-item">@item.Value.Quantity * @Utils.GetNameFromId(item.Value.ID)</div>
+                    }
+                    break;
+                default:
+                    break;
+            }
+            @*<div class="list-item">Sawmill</div>*@
+        </div>
+    </div>
+</div>
 
 @code {
+    private int curTab = 1;
     private GameStateHolder _gameStateHolder = SingletonHolder.GetSingleton<GameStateHolder>();
-    
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        StartTimer(1);
+    }
+
+    protected override void OnTimer(object? state)
+    {
+        base.OnTimer(state);
+        SafeStateHasChanged();
+    }
+
+    private void OnSwitchTab(int tab)
+    {
+        curTab = tab;
+        SafeStateHasChanged();
+    }
 }

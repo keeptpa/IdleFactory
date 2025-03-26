@@ -8,5 +8,6 @@ public class Workbench : BuildingBase
     {
         ID = "building.workbench";
         Description = "building.workbench.description";
+        DetailSubPath = "WorkbenchDetail";
     }
 }

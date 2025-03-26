@@ -177,15 +177,6 @@ namespace IdleFactory {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resources.
-        /// </summary>
-        internal static string resource {
-            get {
-                return ResourceManager.GetString("resource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         internal static string settings {
@@ -204,6 +195,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build.
+        /// </summary>
+        internal static string str_build {
+            get {
+                return ResourceManager.GetString("str.build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buildings.
         /// </summary>
         internal static string str_building {
@@ -218,6 +218,24 @@ namespace IdleFactory {
         internal static string str_buildingDetail {
             get {
                 return ResourceManager.GetString("str.buildingDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieve Building.
+        /// </summary>
+        internal static string str_buildingRetrieve {
+            get {
+                return ResourceManager.GetString("str.buildingRetrieve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resources.
+        /// </summary>
+        internal static string str_resources {
+            get {
+                return ResourceManager.GetString("str.resources", resourceCulture);
             }
         }
     }

@@ -20,9 +20,6 @@
     <data name="action.chop" xml:space="preserve">
         <value>砍伐</value>
     </data>
-    <data name="resource" xml:space="preserve">
-        <value>资源</value>
-    </data>
     <data name="notify.getRes" xml:space="preserve">
         <value>{0} 获得了 {1} 个 {2}.</value>
     </data>
@@ -64,5 +61,14 @@
     </data>
     <data name="home_area" xml:space="preserve">
         <value>总览</value>
+    </data>
+    <data name="str.resources" xml:space="preserve">
+        <value>资源</value>
+    </data>
+    <data name="str.build" xml:space="preserve">
+        <value>建造</value>
+    </data>
+    <data name="str.buildingRetrieve" xml:space="preserve">
+        <value>撤销建筑</value>
     </data>
 </root>

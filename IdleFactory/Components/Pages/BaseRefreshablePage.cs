@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Threading;
 
-public abstract class BaseRefreshablePage : ComponentBase, IDisposable
+public abstract class BaseRefreshablePage : ComponentBase
 {
     private ExecutionContext _savedContext;
     private Timer _timer;
@@ -35,10 +35,5 @@ public abstract class BaseRefreshablePage : ComponentBase, IDisposable
         base.OnInitialized();
         // Capture the initial context when the page is initialized
         _savedContext = ExecutionContext.Capture();
-    }
-
-    public void Dispose()
-    {
-        _timer?.Dispose();
     }
 }
