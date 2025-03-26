@@ -4,11 +4,13 @@ using System.Web;
 using IdleFactory.Components;
 using IdleFactory.Components.Pages;
 using IdleFactory.Game.Building.Base;
+using IdleFactory.Game.DataBase;
 using IdleFactory.Game.DataBase.Base;
 using IdleFactory.Game.Modules;
 using IdleFactory.Game.Modules.Base;
 using IdleFactory.State;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 
 namespace IdleFactory.Util;
 
@@ -85,5 +87,28 @@ public class Utils
 
         }
         return null;
+    }
+
+    public static void Save()
+    {
+        var state = SingletonHolder.GetSingleton<GameStateHolder>();
+        var savedJson = JsonConvert.SerializeObject(state);
+        //Console.WriteLine(savedJson);
+        var saveData = GetData<SaveData>();
+        saveData.savedJson = savedJson;
+        Utils.GetModule<DataBaseModule>().OverwriteData(saveData);
+    }
+
+    public static void Load()
+    {
+        var loadedJson = GetData<SaveData>().savedJson;
+        if (!string.IsNullOrEmpty(loadedJson))
+        {
+            var newState = JsonConvert.DeserializeObject<GameStateHolder>(loadedJson, new JsonSerializerSettings()
+            {
+                ObjectCreationHandling = ObjectCreationHandling.Replace
+            });
+            SingletonHolder.GetSingleton<GameStateHolder>().ReplaceData(newState);
+        }
     }
 }

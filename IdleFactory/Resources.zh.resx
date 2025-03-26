@@ -77,4 +77,7 @@
     <data name="notify.buildingRetrieve" xml:space="preserve">
         <value>{0} 拆除了 {1}</value>
     </data>
+    <data name="exchange_area" xml:space="preserve">
+        <value>以物易物</value>
+    </data>
 </root>

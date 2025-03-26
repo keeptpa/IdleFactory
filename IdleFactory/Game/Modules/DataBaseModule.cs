@@ -5,7 +5,16 @@ using IdleFactory.Util;
 using Newtonsoft.Json;
 
 namespace IdleFactory.Game.Modules;
-
+/// <summary>
+/// Represents a module for managing database operations within the application.
+/// </summary>
+/// <remarks>
+/// This class handles the creation, loading, and management of database files stored in JSON format.
+/// It initializes the database directory, loads existing databases, or creates new ones if they do not exist.
+/// Provides methods to retrieve and overwrite database entries.
+/// Usually these database are readonly and only receives changed from json files' modify,
+/// but it can be overwritten and saved permanently on runtime as needed. e.g. saved game.
+/// </remarks>
 [LoadOrder(1)]
 public class DataBaseModule : ModuleBase
 {
@@ -47,7 +56,10 @@ public class DataBaseModule : ModuleBase
             var dataStr = File.ReadAllText(path);
             if (!string.IsNullOrEmpty(dataStr))
             {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject(dataStr, dataType) as DataBaseBase;
+                return Newtonsoft.Json.JsonConvert.DeserializeObject(dataStr, dataType, new JsonSerializerSettings()
+                {
+                    ObjectCreationHandling = ObjectCreationHandling.Replace
+                }) as DataBaseBase;
             }
         }
         
@@ -59,5 +71,15 @@ public class DataBaseModule : ModuleBase
     public T GetDataBase<T>() where T : DataBaseBase
     {
         return _dataBase[typeof(T).Name] as T;
+    }
+
+    public void OverwriteData(DataBaseBase data)
+    {
+        if (_dataBase.ContainsKey(data.GetType().Name))
+        {
+            _dataBase[data.GetType().Name] = data;
+            var path = Path.Combine(DB_FULL_PATH, data.GetType().Name + ".json");
+            File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(data, Formatting.Indented));
+        }
     }
 }

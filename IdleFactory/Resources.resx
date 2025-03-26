@@ -84,4 +84,7 @@
     <data name="notify.buildingRetrieve" xml:space="preserve">
         <value>{0} retrieves building of {1}</value>
     </data>
+    <data name="exchange_area" xml:space="preserve">
+        <value>Exchange</value>
+    </data>
 </root>

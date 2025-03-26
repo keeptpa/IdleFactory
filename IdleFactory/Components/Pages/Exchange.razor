@@ -1,0 +1,96 @@
+﻿@page "/Exchange"
+@using IdleFactory.Game.DataBase
+@using IdleFactory.RecipeSystem
+@using IdleFactory.State
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> Localizer
+@rendermode InteractiveServer
+@inject ICookie cookie
+@inherits BaseRefreshablePage
+
+<h3>Exchange</h3>
+<div class="scrollable-list">
+    <div class="container">
+        @foreach(var item in recipes)
+        {
+            <div class="row border border-primary">
+                <div class="col">
+                    <div class="list-item">@GetIngredientsString(item)</div>
+                </div>
+                <div class="col">
+                    <div class="list-item">@GetOutputsString(item)</div>
+                </div>
+                <div class="col">
+                    <button class=@(!Exchangeable(item) ? "btn btn-primary disabled" : "btn btn-primary")  @onclick="() => {OnExchange(item);}"> YES </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+    private List<Recipe> recipes;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        recipes = Utils.GetData<ExchangeRecipeData>().Recipes;
+    }
+
+    private string GetIngredientsString(Recipe recipe)
+    {
+        var ingredients = recipe.Ingredients;
+        string ingredientsString = "";
+        foreach (var ingredient in ingredients)
+        {
+            ingredientsString += $"{ingredient.Value} * {Utils.GetNameFromId(ingredient.Key)} ";
+        }
+        return ingredientsString;
+    }
+
+    private string GetOutputsString(Recipe recipe)
+    {
+        var outputs = recipe.Outputs;
+        string outputsString = "";
+        foreach (var output in outputs)
+        {
+            outputsString += $"{output.Value} * {Utils.GetNameFromId(output.Key)} ";
+        }
+        return outputsString;
+    }
+
+    private void OnExchange(Recipe item)
+    {
+        var state = SingletonHolder.GetSingleton<GameStateHolder>();
+        if (Exchangeable(item))
+        {
+            foreach (var ingredient in item.Ingredients)
+            {
+                state.AddResource(ingredient.Key, -ingredient.Value);
+            }
+        }
+
+        foreach (var outputs in item.Outputs)
+        {
+            state.AddResource(outputs.Key, outputs.Value);
+        }
+        SafeStateHasChanged();
+    }
+
+    private bool Exchangeable(Recipe item)
+    {
+        var result = true;
+        var inventory = SingletonHolder.GetSingleton<GameStateHolder>().GetAllResources(true);
+        foreach (var ingredient in item.Ingredients)
+        {
+            if (!inventory.ContainsKey(ingredient.Key) || inventory[ingredient.Key].Quantity < ingredient.Value)
+            {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+}

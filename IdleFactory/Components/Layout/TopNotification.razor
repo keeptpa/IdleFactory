@@ -9,7 +9,9 @@
 
 @if (notify.IsValid())
 {
-    <p>@Utils.GetFormattedTime(notify.timeStamp) - @Utils.DynamicStringFormat(Localizer[notify.notifyString], Utils.TryLocalizeArg(notify.parameters))</p>
+    <div>
+        <text>@Utils.GetFormattedTime(notify.timeStamp) - @Utils.DynamicStringFormat(Localizer[notify.notifyString], Utils.TryLocalizeArg(notify.parameters))</text>
+    </div>
 }
 
 

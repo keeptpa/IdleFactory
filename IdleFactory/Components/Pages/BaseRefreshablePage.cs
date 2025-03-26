@@ -39,6 +39,6 @@ public abstract class BaseRefreshablePage : ComponentBase, IDisposable
 
     public void Dispose()
     {
-        _timer.Dispose();
+        _timer?.Dispose();
     }
 }

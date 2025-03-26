@@ -1,7 +1,26 @@
 ﻿@page "/"
+@using IdleFactory.State
+@using IdleFactory.Util
 @using Microsoft.Extensions.Localization
+@using Newtonsoft.Json
+@rendermode InteractiveServer
 @inject IStringLocalizer<Resources> Localizer
 
 <PageTitle>Home</PageTitle>
 
-Welcome to your new app.
+<button onclick="@Save"> Save </button>
+<button onclick="@Load"> Load </button>
+
+@code
+{
+
+    private void Save()
+    {
+        Utils.Save();
+    }
+    
+    private void Load()
+    {
+        Utils.Load();
+    }
+}
