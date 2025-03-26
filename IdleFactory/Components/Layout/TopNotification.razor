@@ -5,6 +5,7 @@
 @rendermode InteractiveServer
 @inject IStringLocalizer<Resources> Localizer
 @inject ICookie cookie
+@inherits BaseRefreshablePage
 
 @if (notify.IsValid())
 {
@@ -19,22 +20,13 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        // Subscribe to the Update event of the UpdateModule
-        var context = ExecutionContext.Capture();
-        Utils.GetModule<UpdateModule>().Update += () =>
-        {
-            var current = ExecutionContext.Capture();
-            try
-            {
-                notify = Utils.GetModule<NotificationModule>().GetCurNotify();
+        StartTimer(1);
+    }
 
-                ExecutionContext.Restore(context);
-                InvokeAsync(StateHasChanged);
-            }
-            finally
-            {
-                ExecutionContext.Restore(current);
-            }
-        };
+    protected override void OnTimer(object? state)
+    {
+        base.OnTimer(state);
+        notify = Utils.GetModule<NotificationModule>().GetCurNotify();
+        SafeStateHasChanged();
     }
 }

@@ -2,9 +2,11 @@
 @using IdleFactory.Modules
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
-<h3>NotifyHistory</h3>
 @rendermode InteractiveServer
 @inject IStringLocalizer<Resources> Localizer
+@inherits BaseRefreshablePage
+
+<h3>NotifyHistory</h3>
 
 <div>
     <div>
@@ -24,24 +26,14 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Utils.GetModule<UpdateModule>().Update += Update;
-        context = ExecutionContext.Capture();
-
+        StartTimer(1);
     }
 
-    private void Update()
+    protected override void OnTimer(object? state)
     {
+        base.OnTimer(state);
         notifyHistory = Utils.GetModule<NotificationModule>().GetHistory();
-        var current = ExecutionContext.Capture();
-        try
-        {
-            ExecutionContext.Restore(context);
-            InvokeAsync(StateHasChanged);
-        }
-        finally
-        {
-            ExecutionContext.Restore(current);
-        }
+        SafeStateHasChanged();
     }
 
 }

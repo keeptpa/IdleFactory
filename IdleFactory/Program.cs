@@ -3,6 +3,7 @@ using IdleFactory;
 using IdleFactory.Components;
 using IdleFactory.State;
 using IdleFactory.Util;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
@@ -23,6 +24,7 @@ builder.Services.AddControllersWithViews()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
 builder.Services.AddScoped<ICookie, Cookie>();
+builder.Services.AddScoped<NavigationService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

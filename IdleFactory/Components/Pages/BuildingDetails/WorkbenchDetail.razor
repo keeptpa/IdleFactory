@@ -1,4 +1,4 @@
-﻿@page "/BuildingDetails/{buildingIndex}"
+﻿@page "/WorkbenchDetail"/{buildingIndex}"
 @using IdleFactory.Game.Building.Base
 @using IdleFactory.Modules
 @using IdleFactory.State
@@ -30,8 +30,8 @@ else
         building = Utils.GetBuildingWithIndex(int.Parse(buildingIndex));
         base.OnInitialized();
     }
-
-    private void GoBack()
+    
+    protected void GoBack()
     {
         NavigationManager.NavigateTo("/Buildings");
     }

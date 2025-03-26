@@ -5,7 +5,7 @@
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
 @rendermode InteractiveServer
-
+@inherits BaseRefreshablePage
 @inject IStringLocalizer<Resources> Localizer
 @inject NavigationManager NavigationManager
 
@@ -18,34 +18,23 @@
 
 @code {
     List<BuildingBase> buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildings();
-    ExecutionContext context;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Utils.GetModule<UpdateModule>().Update += Update;
-        context = ExecutionContext.Capture();
-
+        StartTimer(3);
     }
 
-    private void Update()
+    protected override void OnTimer(object? state)
     {
+        base.OnTimer(state);
         buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildings();
-        var current = ExecutionContext.Capture();
-        try
-        {
-            ExecutionContext.Restore(context);
-            InvokeAsync(StateHasChanged);
-        }
-        finally
-        {
-            ExecutionContext.Restore(current);
-        }
+        SafeStateHasChanged();
     }
 
     private void OnDetailClick(BuildingBase build)
     {
         var buildIndex = build.GetIndex();
-        NavigationManager.NavigateTo($"/BuildingDetails/{buildIndex}");
+        NavigationManager.NavigateTo($"/WorkbenchDetail/{buildIndex}");
     }
 }
