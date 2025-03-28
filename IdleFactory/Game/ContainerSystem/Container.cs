@@ -28,7 +28,7 @@ public class Container
         return quantityToaAdd;
     }
 
-    public int TryRemoveItem(ResourceItemBase item, bool fromInput)
+    public int TryRemoveItem(ResourceItemBase item, bool fromInput = true)
     {
         var slots = fromInput ? _inputSlots : _outputSlots;
         var quantityToRemove = item.Quantity;
@@ -49,16 +49,18 @@ public class Container
         var availiableQuantity = 0;
         foreach (var itemSlot in _inputSlots)
         {
-            if(itemSlot.GetItem() == null) continue;
+            if (itemSlot.GetItem() == null) continue;
             if (itemSlot.GetItem().ID == item.ID)
             {
                 if (!checkQuantity)
                 {
                     return true;
                 }
+
                 availiableQuantity += itemSlot.GetItem().Quantity;
             }
         }
+
         return availiableQuantity >= item.Quantity;
     }
 
@@ -76,12 +78,12 @@ public class Container
                 return false;
             }
         }
-    
+
         // Check there's enough space to output
         foreach (var output in recipe.Outputs)
         {
             var remainingOutputQuantity = output.Value;
-        
+
             // Check available space in output slots
             foreach (var outputSlot in _outputSlots)
             {
@@ -95,7 +97,7 @@ public class Container
                 {
                     var currentItemQuantity = outputSlot.GetItem()?.Quantity ?? 0;
                     var spaceLeft = outputSlot.GetMaxQuantity() - currentItemQuantity;
-                
+
                     int spaceToFill = Math.Min(remainingOutputQuantity, spaceLeft);
                     remainingOutputQuantity -= spaceToFill;
                 }
@@ -116,4 +118,14 @@ public class Container
 
         return true;
     }
+
+    public ItemSlot[] GetInputSlots()
+    {
+        return _inputSlots;
+    }
+
+    public ItemSlot[] GetOutputSlots(){
+        return _outputSlots;
+    }
+
 }

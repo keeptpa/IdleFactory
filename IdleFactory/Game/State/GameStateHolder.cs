@@ -1,4 +1,5 @@
-﻿using IdleFactory.Game.Building.Base;
+﻿using IdleFactory.Game.Building;
+using IdleFactory.Game.Building.Base;
 using IdleFactory.Game.Modules;
 using IdleFactory.Util;
 using Newtonsoft.Json;
@@ -12,7 +13,10 @@ public class GameStateHolder : SingletonBase
     //This mapping is stored in BuildingItemAdapterModule
     //So this module also provides a method to get a building instance from an item ID (if available)
     [JsonProperty] 
-    private Dictionary<string, ResourceItemBase> _resources = new Dictionary<string, ResourceItemBase>();
+    private Dictionary<string, ResourceItemBase> _resources = new Dictionary<string, ResourceItemBase>()
+    {
+        {"item.workbench" ,new ResourceItemBase { ID = "item.workbench", Quantity = 100 }},
+    };
     [JsonProperty]
     private List<BuildingBase> _buildings = new List<BuildingBase>(){};
     

@@ -1,6 +1,5 @@
 ﻿@page "/WorkbenchDetail/{buildingIndex}"
-@using IdleFactory.Game.Building.Base
-@using IdleFactory.State
+@using IdleFactory.Game.Building
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
 @rendermode InteractiveServer
@@ -14,6 +13,11 @@
 {
     <p>@Localizer[building.ID]</p>
     <p>@Localizer[building.Description]</p>
+    
+    @foreach (var slotInput in building.GetMachineContainer().GetInputSlots())
+    {
+        <SlotComponent slot="slotInput"/>
+    }
 }
 else
 {
@@ -22,11 +26,12 @@ else
 <button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
 @code {
     [Parameter] public string buildingIndex { get; set; }
-    private BuildingBase? building;
+
+    private Workbench? building;
 
     protected override void OnInitialized()
     {
-        building = Utils.GetBuildingWithIndex(int.Parse(buildingIndex));
+        building = Utils.GetBuildingWithIndex(int.Parse(buildingIndex)) as Workbench;
         base.OnInitialized();
     }
     
@@ -34,4 +39,5 @@ else
     {
         NavigationManager.NavigateTo("/Buildings");
     }
+    
 }

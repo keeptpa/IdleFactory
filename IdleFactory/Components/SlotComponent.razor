@@ -1,0 +1,81 @@
+﻿@using IdleFactory.ContainerSystem
+@using IdleFactory.State
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer;
+
+
+<input class="input-group-sm" @bind="Quantity">@Quantity
+
+<select @onfocus="RefreshData" @bind="Id">
+    <option value="" selected="@(item == null)"></option>
+    @foreach (var item in inventoryItems)
+    {
+        <option value="@item.ID" selected="@(Id == item.ID)">@localizer[item.ID]</option>
+    }
+</select>
+
+@code {
+    private List<ResourceItemBase> inventoryItems;
+    private ResourceItemBase? item;
+    
+    private string Id
+    {
+        get => item?.ID;
+        set
+        {
+            item ??= new ResourceItemBase();
+            item.ID = value;
+            item = QualifyItem(item);
+            OnSelectedChange();
+        }
+    }
+
+    private int Quantity
+    {
+        get => item?.Quantity ?? 0;
+        set
+        {
+            item ??= new ResourceItemBase();
+            item.Quantity = value;
+            item = QualifyItem(item);
+            OnSelectedChange();
+        }
+    }
+
+    private ResourceItemBase? QualifyItem(ResourceItemBase item)
+    {
+        if (this.item.ID == null || this.item.Quantity <= 0) return item; //means the user isn't finish selecting
+        var state = SingletonHolder.GetSingleton<GameStateHolder>();
+        if (state.GetResource(item.ID) == null)
+        {
+            return null;
+        }
+        var quantityAvailable = state.GetResource(item.ID).Quantity;
+        var quantityRequested = Quantity;
+        var quantityToTake = Math.Min(quantityAvailable, quantityRequested);
+        item.Quantity = quantityToTake;
+        return item;
+    }
+    
+    private void OnSelectedChange()
+    {
+        var state = SingletonHolder.GetSingleton<GameStateHolder>();
+  
+    }
+
+
+    [Parameter] public ItemSlot slot { get; set; }
+
+    private void RefreshData()
+    {
+        inventoryItems = SingletonHolder.GetSingleton<GameStateHolder>().GetAllResources().Values.ToList();
+    }
+
+    protected override void OnInitialized()
+    {
+        RefreshData();
+        base.OnInitialized();
+    }
+
+}

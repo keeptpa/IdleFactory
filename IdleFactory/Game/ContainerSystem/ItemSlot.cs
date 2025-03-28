@@ -60,7 +60,9 @@ public class ItemSlot
     {
         return item;
     }
-
+    
+    
+    
     public int GetMaxQuantity()
     {
         return MAX_QUANTITY;
@@ -73,5 +75,10 @@ public class ItemSlot
             return MAX_QUANTITY;
         }
         return MAX_QUANTITY - item.Quantity;
+    }
+
+    public void SetItem(ResourceItemBase item)
+    {
+        this.item = item;
     }
 }
