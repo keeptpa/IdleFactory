@@ -12,7 +12,7 @@ public class RecipeData : DataBaseBase
         {
             new Recipe
             {
-                ID = "recipe.workbench.furnance",
+                ID = "recipe.workbench.furnace",
                 Ingredients = new()
                 {
                     {
@@ -35,4 +35,9 @@ public class RecipeData : DataBaseBase
             },
         }}},
     };
+
+    public List<Recipe> GetRecipes(string machineID)
+    {
+        return allRecipes[machineID]?.Recipes ?? new List<Recipe>();
+    }
 }

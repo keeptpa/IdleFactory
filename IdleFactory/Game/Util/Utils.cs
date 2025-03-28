@@ -8,6 +8,7 @@ using IdleFactory.Game.DataBase;
 using IdleFactory.Game.DataBase.Base;
 using IdleFactory.Game.Modules;
 using IdleFactory.Game.Modules.Base;
+using IdleFactory.RecipeSystem;
 using IdleFactory.State;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -18,7 +19,7 @@ public class Utils
 {
     public static string GetNameFromId(string id)
     {
-        return Resources.ResourceManager.GetString(id) ?? Resources.ResourceManager.GetString(id.Replace("item", "building")) ?? id;
+        return Resources.ResourceManager.GetString(id) ?? Resources.ResourceManager.GetString(id.Replace("item", "building")) ?? Resources.ResourceManager.GetString(id.Replace("building", "item")) ?? id;
     }
     
     public static T? GetModule<T>() where T : ModuleBase
@@ -81,7 +82,7 @@ public class Utils
     {
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
         var buildingList = state.GetAllBuildingsPlaced();
-        if (buildingList.Count >= buildingIndex)
+        if (buildingList.Count > buildingIndex)
         {
             return buildingList[buildingIndex];
 
@@ -110,5 +111,27 @@ public class Utils
             });
             SingletonHolder.GetSingleton<GameStateHolder>().ReplaceData(newState);
         }
+    }
+
+    public static string GetIngredientsString(Recipe recipe)
+    {
+        var ingredients = recipe.Ingredients;
+        string ingredientsString = "";
+        foreach (var ingredient in ingredients)
+        {
+            ingredientsString += $"{ingredient.Value} * {Utils.GetNameFromId(ingredient.Key)} ";
+        }
+        return ingredientsString;
+    }
+
+    public static string GetOutputsString(Recipe recipe)
+    {
+        var outputs = recipe.Outputs;
+        string outputsString = "";
+        foreach (var output in outputs)
+        {
+            outputsString += $"{output.Value} * {Utils.GetNameFromId(output.Key)} ";
+        }
+        return outputsString;
     }
 }

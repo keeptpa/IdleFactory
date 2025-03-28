@@ -1,4 +1,6 @@
 ﻿using IdleFactory.RecipeSystem;
+using IdleFactory.State;
+using IdleFactory.Util;
 
 namespace IdleFactory.ContainerSystem;
 
@@ -11,20 +13,44 @@ public class Container
     {
         _inputSlots = new ItemSlot[inputSlotsCount];
         _outputSlots = new ItemSlot[outputSlotsCount];
-    }
 
-    public int TryAddItem(ResourceItemBase item)
-    {
-        var quantityToaAdd = item.Quantity;
-        foreach (var input in _inputSlots)
+        for (int i = 0; i < inputSlotsCount; i++)
         {
-            quantityToaAdd -= input.TryAddItem(item.ID, item.Quantity);
-            if (quantityToaAdd <= 0)
-            {
-                return item.Quantity;
-            }
+            _inputSlots[i] = new ItemSlot();
         }
 
+        for (int i = 0; i < outputSlotsCount; i++)
+        {
+            _outputSlots[i] = new ItemSlot();
+        }
+    }
+
+    public int TryAddItem(ResourceItemBase item, bool toInput = true)
+    {
+        var quantityToaAdd = item.Quantity;
+        if (toInput)
+        {
+            foreach (var input in _inputSlots)
+            {
+                quantityToaAdd -= input.TryAddItem(item.ID, item.Quantity);
+                if (quantityToaAdd <= 0)
+                {
+                    return item.Quantity;
+                }
+            }
+        }
+        else
+        {
+            foreach (var output in _outputSlots)
+            {
+                quantityToaAdd -= output.TryAddItem(item.ID, item.Quantity);
+                if (quantityToaAdd <= 0)
+                {
+                    return item.Quantity;
+                }
+            }
+        }
+        
         return quantityToaAdd;
     }
 
@@ -128,4 +154,28 @@ public class Container
         return _outputSlots;
     }
 
+    /// <summary>
+    /// Return all item to inventory
+    /// </summary>
+    public void Clear()
+    {
+        var state = SingletonHolder.GetSingleton<GameStateHolder>();
+        foreach (var itemSlot in _inputSlots)
+        {
+            var item = itemSlot.GetItem();
+            if (item != null)
+            {
+                state.AddResource(item.ID, item.Quantity);
+            }
+        }
+
+        foreach (var itemSlot in _outputSlots)
+        {
+            var item = itemSlot.GetItem();
+            if (item != null)
+            {
+                state.AddResource(item.ID, item.Quantity);
+            }
+        }
+    }
 }

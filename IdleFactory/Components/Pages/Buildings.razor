@@ -14,7 +14,7 @@
 
 @foreach (var building in buildings)
 {
-    <p>@Localizer[building.ID]
+    <p>@Utils.GetNameFromId(building.ID)
         <button class="btn btn-primary"
                 @onclick="() => {OnDetailClick(building);}"> @Localizer["str.buildingDetail"]</button>
         <button class="btn btn-primary"

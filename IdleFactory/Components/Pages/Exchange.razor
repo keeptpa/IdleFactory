@@ -16,10 +16,10 @@
         {
             <div class="row border border-primary">
                 <div class="col">
-                    <div class="list-item">@GetIngredientsString(item)</div>
+                    <div class="list-item">@Utils.GetIngredientsString(item)</div>
                 </div>
                 <div class="col">
-                    <div class="list-item">@GetOutputsString(item)</div>
+                    <div class="list-item">@Utils.GetOutputsString(item)</div>
                 </div>
                 <div class="col">
                     <button class=@(!Exchangeable(item) ? "btn btn-primary disabled" : "btn btn-primary")  @onclick="() => {OnExchange(item);}"> YES </button>
@@ -36,28 +36,6 @@
     {
         base.OnInitialized();
         recipes = Utils.GetData<ExchangeRecipeData>().Recipes;
-    }
-
-    private string GetIngredientsString(Recipe recipe)
-    {
-        var ingredients = recipe.Ingredients;
-        string ingredientsString = "";
-        foreach (var ingredient in ingredients)
-        {
-            ingredientsString += $"{ingredient.Value} * {Utils.GetNameFromId(ingredient.Key)} ";
-        }
-        return ingredientsString;
-    }
-
-    private string GetOutputsString(Recipe recipe)
-    {
-        var outputs = recipe.Outputs;
-        string outputsString = "";
-        foreach (var output in outputs)
-        {
-            outputsString += $"{output.Value} * {Utils.GetNameFromId(output.Key)} ";
-        }
-        return outputsString;
     }
 
     private void OnExchange(Recipe item)

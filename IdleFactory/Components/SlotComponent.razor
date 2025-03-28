@@ -1,18 +1,20 @@
-﻿@using IdleFactory.ContainerSystem
-@using IdleFactory.State
+﻿@using IdleFactory.State
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
 @inject IStringLocalizer<Resources> localizer;
 
 
-<input class="input-group-sm" @bind="Quantity">@Quantity
+<input class="input-group-sm" @bind="Quantity" style="width:50px">
 
-<select @onfocus="RefreshData" @bind="Id">
-    <option value="" selected="@(item == null)"></option>
+<select @onfocus="RefreshData" @bind="Id" class="form-select" style="width: 120px">
+    <option value="" selected="@(item == null || item.Quantity == 0)"></option>
     @foreach (var item in inventoryItems)
     {
-        <option value="@item.ID" selected="@(Id == item.ID)">@localizer[item.ID]</option>
+        <option value="@item.ID" selected="@(Id == item.ID)">@localizer[item.ID] * @item.Quantity</option>
     }
+    
 </select>
 
 @code {
@@ -24,10 +26,12 @@
         get => item?.ID;
         set
         {
+            if(value == item?.ID) return;
+            OnDeselect();
             item ??= new ResourceItemBase();
             item.ID = value;
             item = QualifyItem(item);
-            OnSelectedChange();
+            OnSelected();
         }
     }
 
@@ -36,16 +40,19 @@
         get => item?.Quantity ?? 0;
         set
         {
+            if(value == item?.Quantity) return;
+            value = Math.Max(0, value);
+            OnDeselect();
             item ??= new ResourceItemBase();
             item.Quantity = value;
             item = QualifyItem(item);
-            OnSelectedChange();
+            OnSelected();
         }
     }
 
     private ResourceItemBase? QualifyItem(ResourceItemBase item)
     {
-        if (this.item.ID == null || this.item.Quantity <= 0) return item; //means the user isn't finish selecting
+        if (this.item == null || this.item.ID == null || this.item.Quantity <= 0) return item; //means the user isn't finish selecting
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
         if (state.GetResource(item.ID) == null)
         {
@@ -57,23 +64,38 @@
         item.Quantity = quantityToTake;
         return item;
     }
-    
-    private void OnSelectedChange()
+
+    private void OnDeselect()
     {
+        if (item?.ID == null || item.Quantity <= 0) return;
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
-  
+        state.AddResource(item.ID, item.Quantity);
+    }
+    
+    private void OnSelected()
+    {
+        if (item?.ID == null || item.Quantity <= 0) return;
+        var state = SingletonHolder.GetSingleton<GameStateHolder>();
+        //slot.SetItem(item);
+        state.AddResource(item.ID, -item.Quantity);
+        slot.SetItem(item);
     }
 
 
     [Parameter] public ItemSlot slot { get; set; }
+    [Parameter] public bool isOutput { get; set; }
 
     private void RefreshData()
     {
-        inventoryItems = SingletonHolder.GetSingleton<GameStateHolder>().GetAllResources().Values.ToList();
+        inventoryItems = isOutput ? (item == null ? [] : [item]) : SingletonHolder.GetSingleton<GameStateHolder>().GetAllResources().Values.ToList();
     }
 
     protected override void OnInitialized()
     {
+        if (slot.GetItem()?.IsValid() == true)
+        {
+            item = slot.GetItem();
+        }
         RefreshData();
         base.OnInitialized();
     }

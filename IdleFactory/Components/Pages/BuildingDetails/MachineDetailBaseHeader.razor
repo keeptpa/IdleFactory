@@ -1,0 +1,55 @@
+﻿@using IdleFactory.Game.Building.Base
+@using IdleFactory.Game.DataBase
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> Localizer
+
+<p>@Utils.GetNameFromId(machine.ID)</p>
+<p>@Localizer[machine.Description]</p>
+<hr class="hr" />
+
+@Localizer["str.selectRecipe"]
+<select @bind="selectedRecipe" class="form-select" style="width: 200px">
+    <option value=""></option>
+    @foreach (var recipe in machine.GetAllAvailableRecipes())
+    {
+        <option selected="@(recipe.ID == selectedRecipe)" value="@recipe.ID">@Utils.DynamicStringFormat(Localizer["str.recipeDetail"], new string[]
+        {
+            Utils.GetOutputsString(recipe), Utils.GetIngredientsString(recipe)
+        })</option>
+    }
+</select>
+
+
+@code {
+    private WorkMachineBase _machine;
+    private string _selectedRecipe;
+    
+    [Parameter]
+    public WorkMachineBase machine
+    {
+        get => _machine;
+        set => _machine = value;
+    }
+
+    public string selectedRecipe
+    {
+        get => _selectedRecipe;
+        set
+        {
+            _selectedRecipe = value;
+            var recipe = machine.SearchRecipe(value);
+            if (recipe != null)
+            {
+                machine.SetRecipe(recipe);
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        _selectedRecipe = machine.GetNowRecipe() != null ? machine.GetNowRecipe().ID : "";
+        base.OnInitialized();
+    }
+
+}

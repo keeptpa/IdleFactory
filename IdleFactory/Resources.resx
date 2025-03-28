@@ -51,9 +51,6 @@
     <data name="item.ironOre" xml:space="preserve">
         <value>Iron Ore</value>
     </data>
-    <data name="building.workbench" xml:space="preserve">
-        <value>Workbench</value>
-    </data>
     <data name="building.workbench.description" xml:space="preserve">
         <value>Basic workbench. You could do some simple job here.</value>
     </data>
@@ -86,5 +83,26 @@
     </data>
     <data name="exchange_area" xml:space="preserve">
         <value>Exchange</value>
+    </data>
+    <data name="str.input" xml:space="preserve">
+        <value>Input</value>
+    </data>
+    <data name="str.output" xml:space="preserve">
+        <value>Output</value>
+    </data>
+    <data name="item.furnace" xml:space="preserve">
+        <value>Furnace</value>
+    </data>
+    <data name="item.workbench" xml:space="preserve">
+        <value>Work Bench</value>
+    </data>
+    <data name="str.crafting" xml:space="preserve">
+        <value>Crafting</value>
+    </data>
+    <data name="str.selectRecipe" xml:space="preserve">
+        <value>Select recipe</value>
+    </data>
+    <data name="str.recipeDetail" xml:space="preserve">
+        <value>Make {0} using {1}</value>
     </data>
 </root>

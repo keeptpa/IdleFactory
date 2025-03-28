@@ -3,6 +3,7 @@
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
 @rendermode InteractiveServer
+@inherits BaseRefreshablePage
 
 @inject IStringLocalizer<Resources> Localizer
 @inject NavigationManager NavigationManager
@@ -11,18 +12,39 @@
 
 @if (building != null)
 {
-    <p>@Localizer[building.ID]</p>
-    <p>@Localizer[building.Description]</p>
-    
-    @foreach (var slotInput in building.GetMachineContainer().GetInputSlots())
-    {
-        <SlotComponent slot="slotInput"/>
-    }
+    <MachineDetailBaseHeader machine="@this.building"/>
+    //<div class="scrollable-list">
+    <div class="container">
+        @*Inputs*@
+        <div class="row">
+            <div class="col">
+                @Localizer["str.input"]
+                @for (int i = 0; i < building.GetMachineContainer().GetInputSlots().Length; i++)
+                {
+                    <div class="row">
+                        <SlotComponent slot="@(building.GetMachineContainer().GetInputSlots()[i])"/>
+                    </div>
+                }
+            </div>
+            @*Outputs*@
+            <div class="col">
+                @Localizer["str.output"]
+                @for (int i = 0; i < building.GetMachineContainer().GetOutputSlots().Length; i++)
+                {
+                    <div class="row">
+                        <SlotComponent isOutput="@true" slot="@(building.GetMachineContainer().GetOutputSlots()[i])"/>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    //</div>
 }
 else
 {
     <p>Building not found.</p>
 }
+<hr class="hr" />
 <button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
 @code {
     [Parameter] public string buildingIndex { get; set; }
@@ -31,10 +53,17 @@ else
 
     protected override void OnInitialized()
     {
+        StartTimer(1);
         building = Utils.GetBuildingWithIndex(int.Parse(buildingIndex)) as Workbench;
         base.OnInitialized();
     }
-    
+
+    protected override void OnTimer(object? state)
+    {
+        base.OnTimer(state);
+        SafeStateHasChanged();
+    }
+
     protected void GoBack()
     {
         NavigationManager.NavigateTo("/Buildings");

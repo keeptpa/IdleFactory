@@ -15,4 +15,9 @@ public class ResourceItemBase
     {
         return Utils.GetModule<BuildingItemAdapterModule>().HasMappedBuilding(ID);
     }
+
+    public bool IsValid()
+    {
+        return !string.IsNullOrEmpty(ID) && Quantity > 0;
+    }
 }

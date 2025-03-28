@@ -44,9 +44,6 @@
     <data name="item.ironOre" xml:space="preserve">
         <value>铁矿石</value>
     </data>
-    <data name="building.workbench" xml:space="preserve">
-        <value>制造台</value>
-    </data>
     <data name="building.workbench.description" xml:space="preserve">
         <value>最基础的制造台，你可以在这里进行一些简单的工作。</value>
     </data>
@@ -79,5 +76,26 @@
     </data>
     <data name="exchange_area" xml:space="preserve">
         <value>以物易物</value>
+    </data>
+    <data name="str.input" xml:space="preserve">
+        <value>输入</value>
+    </data>
+    <data name="str.output" xml:space="preserve">
+        <value>输出</value>
+    </data>
+    <data name="item.workbench" xml:space="preserve">
+        <value>制造台</value>
+    </data>
+    <data name="item.furnace" xml:space="preserve">
+        <value>熔炉</value>
+    </data>
+    <data name="str.crafting" xml:space="preserve">
+        <value>制造</value>
+    </data>
+    <data name="str.selectRecipe" xml:space="preserve">
+        <value>选择配方</value>
+    </data>
+    <data name="str.recipeDetail" xml:space="preserve">
+        <value>制作 {0}, 材料 {1}</value>
     </data>
 </root>

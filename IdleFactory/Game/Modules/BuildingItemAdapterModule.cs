@@ -15,6 +15,10 @@ public class BuildingItemAdapterModule : ModuleBase
         foreach (var building in buildingList)
         {
             var instance = (BuildingBase)Activator.CreateInstance(building);
+            if (instance is WorkMachineBase machine)
+            {
+                machine.ForceRemoveTimer();
+            }
             itemID2BuildMap[instance.ID.Replace("building", "item")] = instance.GetType();
         }
     }

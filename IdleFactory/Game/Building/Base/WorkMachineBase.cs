@@ -1,4 +1,5 @@
 ﻿using IdleFactory.ContainerSystem;
+using IdleFactory.Game.DataBase;
 using IdleFactory.Game.Modules;
 using IdleFactory.RecipeSystem;
 using IdleFactory.Util;
@@ -7,13 +8,14 @@ namespace IdleFactory.Game.Building.Base;
 
 public class WorkMachineBase : BuildingBase, IRecipeMachine
 {
-    private Recipe selectedRecipe;
+    private Recipe? selectedRecipe;
+    private List<Recipe>? availableRecipes;
+    
     private Container machineContainer;
     private int cookProgress = 0;
     public WorkMachineBase(int inputSlots, int outputSlots)
     {
         Utils.GetModule<UpdateModule>().Update += Tick;
-        
         machineContainer = new (inputSlots, outputSlots);
     }
 
@@ -41,15 +43,37 @@ public class WorkMachineBase : BuildingBase, IRecipeMachine
 
     public override bool Retrieve()
     {
+        machineContainer.Clear();
         Utils.GetModule<UpdateModule>().Update -= Tick;
         return base.Retrieve();
     }
 
+    public void ForceRemoveTimer()
+    {
+        Utils.GetModule<UpdateModule>().Update -= Tick;
+    }
+
+    public List<Recipe> GetAllAvailableRecipes()
+    {
+        availableRecipes ??= Utils.GetData<RecipeData>().GetRecipes(ID);
+        return availableRecipes;
+    }
+
+    public Recipe? SearchRecipe(string id)
+    {
+        availableRecipes ??= Utils.GetData<RecipeData>().GetRecipes(ID);
+        return availableRecipes.Find(r => r.ID == id);
+    }
+    
     public void SetRecipe(Recipe recipe = null)
     {
         selectedRecipe = recipe;
     }
 
+    public Recipe? GetNowRecipe()
+    {
+        return selectedRecipe;
+    }
     public void CookOnce()
     {
         foreach (var ingredient in selectedRecipe.Ingredients)
@@ -67,7 +91,7 @@ public class WorkMachineBase : BuildingBase, IRecipeMachine
             {
                 ID = product.Key,
                 Quantity = product.Value
-            });
+            }, false);
         }
     }
 

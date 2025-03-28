@@ -96,15 +96,6 @@ namespace IdleFactory {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Workbench.
-        /// </summary>
-        internal static string building_workbench {
-            get {
-                return ResourceManager.GetString("building.workbench", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Basic workbench. You could do some simple job here..
         /// </summary>
         internal static string building_workbench_description {
@@ -141,6 +132,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Furnace.
+        /// </summary>
+        internal static string item_furnace {
+            get {
+                return ResourceManager.GetString("item.furnace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Iron Ore.
         /// </summary>
         internal static string item_ironOre {
@@ -164,6 +164,15 @@ namespace IdleFactory {
         internal static string item_woodlog {
             get {
                 return ResourceManager.GetString("item.woodlog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Bench.
+        /// </summary>
+        internal static string item_workbench {
+            get {
+                return ResourceManager.GetString("item.workbench", resourceCulture);
             }
         }
         
@@ -258,11 +267,56 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crafting.
+        /// </summary>
+        internal static string str_crafting {
+            get {
+                return ResourceManager.GetString("str.crafting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input.
+        /// </summary>
+        internal static string str_input {
+            get {
+                return ResourceManager.GetString("str.input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output.
+        /// </summary>
+        internal static string str_output {
+            get {
+                return ResourceManager.GetString("str.output", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make {0} using {1}.
+        /// </summary>
+        internal static string str_recipeDetail {
+            get {
+                return ResourceManager.GetString("str.recipeDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resources.
         /// </summary>
         internal static string str_resources {
             get {
                 return ResourceManager.GetString("str.resources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select recipe.
+        /// </summary>
+        internal static string str_selectRecipe {
+            get {
+                return ResourceManager.GetString("str.selectRecipe", resourceCulture);
             }
         }
     }
