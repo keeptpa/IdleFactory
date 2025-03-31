@@ -3,15 +3,18 @@ using IdleFactory.Game.DataBase;
 using IdleFactory.Game.Modules;
 using IdleFactory.RecipeSystem;
 using IdleFactory.Util;
+using Newtonsoft.Json;
 
 namespace IdleFactory.Game.Building.Base;
 [Serializable]
 public class WorkMachineBase : BuildingBase, IRecipeMachine
 {
+    [JsonProperty]
     private Recipe? selectedRecipe;
     private List<Recipe>? availableRecipes;
-    
+    [JsonProperty]
     private Container machineContainer;
+    [JsonProperty]
     private int cookProgress = 0;
     public WorkMachineBase(int inputSlots, int outputSlots)
     {

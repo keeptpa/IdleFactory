@@ -2,6 +2,7 @@
 
 namespace IdleFactory.Game.Building;
 
+[Serializable]
 public class Workbench : WorkMachineBase
 {
     public Workbench() : base(9, 1)
