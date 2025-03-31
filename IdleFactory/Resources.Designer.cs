@@ -294,6 +294,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Progress.
+        /// </summary>
+        internal static string str_progress {
+            get {
+                return ResourceManager.GetString("str.progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make {0} using {1}.
         /// </summary>
         internal static string str_recipeDetail {

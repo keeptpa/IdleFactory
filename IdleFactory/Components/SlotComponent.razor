@@ -116,7 +116,7 @@
     {
         if (isOutput)
         {
-            inventoryItems = slot.GetItem()?.IsValid() == true ? [] : [slot.GetItem()];
+            inventoryItems = slot.GetItem()?.IsValid() == true ? [slot.GetItem()] : [];
         }
         else
         {

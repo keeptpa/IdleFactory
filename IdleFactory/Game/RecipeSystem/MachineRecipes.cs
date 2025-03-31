@@ -1,4 +1,5 @@
 ﻿namespace IdleFactory.RecipeSystem;
+[Serializable]
 public class Recipe
 {
     public required Dictionary<string, int> Ingredients { get; set; }

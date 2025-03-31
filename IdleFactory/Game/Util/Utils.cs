@@ -93,7 +93,7 @@ public class Utils
     public static void Save()
     {
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
-        var savedJson = JsonConvert.SerializeObject(state);
+        var savedJson = JsonConvert.SerializeObject(state, Formatting.Indented);
         //Console.WriteLine(savedJson);
         var saveData = GetData<SaveData>();
         saveData.savedJson = savedJson;

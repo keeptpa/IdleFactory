@@ -5,7 +5,7 @@ using IdleFactory.RecipeSystem;
 using IdleFactory.Util;
 
 namespace IdleFactory.Game.Building.Base;
-
+[Serializable]
 public class WorkMachineBase : BuildingBase, IRecipeMachine
 {
     private Recipe? selectedRecipe;
@@ -98,5 +98,11 @@ public class WorkMachineBase : BuildingBase, IRecipeMachine
     public Container GetMachineContainer()
     {
         return machineContainer;
+    }
+
+    public float GetProgress()
+    {
+        if (selectedRecipe == null) return 0;
+        return (float)cookProgress / selectedRecipe.TimeToCook;
     }
 }

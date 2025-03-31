@@ -8,7 +8,7 @@
 <p>@Localizer[machine.Description]</p>
 <hr class="hr" />
 
-@Localizer["str.selectRecipe"]
+<div>@Localizer["str.selectRecipe"]</div>
 <select @bind="selectedRecipe" class="form-select" style="width: 200px">
     <option value=""></option>
     @foreach (var recipe in machine.GetAllAvailableRecipes())
@@ -19,8 +19,10 @@
         })</option>
     }
 </select>
-
-
+<div>@Localizer["str.progress"]</div>
+<div class="progress">
+    <div class="progress-bar-animated progress-bar-striped bg-info" role="progressbar" style="width: @(machine.GetProgress() * 100)%"></div>
+</div>
 @code {
     private WorkMachineBase _machine;
     private string _selectedRecipe;
@@ -39,10 +41,10 @@
         {
             _selectedRecipe = value;
             var recipe = machine.SearchRecipe(value);
-            if (recipe != null)
-            {
+            //if (recipe != null)
+            //{
                 machine.SetRecipe(recipe);
-            }
+            //}
         }
     }
 

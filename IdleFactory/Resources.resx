@@ -105,4 +105,7 @@
     <data name="str.recipeDetail" xml:space="preserve">
         <value>Make {0} using {1}</value>
     </data>
+    <data name="str.progress" xml:space="preserve">
+        <value>Progress</value>
+    </data>
 </root>

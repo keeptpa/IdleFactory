@@ -3,6 +3,7 @@ using IdleFactory.Util;
 
 namespace IdleFactory.Game.Building.Base;
 
+[Serializable]
 public class BuildingBase
 {
     public string ID { get; set; }

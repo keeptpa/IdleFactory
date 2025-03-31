@@ -4,6 +4,7 @@ using IdleFactory.Util;
 
 namespace IdleFactory.ContainerSystem;
 
+[Serializable]
 public class Container
 {
     private ItemSlot[] _inputSlots;
@@ -99,7 +100,7 @@ public class Container
                 {
                     ID = ingredient.Key,
                     Quantity = ingredient.Value,
-                }))
+                }, true))
             {
                 return false;
             }
@@ -114,7 +115,7 @@ public class Container
             foreach (var outputSlot in _outputSlots)
             {
                 // If slot is empty, it can fully accept the output
-                if (outputSlot.GetItem() == null)
+                if (outputSlot.GetItem() == null || outputSlot.GetItem()?.IsValid() == false)
                 {
                     remainingOutputQuantity -= Math.Min(remainingOutputQuantity, outputSlot.GetMaxQuantity());
                 }
