@@ -92,7 +92,10 @@ public class Utils
     public static void Save()
     {
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
-        var savedJson = JsonConvert.SerializeObject(state, Formatting.Indented);
+        var savedJson = JsonConvert.SerializeObject(state,new JsonSerializerSettings()
+        {
+            TypeNameHandling = TypeNameHandling.All,
+        });
         //Console.WriteLine(savedJson);
         var saveData = GetData<SaveData>();
         saveData.savedJson = savedJson;
@@ -106,7 +109,8 @@ public class Utils
         {
             var newState = JsonConvert.DeserializeObject<GameStateHolder>(loadedJson, new JsonSerializerSettings()
             {
-                ObjectCreationHandling = ObjectCreationHandling.Replace
+                ObjectCreationHandling = ObjectCreationHandling.Replace,
+                TypeNameHandling = TypeNameHandling.All
             });
             SingletonHolder.GetSingleton<GameStateHolder>().ReplaceData(newState);
         }

@@ -1,7 +1,9 @@
 ﻿using IdleFactory;
+using Newtonsoft.Json;
 
 public class ItemSlot
 {
+    [JsonProperty]
     private ResourceItemBase? item;
     public static int MAX_QUANTITY = 64;
 

@@ -1,14 +1,15 @@
 ﻿using IdleFactory.RecipeSystem;
 using IdleFactory.State;
 using IdleFactory.Util;
+using Newtonsoft.Json;
 
 namespace IdleFactory.ContainerSystem;
 
 [Serializable]
 public class Container
 {
-    private ItemSlot[] _inputSlots;
-    private ItemSlot[] _outputSlots;
+    [JsonProperty] private ItemSlot[] _inputSlots;
+    [JsonProperty] private ItemSlot[] _outputSlots;
 
     public Container(int inputSlotsCount, int outputSlotsCount)
     {
