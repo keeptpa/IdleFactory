@@ -20,4 +20,15 @@ public class ResourceItemBase
     {
         return !string.IsNullOrEmpty(ID) && Quantity > 0;
     }
+
+    public bool IsSame(ResourceItemBase? other)
+    {
+        if (other == null) return false;
+        return ID == other.ID && Quantity == other.Quantity;
+    }
+
+    public string GetIdentity()
+    {
+        return string.Format("{0}({1})", ID, Quantity);
+    }
 }

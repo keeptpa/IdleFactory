@@ -19,10 +19,18 @@
 
 @code {
     private List<ResourceItemBase> inventoryItems;
-    
+    private string lastItemIdentity = null;
     private string Id
     {
-        get => slot.GetItem()?.ID;
+        get
+        {
+            if (slot.GetItem()?.GetIdentity() != lastItemIdentity)
+            {
+                RefreshData();
+            }
+            lastItemIdentity = slot.GetItem()?.GetIdentity();
+            return slot.GetItem()?.ID;
+        }
         set
         {
             if(value == slot.GetItem()?.ID) return;
@@ -108,13 +116,13 @@
     {
         if (isOutput)
         {
-            inventoryItems = slot.GetItem() == null ? [] : [slot.GetItem()];
+            inventoryItems = slot.GetItem()?.IsValid() == true ? [] : [slot.GetItem()];
         }
         else
         {
             var state = SingletonHolder.GetSingleton<GameStateHolder>();
             inventoryItems = state.GetAllResources().Values.ToList();
-            if (slot.GetItem() != null && state.GetResource(slot.GetItem().ID) == null)// if all the item is selected we need to add it to list so it can show up
+            if (slot.GetItem()?.IsValid() == true && state.GetResource(slot.GetItem().ID) == null)// if all the item is selected we need to add it to list so it can show up
             {
                 var fakeItem = new ResourceItemBase();
                 fakeItem.ID = slot.GetItem().ID;
