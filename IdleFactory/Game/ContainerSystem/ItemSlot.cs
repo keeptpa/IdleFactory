@@ -81,4 +81,7 @@ public class ItemSlot
     {
         this.item = item;
     }
+    
+    public delegate void OnItemChangeDelegate(ResourceItemBase? item);
+    public event OnItemChangeDelegate OnItemChanged;
 }

@@ -9,7 +9,7 @@
 <input class="input-group-sm" @bind="Quantity" style="width:50px">
 
 <select @onfocus="RefreshData" @bind="Id" class="form-select" style="width: 120px">
-    <option value="" selected="@(item == null || item.Quantity == 0)"></option>
+    <option value="" selected="@(slot.GetItem() == null || slot.GetItem().Quantity == 0)"></option>
     @foreach (var item in inventoryItems)
     {
         <option value="@item.ID" selected="@(Id == item.ID)">@localizer[item.ID] * @item.Quantity</option>
@@ -19,40 +19,58 @@
 
 @code {
     private List<ResourceItemBase> inventoryItems;
-    private ResourceItemBase? item;
     
     private string Id
     {
-        get => item?.ID;
+        get => slot.GetItem()?.ID;
         set
         {
-            if(value == item?.ID) return;
+            if(value == slot.GetItem()?.ID) return;
             OnDeselect();
-            item ??= new ResourceItemBase();
-            item.ID = value;
-            item = QualifyItem(item);
+            if (slot.GetItem() == null)
+            {
+                slot.SetItem(new ResourceItemBase()
+                {
+                    ID = value,
+                    Quantity = 0
+                });
+            }
+            else
+            {
+                slot.GetItem().ID = value;
+            }
             OnSelected();
         }
     }
 
     private int Quantity
     {
-        get => item?.Quantity ?? 0;
+        get => slot.GetItem()?.Quantity ?? 0;
         set
         {
-            if(value == item?.Quantity) return;
+            if(value == slot.GetItem()?.Quantity) return;
             value = Math.Max(0, value);
             OnDeselect();
-            item ??= new ResourceItemBase();
-            item.Quantity = value;
-            item = QualifyItem(item);
+            if (slot.GetItem() == null)
+            {
+                slot.SetItem(new ResourceItemBase()
+                {
+                    ID = "",
+                    Quantity = value
+                });
+            }
+            else
+            {
+                slot.GetItem().Quantity = value;
+            }
+            slot.SetItem(QualifyItem(slot.GetItem()));
             OnSelected();
         }
     }
 
-    private ResourceItemBase? QualifyItem(ResourceItemBase item)
+    private ResourceItemBase? QualifyItem(ResourceItemBase? item)
     {
-        if (this.item == null || this.item.ID == null || this.item.Quantity <= 0) return item; //means the user isn't finish selecting
+        if (item == null || string.IsNullOrEmpty(item.ID) || item.Quantity <= 0) return item; //means the user isn't finish selecting
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
         if (state.GetResource(item.ID) == null)
         {
@@ -67,18 +85,19 @@
 
     private void OnDeselect()
     {
-        if (item?.ID == null || item.Quantity <= 0) return;
+        if (string.IsNullOrEmpty(slot.GetItem()?.ID) || slot.GetItem()?.Quantity <= 0) return;
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
-        state.AddResource(item.ID, item.Quantity);
+        state.AddResource(slot.GetItem().ID, slot.GetItem().Quantity);
+        slot.SetItem(null);
     }
     
     private void OnSelected()
     {
-        if (item?.ID == null || item.Quantity <= 0) return;
+        if (string.IsNullOrEmpty(slot.GetItem()?.ID) || slot.GetItem()?.Quantity <= 0) return;
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
         //slot.SetItem(item);
-        state.AddResource(item.ID, -item.Quantity);
-        slot.SetItem(item);
+        state.AddResource(slot.GetItem().ID, -slot.GetItem().Quantity);
+        slot.SetItem(slot.GetItem());
     }
 
 
@@ -87,15 +106,26 @@
 
     private void RefreshData()
     {
-        inventoryItems = isOutput ? (item == null ? [] : [item]) : SingletonHolder.GetSingleton<GameStateHolder>().GetAllResources().Values.ToList();
+        if (isOutput)
+        {
+            inventoryItems = slot.GetItem() == null ? [] : [slot.GetItem()];
+        }
+        else
+        {
+            var state = SingletonHolder.GetSingleton<GameStateHolder>();
+            inventoryItems = state.GetAllResources().Values.ToList();
+            if (slot.GetItem() != null && state.GetResource(slot.GetItem().ID) == null)// if all the item is selected we need to add it to list so it can show up
+            {
+                var fakeItem = new ResourceItemBase();
+                fakeItem.ID = slot.GetItem().ID;
+                fakeItem.Quantity = 0;
+                inventoryItems.Add(fakeItem);
+            }
+        }
     }
 
     protected override void OnInitialized()
     {
-        if (slot.GetItem()?.IsValid() == true)
-        {
-            item = slot.GetItem();
-        }
         RefreshData();
         base.OnInitialized();
     }
