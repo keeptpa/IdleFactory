@@ -26,7 +26,12 @@ public class BuildingItemAdapterModule : ModuleBase
     public T? GetBuildingFromItemID<T>(string itemID) where T : BuildingBase
     {
         itemID2BuildMap.TryGetValue(itemID, out var building);
-        return (T)Activator.CreateInstance(building);
+        var result = (T)Activator.CreateInstance(building);
+        if (result != null)
+        {
+            result.UUID = Guid.NewGuid();
+        }
+        return result;
     }
 
     public bool HasMappedBuilding(string itemID)

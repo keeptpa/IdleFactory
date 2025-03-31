@@ -9,11 +9,13 @@ public class BuildingBase
     public string ID { get; set; }
     public string Description { get; set; }
 
+    public Guid UUID { get; set; }
     public string DetailSubPath { get; set; }
     public int GetIndex()
     {
         var allBuildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced();
-        return allBuildings.IndexOf(this);
+        var building = allBuildings.FirstOrDefault(b => b.UUID.Equals(this.UUID));
+        return building != null ? allBuildings.IndexOf(building) : -1;
     }
 
     public virtual bool Retrieve()

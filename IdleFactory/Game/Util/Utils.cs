@@ -85,7 +85,6 @@ public class Utils
         if (buildingList.Count > buildingIndex)
         {
             return buildingList[buildingIndex];
-
         }
         return null;
     }
