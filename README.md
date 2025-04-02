@@ -1,7 +1,7 @@
 # Idle Factory
 ## What?
 It's a web idle game(?) based on gregtech mod from minecraft and cookie clicker  
-**It's still highly WIP.  **
+**It's still highly WIP.**
   
 **A resource menu**  
 ![Snipaste_2025-04-02_12-08-07](https://github.com/user-attachments/assets/3d52aebf-b56d-4acc-8b53-55d07fb4dbed)  
