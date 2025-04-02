@@ -35,6 +35,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        buildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced();
         StartTimer(3);
     }
 

@@ -1,4 +1,5 @@
 ﻿using IdleFactory.ContainerSystem;
+using IdleFactory.Game.Building.Base;
 using IdleFactory.Game.DataBase.Base;
 
 namespace IdleFactory.Game.DataBase;
@@ -9,6 +10,7 @@ public struct BuildingSetting
     public string Description  { get; set; }
     public string DetailSubPath { get; set; }
     public ContainerSetting? ContainerSetting { get; set; }
+    public BurnChamberSetting? BurnChamerSetting { get; set; }
 }
 
 public class BuildingSettingData : DataBaseBase
@@ -38,7 +40,13 @@ public class BuildingSettingData : DataBaseBase
                 {
                     InputSlotsCount = 2,
                     OutputSlotsCount = 1,
-                    SlotsTagFilter = new(){ { 0, ["fuel"] }}
+                    SlotsTagFilter = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["fuel"] }} },
+                },
+                BurnChamerSetting = new BurnChamberSetting()
+                {
+                    BurnRate = 1000000,
+                    HeatCapacity = 100000,
+                    CoolDownRate = 100000
                 }
             }
         },

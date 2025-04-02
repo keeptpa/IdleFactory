@@ -1,4 +1,5 @@
 ﻿using IdleFactory;
+using IdleFactory.ContainerSystem;
 using Newtonsoft.Json;
 
 public class ItemSlot
@@ -6,10 +7,10 @@ public class ItemSlot
     [JsonProperty]
     private ResourceItemBase? item;
     public static int MAX_QUANTITY = 64;
-    public List<string>? Tags; // allowed item tags
+    public ItemTagFilter? TagFilter; // allowed item tags
     public int TryAddItem(ResourceItemBase item)
     {
-        if (!item.Allowed(Tags)) return 0;
+        if (TagFilter != null && !TagFilter.IsAllowItem(item)) return 0;
         int addedQuantity = 0;
         // If slot is empty, create new item
         if (this.item == null)
@@ -58,7 +59,28 @@ public class ItemSlot
         
         return decrementedQuantity;
     }
+    public int TryRemoveItem(int itemCount, bool requireFullfill = false)
+    {
+        if (this.item == null)
+        {
+            return 0;
+        }
 
+        if (requireFullfill && this.item.Quantity < itemCount)
+        {
+            return 0;
+        }
+        
+        int decrementedQuantity = Math.Min(this.item.Quantity, itemCount);
+        this.item.Quantity -= decrementedQuantity;
+        
+        if (this.item.Quantity <= 0)
+        {
+            this.item = null;
+        }
+        
+        return decrementedQuantity;
+    }
     public ResourceItemBase? GetItem()
     {
         return item;

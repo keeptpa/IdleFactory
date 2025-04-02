@@ -114,4 +114,10 @@
     <data name="building.furnace.description" xml:space="preserve">
         <value>A primitive furnace. You could do some low-tech smelting here.</value>
     </data>
+    <data name="str.temperature" xml:space="preserve">
+        <value>Temperature</value>
+    </data>
+    <data name="str.remainFuelValue" xml:space="preserve">
+        <value>Fuel value remaining</value>
+    </data>
 </root>

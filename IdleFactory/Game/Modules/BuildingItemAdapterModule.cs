@@ -35,14 +35,21 @@ public class BuildingItemAdapterModule : ModuleBase
             var buildingSetting = Utils.GetData<BuildingSettingData>().GetBuildingSettingByItemID(itemID);
             if (buildingSetting != null)
             {
+                result.ApplyBuildingSetting(buildingSetting.Value);
                 if (result is WorkMachineBase machine)
                 {
-                    machine.ApplyBuildingSetting(buildingSetting.Value);
+                    machine.ApplyContainerSetting(buildingSetting.Value);
                 }
-                else
+                if (result is BurningChamberMachineBase burningMachine)
                 {
-                    result.ApplyBuildingSetting(buildingSetting.Value);
+                    burningMachine.ApplyBurnChamberComponentSetting(buildingSetting.Value);
                 }
+                
+            }
+
+            if (result is WorkMachineBase workMachine)
+            {
+                Utils.GetModule<UpdateModule>().Update += workMachine.Tick;
             }
         }
         return result;

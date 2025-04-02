@@ -1,4 +1,5 @@
-﻿using IdleFactory.Game.Building;
+﻿using IdleFactory.ContainerSystem;
+using IdleFactory.Game.Building;
 using IdleFactory.Game.Building.Base;
 using IdleFactory.Game.Modules;
 using IdleFactory.Util;
@@ -62,12 +63,20 @@ public class GameStateHolder : SingletonBase
         {
             return _resources;
         }
-    }    
-    public Dictionary<string, ResourceItemBase> GetAllResources(List<string>? filterTags, bool includeBuilding = false)
+    }
+
+    public Dictionary<string, ResourceItemBase> GetAllResources(ItemTagFilter? filter, bool includeBuilding = false)
     {
-        if(!includeBuilding)
+        if (filter == null)
         {
-            return _resources.Where(x => { return !x.Value.IsBuilding() && x.Value.Allowed(filterTags); }).ToDictionary();
+            return GetAllResources(includeBuilding);
+        }
+
+        var filterTags = filter._allowedTags;
+        if (!includeBuilding)
+        {
+            return _resources.Where(x => { return !x.Value.IsBuilding() && x.Value.Allowed(filterTags); })
+                .ToDictionary();
         }
         else
         {

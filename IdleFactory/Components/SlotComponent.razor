@@ -121,7 +121,7 @@
         else
         {
             var state = SingletonHolder.GetSingleton<GameStateHolder>();
-            inventoryItems = state.GetAllResources(slot.Tags).Values.ToList();
+            inventoryItems = state.GetAllResources(slot.TagFilter).Values.ToList();
             
             if (slot.GetItem()?.IsValid() == true && state.GetResource(slot.GetItem().ID) == null)// if all the item is selected we need to add it to list so it can show up
             {

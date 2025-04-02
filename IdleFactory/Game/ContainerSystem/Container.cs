@@ -181,3 +181,10 @@ public class Container
         }
     }
 }
+
+public struct ContainerSetting
+{
+    public int InputSlotsCount;
+    public int OutputSlotsCount;
+    public Dictionary<int, ItemTagFilter>? SlotsTagFilter; //Set the slot to accept specific tagged item only
+}

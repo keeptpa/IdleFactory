@@ -330,6 +330,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fuel value remaining.
+        /// </summary>
+        internal static string str_remainFuelValue {
+            get {
+                return ResourceManager.GetString("str.remainFuelValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resources.
         /// </summary>
         internal static string str_resources {
@@ -344,6 +353,15 @@ namespace IdleFactory {
         internal static string str_selectRecipe {
             get {
                 return ResourceManager.GetString("str.selectRecipe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temperature.
+        /// </summary>
+        internal static string str_temperature {
+            get {
+                return ResourceManager.GetString("str.temperature", resourceCulture);
             }
         }
     }

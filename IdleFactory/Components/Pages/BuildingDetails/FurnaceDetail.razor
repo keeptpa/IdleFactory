@@ -11,6 +11,9 @@
 @if (building != null)
 {
     <MachineDetailBaseHeader machine="@this.building"/>
+    <hr class="hr" />
+    <div>@Localizer["str.temperature"]: @building.Temperature</div>
+    <div>@Localizer["str.remainFuelValue"]: @building.RemainFuelValue J</div>
     <div class="container">
         @*Inputs*@
         <div class="row">
