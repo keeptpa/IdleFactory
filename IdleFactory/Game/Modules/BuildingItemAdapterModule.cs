@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using IdleFactory.Game.Action.Base;
 using IdleFactory.Game.Building.Base;
+using IdleFactory.Game.DataBase;
 using IdleFactory.Game.Modules.Base;
+using IdleFactory.Util;
 
 namespace IdleFactory.Game.Modules;
 
@@ -14,12 +16,11 @@ public class BuildingItemAdapterModule : ModuleBase
         var buildingList = Assembly.GetAssembly(typeof(BuildingItemAdapterModule))?.GetTypes().Where(t => t is { Namespace: "IdleFactory.Game.Building", IsClass: true }).ToList();
         foreach (var building in buildingList)
         {
-            var instance = (BuildingBase)Activator.CreateInstance(building);
-            if (instance is WorkMachineBase machine)
+            var attribute = building.GetCustomAttribute<BaseBuildingInfoAttribute>();
+            if (attribute != null)
             {
-                machine.ForceRemoveTimer();
+                itemID2BuildMap[attribute.ID.Replace("building", "item")] = building;
             }
-            itemID2BuildMap[instance.ID.Replace("building", "item")] = instance.GetType();
         }
     }
 
@@ -30,6 +31,19 @@ public class BuildingItemAdapterModule : ModuleBase
         if (result != null)
         {
             result.UUID = Guid.NewGuid();
+            
+            var buildingSetting = Utils.GetData<BuildingSettingData>().GetBuildingSettingByItemID(itemID);
+            if (buildingSetting != null)
+            {
+                if (result is WorkMachineBase machine)
+                {
+                    machine.ApplyBuildingSetting(buildingSetting.Value);
+                }
+                else
+                {
+                    result.ApplyBuildingSetting(buildingSetting.Value);
+                }
+            }
         }
         return result;
     }

@@ -1,18 +1,16 @@
-﻿using IdleFactory.Game.Building.Base;
+﻿using IdleFactory.ContainerSystem;
+using IdleFactory.Game.Building.Base;
 using Newtonsoft.Json;
 
 namespace IdleFactory.Game.Building;
 
 [Serializable]
+[BaseBuildingInfo("building.furnace")]
 public class Furnace : WorkMachineBase
 {
-    public Furnace() : base(2, 1)
+    public Furnace()
     {
-        ID = "building.furnace";
-        Description = "building.furnace.description";
-        DetailSubPath = "FurnaceDetail";
-
-        GetMachineContainer().GetInputSlots()[0].Tags = ["fuel"];
+        
     }
 
     [JsonProperty]

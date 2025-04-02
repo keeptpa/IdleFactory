@@ -104,4 +104,7 @@
     <data name="item.charcoal" xml:space="preserve">
         <value>木炭</value>
     </data>
+    <data name="building.furnace.description" xml:space="preserve">
+        <value>较为原始的熔炉，可以在这里进行一些低科技水平的熔炼。</value>
+    </data>
 </root>

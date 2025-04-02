@@ -16,10 +16,32 @@ public class WorkMachineBase : BuildingBase, IRecipeMachine
     private Container machineContainer;
     [JsonProperty]
     private int cookProgress = 0;
-    public WorkMachineBase(int inputSlots, int outputSlots)
+    public WorkMachineBase()
     {
         Utils.GetModule<UpdateModule>().Update += Tick;
-        machineContainer = new (inputSlots, outputSlots);
+        
+    }
+
+
+    public override void ApplyBuildingSetting(BuildingSetting setting)
+    {
+        base.ApplyBuildingSetting(setting);
+        if (setting.ContainerSetting != null)
+        {
+            ApplyContainerSetting((ContainerSetting)setting.ContainerSetting);
+        }
+    }
+    
+    private void ApplyContainerSetting(ContainerSetting setting)
+    {
+        machineContainer = new (setting.InputSlotsCount, setting.OutputSlotsCount);
+        if (setting.SlotsTagFilter != null)
+        {
+            foreach (var filterSetting in setting.SlotsTagFilter)
+            {
+                machineContainer.GetInputSlots()[filterSetting.Key].Tags = filterSetting.Value;
+            }
+        }
     }
 
     private void Tick()

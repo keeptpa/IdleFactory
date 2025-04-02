@@ -96,6 +96,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A primitive furnace. You could do some low-tech smelting here..
+        /// </summary>
+        internal static string building_furnace_description {
+            get {
+                return ResourceManager.GetString("building.furnace.description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basic workbench. You could do some simple job here..
         /// </summary>
         internal static string building_workbench_description {

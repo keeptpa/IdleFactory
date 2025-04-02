@@ -1,14 +1,12 @@
-﻿using IdleFactory.Game.Building.Base;
+﻿using IdleFactory.ContainerSystem;
+using IdleFactory.Game.Building.Base;
 
 namespace IdleFactory.Game.Building;
 
 [Serializable]
+[BaseBuildingInfo("building.workbench")]
+
 public class Workbench : WorkMachineBase
 {
-    public Workbench() : base(9, 1)
-    {
-        ID = "building.workbench";
-        Description = "building.workbench.description";
-        DetailSubPath = "WorkbenchDetail";
-    }
+    public Workbench(){}
 }

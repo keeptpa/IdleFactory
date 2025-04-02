@@ -111,4 +111,7 @@
     <data name="item.charcoal" xml:space="preserve">
         <value>Charcoal</value>
     </data>
+    <data name="building.furnace.description" xml:space="preserve">
+        <value>A primitive furnace. You could do some low-tech smelting here.</value>
+    </data>
 </root>

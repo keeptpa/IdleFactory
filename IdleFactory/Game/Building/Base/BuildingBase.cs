@@ -1,4 +1,6 @@
-﻿using IdleFactory.State;
+﻿using IdleFactory.ContainerSystem;
+using IdleFactory.Game.DataBase;
+using IdleFactory.State;
 using IdleFactory.Util;
 
 namespace IdleFactory.Game.Building.Base;
@@ -11,6 +13,13 @@ public class BuildingBase
     public string DetailSubPath { get; set; }
 
     public Guid UUID { get; set; }
+    
+    public virtual void ApplyBuildingSetting(BuildingSetting setting)
+    {
+        this.ID = setting.ID;
+        this.Description = setting.Description;
+        this.DetailSubPath = setting.DetailSubPath;
+    }
     public int GetIndex()
     {
         var allBuildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced();
