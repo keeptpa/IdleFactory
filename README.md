@@ -20,6 +20,8 @@ It's a web idle game(?) which's idea based on gregtech mod from minecraft and co
 ✔ Machines, and their interface sutff  
 ✔ Machine processing and Recipes  
 ✔ Item Tags System  
+✔ Temperture based crafting machine and their burning chamber system.  
+  
 ▶ Pipeline System(Logistic)  
 
 ## Why?
