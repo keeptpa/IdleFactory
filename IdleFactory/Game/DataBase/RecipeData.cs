@@ -55,7 +55,7 @@ public class RecipeData : DataBaseBase
                             {"item.charcoal", 1}
                         },
                         TimeToCook = 3,
-                        ExtraRequirements = "\"temperatureRequirement\":100"
+                        ExtraRequirements = "{\"temperatureRequirement\":100}"
                     }
                 }
             }

@@ -9,7 +9,7 @@ public class ItemSlot
     public List<string>? Tags; // allowed item tags
     public int TryAddItem(ResourceItemBase item)
     {
-        if (item.Allowed(Tags)) return 0;
+        if (!item.Allowed(Tags)) return 0;
         int addedQuantity = 0;
         // If slot is empty, create new item
         if (this.item == null)

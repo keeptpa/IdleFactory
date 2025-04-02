@@ -108,4 +108,7 @@
     <data name="str.progress" xml:space="preserve">
         <value>Progress</value>
     </data>
+    <data name="item.charcoal" xml:space="preserve">
+        <value>Charcoal</value>
+    </data>
 </root>

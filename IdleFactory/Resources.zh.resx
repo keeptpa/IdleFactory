@@ -101,4 +101,7 @@
     <data name="str.progress" xml:space="preserve">
         <value>进度</value>
     </data>
+    <data name="item.charcoal" xml:space="preserve">
+        <value>木炭</value>
+    </data>
 </root>
