@@ -8,9 +8,9 @@ public class BuildingBase
 {
     public string ID { get; set; }
     public string Description { get; set; }
+    public string DetailSubPath { get; set; }
 
     public Guid UUID { get; set; }
-    public string DetailSubPath { get; set; }
     public int GetIndex()
     {
         var allBuildings = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced();

@@ -27,7 +27,7 @@ public class WorkMachineBase : BuildingBase, IRecipeMachine
         CookTick();
     }
 
-    public bool CanCookRecipe()
+    public virtual bool CanCookRecipe()
     {
         if (selectedRecipe == null) return false;
         return machineContainer.CheckRecipeValid(selectedRecipe);

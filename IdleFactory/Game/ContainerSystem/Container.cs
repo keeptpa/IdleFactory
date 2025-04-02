@@ -34,7 +34,7 @@ public class Container
         {
             foreach (var input in _inputSlots)
             {
-                quantityToaAdd -= input.TryAddItem(item.ID, item.Quantity);
+                quantityToaAdd -= input.TryAddItem(item);
                 if (quantityToaAdd <= 0)
                 {
                     return item.Quantity;
@@ -45,7 +45,7 @@ public class Container
         {
             foreach (var output in _outputSlots)
             {
-                quantityToaAdd -= output.TryAddItem(item.ID, item.Quantity);
+                quantityToaAdd -= output.TryAddItem(item);
                 if (quantityToaAdd <= 0)
                 {
                     return item.Quantity;
@@ -62,7 +62,7 @@ public class Container
         var quantityToRemove = item.Quantity;
         foreach (var slot in slots)
         {
-            quantityToRemove -= slot.TryRemoveItem(item.ID, item.Quantity);
+            quantityToRemove -= slot.TryRemoveItem(item);
             if (quantityToRemove <= 0)
             {
                 return item.Quantity;

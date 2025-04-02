@@ -62,6 +62,17 @@ public class GameStateHolder : SingletonBase
         {
             return _resources;
         }
+    }    
+    public Dictionary<string, ResourceItemBase> GetAllResources(List<string>? filterTags, bool includeBuilding = false)
+    {
+        if(!includeBuilding)
+        {
+            return _resources.Where(x => { return !x.Value.IsBuilding() && x.Value.Allowed(filterTags); }).ToDictionary();
+        }
+        else
+        {
+            return _resources.Where(x => { return x.Value.Allowed(filterTags); }).ToDictionary();
+        }
     }
 
     public Dictionary<string, ResourceItemBase> GetAllBuildingsNotPlaced()

@@ -6,53 +6,54 @@ public class ItemSlot
     [JsonProperty]
     private ResourceItemBase? item;
     public static int MAX_QUANTITY = 64;
-
-    public int TryAddItem(string itemID, int quantity)
+    public List<string>? Tags; // allowed item tags
+    public int TryAddItem(ResourceItemBase item)
     {
+        if (item.Allowed(Tags)) return 0;
         int addedQuantity = 0;
         // If slot is empty, create new item
-        if (item == null)
+        if (this.item == null)
         {
-            addedQuantity = Math.Min(quantity, MAX_QUANTITY);
-            item = new ResourceItemBase()
+            addedQuantity = Math.Min(item.Quantity, MAX_QUANTITY);
+            this.item = new ResourceItemBase()
             {
-                ID = itemID,
+                ID = item.ID,
                 Quantity = addedQuantity
             };
             return addedQuantity;
         }
         
         // If item exists but different type, can't add
-        if (!item.ID.Equals(itemID))
+        if (!this.item.ID.Equals(item.ID))
         {
             return 0;
         }
         
         // Add to existing item
-        int spaceLeft = MAX_QUANTITY - item.Quantity;
-        addedQuantity = Math.Min(quantity, spaceLeft);
-        item.Quantity += addedQuantity;
+        int spaceLeft = MAX_QUANTITY - this.item.Quantity;
+        addedQuantity = Math.Min(item.Quantity, spaceLeft);
+        this.item.Quantity += addedQuantity;
         return addedQuantity;
     }
 
-    public int TryRemoveItem(string itemID, int quantity, bool requireFullfill = false)
+    public int TryRemoveItem(ResourceItemBase item, bool requireFullfill = false)
     {
-        if (item == null || !item.ID.Equals(itemID))
+        if (this.item == null || !this.item.ID.Equals(item.ID))
         {
             return 0;
         }
 
-        if (requireFullfill && item.Quantity < quantity)
+        if (requireFullfill && this.item.Quantity < item.Quantity)
         {
             return 0;
         }
         
-        int decrementedQuantity = Math.Min(quantity, item.Quantity);
-        item.Quantity -= decrementedQuantity;
+        int decrementedQuantity = Math.Min(this.item.Quantity, item.Quantity);
+        this.item.Quantity -= decrementedQuantity;
         
-        if (item.Quantity <= 0)
+        if (this.item.Quantity <= 0)
         {
-            item = null;
+            this.item = null;
         }
         
         return decrementedQuantity;
