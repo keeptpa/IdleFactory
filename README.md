@@ -1,6 +1,6 @@
 # Idle Factory
 ## What?
-It's a web idle game(?) based on gregtech mod from minecraft and cookie clicker  
+It's a web idle game(?) which's idea based on gregtech mod from minecraft and cookie clicker  
 **It's still highly WIP.**
   
 **A resource menu**  
@@ -20,6 +20,8 @@ It's a web idle game(?) based on gregtech mod from minecraft and cookie clicker
 ✔ Machines, and their interface sutff  
 ✔ Machine processing and Recipes  
 ✔ Item Tags System  
+✔ Temperture based crafting machine and their burning chamber system.  
+  
 ▶ Pipeline System(Logistic)  
 
 ## Why?
