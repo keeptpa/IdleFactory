@@ -294,6 +294,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fuel.
+        /// </summary>
+        internal static string str_fuel {
+            get {
+                return ResourceManager.GetString("str.fuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input.
         /// </summary>
         internal static string str_input {

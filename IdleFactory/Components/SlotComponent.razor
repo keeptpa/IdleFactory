@@ -1,4 +1,5 @@
-﻿@using IdleFactory.State
+﻿@using System.Drawing
+@using IdleFactory.State
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
 @rendermode InteractiveServer
@@ -8,7 +9,7 @@
 
 <input class="input-group-sm" @bind="Quantity" style="width:50px">
 
-<select @onfocus="RefreshData" @bind="Id" class="form-select" style="width: 120px">
+<select @onfocus="RefreshData" @bind="Id" class="form-select" style="width: 120px; background-color: @GetSlotColor()">
     <option value="" selected="@(slot.GetItem() == null || slot.GetItem().Quantity == 0)"></option>
     @foreach (var item in inventoryItems)
     {
@@ -108,6 +109,11 @@
         slot.SetItem(slot.GetItem());
     }
 
+    private string GetSlotColor()
+    {
+        if (slot.Tag?.HasTagFilter("notInRecipe") == true) return "#1a7009";
+        return "";
+    }
 
     [Parameter] public ItemSlot slot { get; set; }
     [Parameter] public bool isOutput { get; set; }

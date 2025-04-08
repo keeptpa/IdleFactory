@@ -30,6 +30,14 @@ public class WorkMachineBase : BuildingBase, IRecipeMachine
                     machineContainer.GetInputSlots()[filterSetting.Key].TagFilter = filterSetting.Value;
                 }
             }
+            
+            if (setting.SlotsTag != null)
+            {
+                foreach (var tagSetting in setting.SlotsTag)
+                {
+                    machineContainer.GetInputSlots()[tagSetting.Key].Tag = tagSetting.Value;
+                }
+            }
         }
     }
 

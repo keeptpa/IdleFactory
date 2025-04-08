@@ -1,4 +1,6 @@
-﻿namespace IdleFactory.ContainerSystem;
+﻿using System.Text.Json.Serialization;
+
+namespace IdleFactory.ContainerSystem;
 public class ItemTagFilter
 {
     public List<string> _allowedTags;

@@ -120,4 +120,7 @@
     <data name="str.remainFuelValue" xml:space="preserve">
         <value>Fuel value remaining</value>
     </data>
+    <data name="str.fuel" xml:space="preserve">
+        <value>Fuel</value>
+    </data>
 </root>

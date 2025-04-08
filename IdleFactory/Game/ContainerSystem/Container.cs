@@ -77,7 +77,7 @@ public class Container
         var availiableQuantity = 0;
         foreach (var itemSlot in _inputSlots)
         {
-            if (itemSlot.GetItem() == null) continue;
+            if (itemSlot.GetItem() == null || (itemSlot.Tag?.HasTagFilter("notInRecipe") == true)) continue;
             if (itemSlot.GetItem().ID == item.ID)
             {
                 if (!checkQuantity)
@@ -187,4 +187,5 @@ public struct ContainerSetting
     public int InputSlotsCount;
     public int OutputSlotsCount;
     public Dictionary<int, ItemTagFilter>? SlotsTagFilter; //Set the slot to accept specific tagged item only
+    public Dictionary<int, ItemTagFilter>? SlotsTag; //Set the slot tag, e.g. only provides fuel instead of crafting
 }

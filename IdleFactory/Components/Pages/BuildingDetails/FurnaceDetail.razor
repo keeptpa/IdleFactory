@@ -14,6 +14,7 @@
     <hr class="hr" />
     <div>@Localizer["str.temperature"]: @building.Temperature</div>
     <div>@Localizer["str.remainFuelValue"]: @building.RemainFuelValue J</div>
+    <div hidden="@(!building.CanCookRecipe())" class=@($"fire {(building.RemainFuelValue > 0 ? "" : "paused")}")>🔥</div>
     <div class="container">
         @*Inputs*@
         <div class="row">

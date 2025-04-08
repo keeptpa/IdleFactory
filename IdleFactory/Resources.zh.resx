@@ -113,4 +113,7 @@
     <data name="str.temperature" xml:space="preserve">
         <value>温度</value>
     </data>
+    <data name="str.fuel" xml:space="preserve">
+        <value>燃料</value>
+    </data>
 </root>

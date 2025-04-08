@@ -8,6 +8,7 @@ public class ItemSlot
     private ResourceItemBase? item;
     public static int MAX_QUANTITY = 64;
     public ItemTagFilter? TagFilter; // allowed item tags
+    public ItemTagFilter? Tag; // slot specific tag
     public int TryAddItem(ResourceItemBase item)
     {
         if (TagFilter != null && !TagFilter.IsAllowItem(item)) return 0;

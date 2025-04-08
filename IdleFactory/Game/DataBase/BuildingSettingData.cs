@@ -41,6 +41,7 @@ public class BuildingSettingData : DataBaseBase
                     InputSlotsCount = 2,
                     OutputSlotsCount = 1,
                     SlotsTagFilter = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["fuel"] }} },
+                    SlotsTag = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["notInRecipe"] }} },
                 },
                 BurnChamerSetting = new BurnChamberSetting()
                 {

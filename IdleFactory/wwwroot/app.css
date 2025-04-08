@@ -114,3 +114,18 @@ h1:focus {
 .list-item:last-child {
     border-bottom: none;
 }
+.fire {
+    display: inline-block;
+    font-size: 50px;
+    animation: flicker 0.2s infinite alternate;
+}
+
+.paused {
+    animation: none;
+}
+
+@keyframes flicker {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
