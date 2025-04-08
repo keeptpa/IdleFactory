@@ -35,6 +35,21 @@ public class RecipeData : DataBaseBase
                         },
                         TimeToCook = 5
                     },
+                    new Recipe()
+                    {
+                        ID = "recipe.workbench.chest",
+                        Ingredients = new()
+                        {
+                            {
+                                "item.woodlog", 100
+                            }
+                        },
+                        Outputs = new()
+                        {
+                            {"item.chest", 1}
+                        },
+                        TimeToCook = 10
+                    }
                 }
             }
         },

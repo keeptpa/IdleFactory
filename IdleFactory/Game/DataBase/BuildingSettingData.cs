@@ -51,6 +51,18 @@ public class BuildingSettingData : DataBaseBase
                 }
             }
         },
+        {
+            "building.chest", new BuildingSetting()
+            {
+                ID = "building.chest",
+                Description = "building.chest.description",
+                DetailSubPath = "ChestDetail",
+                ContainerSetting = new()
+                {
+                    InputSlotsCount = 24,
+                }
+            }
+        },
         
     };
 

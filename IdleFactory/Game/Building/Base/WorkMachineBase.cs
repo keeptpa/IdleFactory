@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace IdleFactory.Game.Building.Base;
 [Serializable]
-public class WorkMachineBase : BuildingBase, IRecipeMachine
+public class WorkMachineBase : BuildingBase, IItemContainer
 {
     [JsonProperty]
     private Recipe? selectedRecipe;

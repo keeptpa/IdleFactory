@@ -1,0 +1,56 @@
+﻿@page "/ChestDetail/{buildingIndex}"
+@using IdleFactory.Game.Building
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+
+@inject IStringLocalizer<Resources> Localizer
+@inject NavigationManager NavigationManager
+
+<h3>@Localizer["str.chestDetail"]</h3>
+
+@if (building != null)
+{
+    <div class="container">
+        <div class="row">
+            @Localizer["str.input"]
+            @for (int i = 0; i < building.GetMachineContainer().GetInputSlots().Length; i++)
+            {
+                <div class="row">
+                    <SlotComponent slot="@(building.GetMachineContainer().GetInputSlots()[i])"/>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p>Building not found.</p>
+}
+<hr class="hr" />
+<button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
+@code {
+    [Parameter] public string buildingIndex { get; set; }
+
+    private Chest? building;
+
+    protected override void OnInitialized()
+    {
+        StartTimer(1);
+        building = Utils.GetBuildingWithIndex(int.Parse(buildingIndex)) as Chest;
+        base.OnInitialized();
+    }
+
+    protected override void OnTimer(object? state)
+    {
+        base.OnTimer(state);
+        SafeStateHasChanged();
+    }
+
+    protected void GoBack()
+    {
+        NavigationManager.NavigateTo("/Buildings");
+    }
+    
+}

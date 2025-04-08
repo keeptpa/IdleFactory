@@ -36,9 +36,9 @@ public class BuildingItemAdapterModule : ModuleBase
             if (buildingSetting != null)
             {
                 result.ApplyBuildingSetting(buildingSetting.Value);
-                if (result is WorkMachineBase machine)
+                if (result is IItemContainer container)
                 {
-                    machine.ApplyContainerSetting(buildingSetting.Value);
+                    container.ApplyContainerSetting(buildingSetting.Value);
                 }
                 if (result is BurningChamberMachineBase burningMachine)
                 {

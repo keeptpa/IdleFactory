@@ -14,7 +14,7 @@ public class ItemSlot
         if (TagFilter != null && !TagFilter.IsAllowItem(item)) return 0;
         int addedQuantity = 0;
         // If slot is empty, create new item
-        if (this.item == null)
+        if (this.item?.IsValid() != true)
         {
             addedQuantity = Math.Min(item.Quantity, MAX_QUANTITY);
             this.item = new ResourceItemBase()
@@ -40,7 +40,7 @@ public class ItemSlot
 
     public int TryRemoveItem(ResourceItemBase item, bool requireFullfill = false)
     {
-        if (this.item == null || !this.item.ID.Equals(item.ID))
+        if (this.item?.IsValid() != true || !this.item.ID.Equals(item.ID))
         {
             return 0;
         }
@@ -62,7 +62,7 @@ public class ItemSlot
     }
     public int TryRemoveItem(int itemCount, bool requireFullfill = false)
     {
-        if (this.item == null)
+        if (item?.IsValid() != true)
         {
             return 0;
         }
@@ -92,15 +92,6 @@ public class ItemSlot
     public int GetMaxQuantity()
     {
         return MAX_QUANTITY;
-    }
-
-    public int GetRemainingCapacity()
-    {
-        if (item == null)
-        {
-            return MAX_QUANTITY;
-        }
-        return MAX_QUANTITY - item.Quantity;
     }
 
     public void SetItem(ResourceItemBase item)

@@ -35,13 +35,14 @@
         set
         {
             if(value == slot.GetItem()?.ID) return;
+            var quantity = string.IsNullOrEmpty(value) ? 0 : slot.GetItem()?.Quantity;
             OnDeselect();
             if (slot.GetItem() == null)
             {
                 slot.SetItem(new ResourceItemBase()
                 {
                     ID = value,
-                    Quantity = 0
+                    Quantity = quantity ?? 0
                 });
             }
             else
@@ -59,12 +60,14 @@
         {
             if(value == slot.GetItem()?.Quantity) return;
             value = Math.Max(0, value);
+
+            var id = slot.GetItem()?.ID;
             OnDeselect();
             if (slot.GetItem() == null)
             {
                 slot.SetItem(new ResourceItemBase()
                 {
-                    ID = "",
+                    ID = id ?? "",
                     Quantity = value
                 });
             }

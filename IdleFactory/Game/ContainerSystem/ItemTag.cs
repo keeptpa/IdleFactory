@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace IdleFactory.ContainerSystem;
+[Serializable]
 public class ItemTagFilter
 {
     public List<string> _allowedTags;
