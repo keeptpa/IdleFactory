@@ -5,8 +5,10 @@
 @using IdleFactory.Components.Components
 @using IdleFactory.State
 @using IdleFactory.Util
+@using Microsoft.Extensions.Localization
 @rendermode InteractiveServer
 @inherits BaseRefreshablePage
+@inject IStringLocalizer<Resources> localizer;
 
 <div class="surface-container" 
      @onmousedown="StartDragging" 
@@ -14,6 +16,7 @@
      @onmousemove="OnMouseMove"
      @onmouseleave="StopDragging"
      @onwheel="OnMouseWheel"
+     @onclick="PageClick"
      style="overflow: hidden; position: relative; width: 100%; height: 600px; background-color: #f0f0f0; cursor: @(_isDragging ? "grabbing" : "grab")">
     
     <div class="surface-grid" style="position: absolute; transform: translate(@(_offsetX)px, @(_offsetY)px) scale(@_zoomLevel); transform-origin: center; @(_isDragging ? "" : "transition: transform 0.1s ease-out;")">
@@ -26,21 +29,22 @@
                     int cellY = y;
                     
                     <div class="grid-cell"
-                         @onclick="() => CellClicked(cellX, cellY)"
+                         @oncontextmenu="() => CellClicked(cellX, cellY)"
+                         @oncontextmenu:preventDefault="true"
                          style="width: @(_cellSize)px; height: @(_cellSize)px; @(_showGridLines ? "border: 1px solid #ccc;" : "");">
                         <GridComponent _building="@GetBuilding(cellX, cellY)" />
                     </div>
                     @if (_showContextMenu)
                     {
-                        <SurfaceContextMenuComponent onAction="@OnAction" contextMenuPos="@_contextMenuCellPos" />
+                        <SurfaceContextMenuComponent contextMenuPos="@_contextMenuCellPos" />
                     }
                 }
             </div>
         }
     </div>
 
-    @*<div class="control-panel" style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background-color: white; padding: 10px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
-        <div class="mb-2">
+    <div class="control-panel" style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background-color: white; padding: 10px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+        @*<div class="mb-2">
             <button @onclick="ExpandGridRight" class="btn btn-sm btn-primary mr-1">Expand Right</button>
             <button @onclick="ExpandGridDown" class="btn btn-sm btn-primary mr-1">Expand Down</button>
             <button @onclick="ExpandGridLeft" class="btn btn-sm btn-primary mr-1">Expand Left</button>
@@ -50,14 +54,14 @@
             <button @onclick="ZoomIn" class="btn btn-sm btn-secondary mr-1">Zoom In (+)</button>
             <button @onclick="ZoomOut" class="btn btn-sm btn-secondary mr-1">Zoom Out (-)</button>
             <button @onclick="ResetZoom" class="btn btn-sm btn-secondary">Reset Zoom (1:1)</button>
-        </div>
+        </div>*@
         <div>
             <label>
                 <input type="checkbox" @bind="_showGridLines" />
-                Show Grid Lines
+                @localizer["str.showGrid"]
             </label>
         </div>
-    </div>*@
+    </div>
 </div>
 
 @code {
@@ -198,14 +202,15 @@
         SafeStateHasChanged();
     }
 
-    private void OnAction()
-    {
-        SafeStateHasChanged();
-    }
-
     private BuildingSlot GetBuilding(int cellX, int cellY)
     {
         return SingletonHolder.GetSingleton<GameStateHolder>().GetBuildingSlot(cellX, cellY);
+    }
+
+    private void PageClick()
+    {
+        _showContextMenu = false;
+        SafeStateHasChanged();
     }
 
 }

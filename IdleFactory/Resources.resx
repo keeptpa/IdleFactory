@@ -123,4 +123,7 @@
     <data name="str.fuel" xml:space="preserve">
         <value>Fuel</value>
     </data>
+    <data name="str.showGrid" xml:space="preserve">
+        <value>Show Grid Border</value>
+    </data>
 </root>

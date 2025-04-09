@@ -366,6 +366,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Grid Border.
+        /// </summary>
+        internal static string str_showGrid {
+            get {
+                return ResourceManager.GetString("str.showGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Temperature.
         /// </summary>
         internal static string str_temperature {

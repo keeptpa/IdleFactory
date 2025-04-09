@@ -116,4 +116,7 @@
     <data name="str.fuel" xml:space="preserve">
         <value>燃料</value>
     </data>
+    <data name="str.showGrid" xml:space="preserve">
+        <value>显示网格边界</value>
+    </data>
 </root>

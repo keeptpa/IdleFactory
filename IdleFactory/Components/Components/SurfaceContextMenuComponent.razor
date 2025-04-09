@@ -9,8 +9,8 @@
 @inject NavigationManager NavigationManager
 @inject ICookie cookie
 
-<div class="context-menu"
-     style="position: fixed; left: @((contextMenuPos.X + 5) * 40)px; top: @(40 * -1 * (contextMenuPos.Y - 5))px;
+<div class="context-menu" @onclick:stopPropagation="true"
+     style="position: fixed; left: @((contextMenuPos.X + 6) * 40)px; top: @(40 * -1 * (contextMenuPos.Y - 5))px;
      background-color: white; border: 3px solid #ccc; border-radius: 4px;width: 200px; height: 300px;">
     <div style="position: relative; left: 5px;">
         <text>@contextMenuPos.X, @contextMenuPos.Y</text>
@@ -50,7 +50,6 @@
     }
 
     [Parameter] public Position contextMenuPos { get; set; }
-    [Parameter] public Action onAction { get; set; }
 
     private List<ResourceItemBase> _buildingAvailable = new();
 
@@ -78,7 +77,6 @@
 
         SafeStateHasChanged();
         RefreshBuilding();
-        onAction?.Invoke();
     }
 
     protected override void OnInitialized()
