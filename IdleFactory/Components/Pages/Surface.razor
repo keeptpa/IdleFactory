@@ -34,12 +34,12 @@
                          style="width: @(_cellSize)px; height: @(_cellSize)px; @(_showGridLines ? "border: 1px solid #ccc;" : "");">
                         <GridComponent X="x" Y="y" _building="@GetBuilding(cellX, cellY)" />
                     </div>
-                    @if (_showContextMenu)
-                    {
-                        <SurfaceContextMenuComponent contextMenuPos="@_contextMenuCellPos" />
-                    }
                 }
             </div>
+        }
+        @if (_showContextMenu)
+        {
+            <SurfaceContextMenuComponent contextMenuPos="@_contextMenuCellPos" />
         }
     </div>
 

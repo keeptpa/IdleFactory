@@ -126,4 +126,7 @@
     <data name="str.showGrid" xml:space="preserve">
         <value>Show Grid Border</value>
     </data>
+    <data name="str.filter" xml:space="preserve">
+        <value>Filter</value>
+    </data>
 </root>

@@ -180,3 +180,11 @@ h1:focus {
     text-align: left !important;
     padding-left: 8px;
 }
+
+.context-menu {
+    background-color: white;
+    border: 3px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+    height: 300px;
+}

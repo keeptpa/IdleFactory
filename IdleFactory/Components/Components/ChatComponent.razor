@@ -36,13 +36,19 @@
         if (firstRender)
         {
             StateHasChanged();
+            curPlayerName = await cookie.GetValue("id");
+            if (_isHidden != ((await cookie.GetValue("setting.hideChatpanel")) == "True"))
+            {
+                _isHidden = !_isHidden;
+                SafeStateHasChanged();
+            }
         }
-        curPlayerName = await cookie.GetValue("id");
     }
 
-    private void ToggleChat()
+    private async void ToggleChat()
     {
         _isHidden = !_isHidden;
+        cookie.SetValue("setting.hideChatpanel", _isHidden.ToString());
     }
 
     private void SendNew()

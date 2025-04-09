@@ -119,4 +119,7 @@
     <data name="str.showGrid" xml:space="preserve">
         <value>显示网格边界</value>
     </data>
+    <data name="str.filter" xml:space="preserve">
+        <value>过滤</value>
+    </data>
 </root>
