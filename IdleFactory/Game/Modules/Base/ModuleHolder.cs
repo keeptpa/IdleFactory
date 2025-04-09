@@ -26,7 +26,8 @@ public class ModuleHolder : SingletonBase
 
     public T? GetModule<T>() where T : ModuleBase
     {
-        _modules.TryGetValue(typeof(T).Name, out var module);
-        return module as T;
+        var result = _modules[typeof(T).Name] as T;
+        Console.WriteLine($"Getting module: {typeof(T).Name}, Hash: {result?.GetHashCode()}");
+        return result;
     }
 }

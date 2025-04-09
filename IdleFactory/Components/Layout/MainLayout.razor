@@ -1,4 +1,6 @@
 ﻿@using IdleFactory.Util
+@using IdleFactory.Components.Components
+@using IdleFactory.Game.Modules
 @inherits LayoutComponentBase
 
 <div class="page">
@@ -15,6 +17,9 @@
             @Body
         </article>
     </main>
+    <div>
+        <ChatComponent/>
+    </div>
 </div>
 <script src="util.js"></script>
 <div id="blazor-error-ui" data-nosnippet>

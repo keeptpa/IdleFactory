@@ -12,6 +12,7 @@ public class SingletonHolder
         {
             result = Activator.CreateInstance<T>();
             instances[nameKey] = result;
+            Console.WriteLine($"Creating new instance of {nameKey} with hash: {result.GetHashCode()}");
         }
         else
         {

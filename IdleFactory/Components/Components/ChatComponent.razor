@@ -1,0 +1,73 @@
+﻿@using System.Collections.ObjectModel
+@using IdleFactory.Game.Modules
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+@inject IStringLocalizer<Resources> localizer
+@inject ICookie cookie
+<div class="chat-container @(_isHidden ? "hidden" : "")">
+    <button style="padding-bottom: 8px;" class="toggle-btn btn btn-primary" @onclick="ToggleChat">
+        @(_isHidden ? "👉" : "👈")
+    </button>
+    <div class="chatBox">
+        <div class="scrollable-list">
+                @foreach (var chatItem in _module.GetMsgList())
+                {
+                    <div>[@Utils.GetFormattedTime(@chatItem.TimeStamp)]@chatItem.NickName: @chatItem.Message</div>
+                }
+        </div>
+        <textarea @bind="Input" class="chatInput"></textarea>
+        <button class="btn btn-primary btn-sendMsg" @onclick="SendNew">↩️</button>
+    </div>
+</div>
+
+@code {
+    private bool _isHidden = false;
+    private string curPlayerName = "";
+    
+    private ChatModule _module;
+    
+    
+    private string Input { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+        curPlayerName = await cookie.GetValue("id");
+    }
+
+    private void ToggleChat()
+    {
+        _isHidden = !_isHidden;
+    }
+
+    private void SendNew()
+    {
+        Utils.GetModule<ChatModule>().SendNew(curPlayerName, Input);
+        Input = "";
+        SafeStateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _module = Utils.GetModule<ChatModule>();
+        _module.OnNewMessage += Refresh;
+    }
+
+    private void Refresh()
+    {
+        SafeStateHasChanged();
+    }
+
+    public override void Dispose()
+    {
+        _module.OnNewMessage -= Refresh;
+        base.Dispose();
+    }
+
+}

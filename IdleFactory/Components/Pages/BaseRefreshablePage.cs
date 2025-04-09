@@ -37,7 +37,7 @@ public abstract class BaseRefreshablePage : ComponentBase, IDisposable
         _savedContext = ExecutionContext.Capture();
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         _timer?.Dispose();
     }
