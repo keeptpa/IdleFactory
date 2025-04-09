@@ -37,9 +37,9 @@
                                 <div class="col">
                                     <div class="list-item">@Utils.GetNameFromId(item.Value.ID)</div>
                                 </div>
-                                <div class="col">
+                                @*<div class="col">
                                     <button class="btn btn-primary" style="margin-top: 0.2rem" @onclick="() => { OnClickBuild(item.Value); }">@Localizer["str.build"]</button>
-                                </div>
+                                </div>*@
                             </div>
                         }
                         break;
@@ -94,7 +94,7 @@
         SafeStateHasChanged();
     }
 
-    private void OnClickBuild(ResourceItemBase buildingItem)
+    /*private void OnClickBuild(ResourceItemBase buildingItem)
     {
         var state = SingletonHolder.GetSingleton<GameStateHolder>();
         var isSuccessful = state.TryBuild(buildingItem);
@@ -106,5 +106,5 @@
                 parameters = new string[] {curPlayerName, buildingItem.ID }
             });
         }
-    }
+    }*/
 }

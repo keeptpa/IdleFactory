@@ -2,6 +2,7 @@
 @using IdleFactory.Game.Building
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
+@using IdleFactory.Components.Components
 @rendermode InteractiveServer
 @inherits BaseRefreshablePage
 @inject IStringLocalizer<Resources> Localizer
@@ -65,6 +66,6 @@ else
 
     protected void GoBack()
     {
-        NavigationManager.NavigateTo("/Buildings");
+        NavigationManager.NavigateTo("/Surface");
     }
 }

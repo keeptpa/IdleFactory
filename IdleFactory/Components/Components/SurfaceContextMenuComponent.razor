@@ -1,0 +1,116 @@
+﻿@using IdleFactory.Game.Building.Base
+@using IdleFactory.Game.Modules
+@using IdleFactory.State
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+@inject IStringLocalizer<Resources> localizer;
+@inject NavigationManager NavigationManager
+@inject ICookie cookie
+
+<div class="context-menu"
+     style="position: fixed; left: @((contextMenuPos.X + 5) * 40)px; top: @(40 * -1 * (contextMenuPos.Y - 5))px;
+     background-color: white; border: 3px solid #ccc; border-radius: 4px;width: 200px; height: 300px;">
+    <div style="position: relative; left: 5px;">
+        <text>@contextMenuPos.X, @contextMenuPos.Y</text>
+        @if (_building != null)
+        {
+            <div>@localizer["str.building"]: @Utils.GetNameFromId(_building.ID)</div>
+        }
+        <select hidden="@(_building != null)" class="form-select" style="width: 160px; position: relative; left: 5px;"
+                @bind="BuildingSelection" onfocus="@RefreshData">
+            @foreach (var item in _buildingAvailable)
+            {
+                <option value="@item.ID">@Utils.GetNameFromId(item.ID)</option>
+            }
+            <option value=""></option>
+        </select>
+    </div>
+
+
+    <div style="position: absolute; bottom: 3px">
+        <div class="row" style="position: relative; left: 33px; bottom: 3px; width: 150px">
+            <button hidden="@(_building != null)" class="btn btn-primary"
+                    @onclick="Build">@localizer["str.build"]</button>
+            <button hidden="@(_building == null)" class="btn btn-primary"
+                    @onclick="BuildDetail">@localizer["str.buildingDetail"]</button>
+            <button hidden="@(_building == null)" class="btn btn-primary"
+                    @onclick="OnRetriveClick"> @localizer["str.buildingRetrieve"]</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string curPlayerName = "";
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        curPlayerName = await cookie.GetValue("id");
+    }
+
+    [Parameter] public Position contextMenuPos { get; set; }
+    [Parameter] public Action onAction { get; set; }
+
+    private List<ResourceItemBase> _buildingAvailable = new();
+
+    private string _selection;
+
+    private string BuildingSelection
+    {
+        get => _selection;
+        set { _selection = value; }
+    }
+
+    private BuildingBase? _building;
+
+    private void RefreshData()
+    {
+        _buildingAvailable = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsNotPlaced().Values.ToList();
+    }
+
+    private void Build()
+    {
+        if (!string.IsNullOrEmpty(BuildingSelection))
+        {
+            SingletonHolder.GetSingleton<GameStateHolder>().TryBuild(new ResourceItemBase() { ID = BuildingSelection, Quantity = 1 }, contextMenuPos);
+        }
+
+        SafeStateHasChanged();
+        RefreshBuilding();
+        onAction?.Invoke();
+    }
+
+    protected override void OnInitialized()
+    {
+        RefreshBuilding();
+        base.OnInitialized();
+    }
+
+    private void RefreshBuilding()
+    {
+        _building = SingletonHolder.GetSingleton<GameStateHolder>().GetBuilding(contextMenuPos);
+    }
+
+    private void BuildDetail()
+    {
+        var buildIndex = _building.GetIndex();
+        NavigationManager.NavigateTo($"/{_building.DetailSubPath}/{buildIndex}");
+    }
+
+    private void OnRetriveClick()
+    {
+        var isSuccess = _building.Retrieve();
+        if (isSuccess)
+        {
+            Utils.GetModule<NotificationModule>().SetNotify(new NotifyItem()
+            {
+                notifyString = "notify.buildingRetrieve",
+                parameters = new string[] { curPlayerName, _building.ID }
+            });
+            RefreshBuilding();
+            SafeStateHasChanged();
+        }
+    }
+
+}

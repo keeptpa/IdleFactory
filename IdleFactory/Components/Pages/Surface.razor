@@ -1,0 +1,211 @@
+﻿@page "/Surface"
+@using System.Collections.Generic
+@using IdleFactory.Game.Building.Base
+@using Microsoft.AspNetCore.Components.Web
+@using IdleFactory.Components.Components
+@using IdleFactory.State
+@using IdleFactory.Util
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+
+<div class="surface-container" 
+     @onmousedown="StartDragging" 
+     @onmouseup="StopDragging" 
+     @onmousemove="OnMouseMove"
+     @onmouseleave="StopDragging"
+     @onwheel="OnMouseWheel"
+     style="overflow: hidden; position: relative; width: 100%; height: 600px; background-color: #f0f0f0; cursor: @(_isDragging ? "grabbing" : "grab")">
+    
+    <div class="surface-grid" style="position: absolute; transform: translate(@(_offsetX)px, @(_offsetY)px) scale(@_zoomLevel); transform-origin: center; @(_isDragging ? "" : "transition: transform 0.1s ease-out;")">
+        @for (int y = _maxY; y >= _minY; y--)
+        {
+            <div class="grid-row" style="display: flex; flex-direction: row;">
+                @for (int x = _minX; x < _maxX; x++)
+                {
+                    int cellX = x;
+                    int cellY = y;
+                    
+                    <div class="grid-cell"
+                         @onclick="() => CellClicked(cellX, cellY)"
+                         style="width: @(_cellSize)px; height: @(_cellSize)px; @(_showGridLines ? "border: 1px solid #ccc;" : "");">
+                        <GridComponent _building="@GetBuilding(cellX, cellY)" />
+                    </div>
+                    @if (_showContextMenu)
+                    {
+                        <SurfaceContextMenuComponent onAction="@OnAction" contextMenuPos="@_contextMenuCellPos" />
+                    }
+                }
+            </div>
+        }
+    </div>
+
+    @*<div class="control-panel" style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background-color: white; padding: 10px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+        <div class="mb-2">
+            <button @onclick="ExpandGridRight" class="btn btn-sm btn-primary mr-1">Expand Right</button>
+            <button @onclick="ExpandGridDown" class="btn btn-sm btn-primary mr-1">Expand Down</button>
+            <button @onclick="ExpandGridLeft" class="btn btn-sm btn-primary mr-1">Expand Left</button>
+            <button @onclick="ExpandGridUp" class="btn btn-sm btn-primary">Expand Up</button>
+        </div>
+        <div class="mb-2">
+            <button @onclick="ZoomIn" class="btn btn-sm btn-secondary mr-1">Zoom In (+)</button>
+            <button @onclick="ZoomOut" class="btn btn-sm btn-secondary mr-1">Zoom Out (-)</button>
+            <button @onclick="ResetZoom" class="btn btn-sm btn-secondary">Reset Zoom (1:1)</button>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" @bind="_showGridLines" />
+                Show Grid Lines
+            </label>
+        </div>
+    </div>*@
+</div>
+
+@code {
+    // Grid properties
+    private int _minX = -5;
+    private int _maxX = 5;
+    private int _minY = -5;
+    private int _maxY = 5;
+    
+    private int _cellSize = 40;
+    private bool _showGridLines = true;
+    
+    // Zoom properties
+    private double _zoomLevel = 1.0;
+    private const double _zoomIncrement = 0.1;
+    private const double _minZoom = 0.2;
+    private const double _maxZoom = 5.0;
+    
+    // Dragging functionality
+    private bool _isDragging = false;
+    private double _offsetX = 0;
+    private double _offsetY = 0;
+    private double _lastX = 0;
+    private double _lastY = 0;
+    
+    // Context menu properties
+    private bool _showContextMenu = false;
+    private Position _contextMenuCellPos;
+    
+    // Cell interaction
+    private void CellClicked(int x, int y)
+    {
+        // Only process click if we're not dragging
+        if (!_isDragging)
+        {
+            _showContextMenu = !_showContextMenu;
+            _contextMenuCellPos = new Position()
+            {
+                X = x,
+                Y = y
+            };
+            SafeStateHasChanged();
+        }
+    }
+    
+    // Dragging handlers
+    private void StartDragging(MouseEventArgs e)
+    {
+        _isDragging = true;
+        _lastX = e.ClientX;
+        _lastY = e.ClientY;
+    }
+    
+    private void StopDragging()
+    {
+        _isDragging = false;
+    }
+    
+    private void OnMouseMove(MouseEventArgs e)
+    {
+        if (_isDragging)
+        {
+            var deltaX = e.ClientX - _lastX;
+            var deltaY = e.ClientY - _lastY;
+            
+            _offsetX += deltaX;
+            _offsetY += deltaY;
+            
+            _lastX = e.ClientX;
+            _lastY = e.ClientY;
+            
+            SafeStateHasChanged();
+        }
+    }
+    
+    // Zoom functionality
+    private void OnMouseWheel(WheelEventArgs e)
+    {
+        // Negative deltaY means scroll up/zoom in, positive means scroll down/zoom out
+        double zoomDelta = -Math.Sign(e.DeltaY) * _zoomIncrement;
+        
+        // Calculate new zoom level
+        double newZoom = Math.Clamp(_zoomLevel + zoomDelta, _minZoom, _maxZoom);
+        
+        // Get mouse position relative to grid center
+        // For more advanced zoom, you would calculate this relative to the container
+        
+        // Apply new zoom
+        _zoomLevel = newZoom;
+        
+        SafeStateHasChanged();
+    }
+    
+    private void ZoomIn()
+    {
+        _zoomLevel = Math.Min(_zoomLevel + _zoomIncrement, _maxZoom);
+        SafeStateHasChanged();
+    }
+    
+    private void ZoomOut()
+    {
+        _zoomLevel = Math.Max(_zoomLevel - _zoomIncrement, _minZoom);
+        SafeStateHasChanged();
+    }
+    
+    private void ResetZoom()
+    {
+        _zoomLevel = 1.0;
+        SafeStateHasChanged();
+    }
+    
+    // Grid expansion methods
+    private void ExpandGridRight()
+    {
+        _maxX += 10;
+        SafeStateHasChanged();
+    }
+    
+    private void ExpandGridDown()
+    {
+        _minY -= 10;
+        SafeStateHasChanged();
+    }
+    
+    private void ExpandGridLeft()
+    {
+        // When expanding left, we need to adjust the offset to keep visible area in view
+        _offsetX += 10 * _cellSize * _zoomLevel;
+        _minX -= 10;
+        SafeStateHasChanged();
+    }
+    
+    private void ExpandGridUp()
+    {
+        // When expanding up, we need to adjust the offset to keep visible area in view
+        _offsetY += 10 * _cellSize * _zoomLevel;
+        _maxY += 10;
+        SafeStateHasChanged();
+    }
+
+    private void OnAction()
+    {
+        SafeStateHasChanged();
+    }
+
+    private BuildingSlot GetBuilding(int cellX, int cellY)
+    {
+        return SingletonHolder.GetSingleton<GameStateHolder>().GetBuildingSlot(cellX, cellY);
+    }
+
+}

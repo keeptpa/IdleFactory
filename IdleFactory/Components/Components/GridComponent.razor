@@ -1,0 +1,27 @@
+﻿@using IdleFactory.Game.Building.Base
+@using IdleFactory.State
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+@inject IStringLocalizer<Resources> localizer;
+
+@if (_building.IsValid)
+{
+    <div class="text-black" style="font-size: xx-small">@(@Utils.GetNameFromId(_building.GetBuilding().ID)[0])</div>
+}
+
+@code {
+    
+    [Parameter]
+    public BuildingSlot _building
+    {
+        get;
+        set;
+    }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+}

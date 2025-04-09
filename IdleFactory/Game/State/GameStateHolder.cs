@@ -19,7 +19,7 @@ public class GameStateHolder : SingletonBase
         {"item.workbench" ,new ResourceItemBase { ID = "item.workbench", Quantity = 100 }},
     };
     [JsonProperty]
-    private List<BuildingBase> _buildings = new List<BuildingBase>(){};
+    private Dictionary<Position, BuildingSlot> _buildings = new (){};
     
     public Dictionary<string,int> resSingleGetQuantity = new Dictionary<string, int>();
 
@@ -95,25 +95,53 @@ public class GameStateHolder : SingletonBase
 
     public void AddBuilding(BuildingBase building)
     {
-        _buildings.Add(building);
+        if (_buildings.ContainsKey(building.Position))
+        {
+            _buildings[building.Position].SetBuilding(building);
+        }
+        else
+        {
+            var newSlot = new BuildingSlot();
+            newSlot.SetBuilding(building);
+            _buildings.Add(building.Position, newSlot);
+        }
     }
 
     public void RemoveBuilding(BuildingBase building)
     {
-        _buildings.Remove(building);
+        _buildings.Remove(building.Position);
     }
     
     public List<BuildingBase> GetAllBuildingsPlaced()
     {
-        return _buildings;
+        return _buildings.Values.Where( b => b.GetBuilding() != null).ToList().ConvertAll(b => b.GetBuilding());
     }
-
-    public bool TryBuild(ResourceItemBase buildingItem)
+    
+    public BuildingBase? GetBuilding(Position pos)
+    {
+        return _buildings.GetValueOrDefault(pos)?.GetBuilding();
+    }
+    public BuildingSlot GetBuildingSlot(Position pos)
+    {
+        _buildings[pos] = _buildings.TryGetValue(pos, out var building) ? building : new BuildingSlot();
+        return _buildings.GetValueOrDefault(pos);
+    }
+    public BuildingSlot GetBuildingSlot(int X, int Y)
+    {
+        var pos = new Position()
+        {
+            X = X,
+            Y = Y
+        };
+        return GetBuildingSlot(pos);
+    }
+    public bool TryBuild(ResourceItemBase buildingItem, Position position)
     {
         if (buildingItem.IsBuilding() && _resources.ContainsKey(buildingItem.ID) && _resources[buildingItem.ID].Quantity >= 1)
         {
             var building = Utils.GetModule<BuildingItemAdapterModule>().GetBuildingFromItemID<BuildingBase>(buildingItem.ID);
             var state = SingletonHolder.GetSingleton<GameStateHolder>();
+            building.Position = position;
             state.AddBuilding(building);
             state.AddResource(buildingItem.ID, -1);
             

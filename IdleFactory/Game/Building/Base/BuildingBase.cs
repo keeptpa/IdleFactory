@@ -13,7 +13,7 @@ public class BuildingBase
     public string DetailSubPath { get; set; }
 
     public Guid UUID { get; set; }
-    
+    public Position Position { get; set; }  
     public virtual void ApplyBuildingSetting(BuildingSetting setting)
     {
         this.ID = setting.ID;
