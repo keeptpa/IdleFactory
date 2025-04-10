@@ -34,9 +34,29 @@ public class BuildingBase
         {
             state.AddResource(this.ID.Replace("building", "item"), 1);
             state.RemoveBuilding(this);
+            NotifySurrounding();
             return true;
         }
 
         return false;
+    }
+
+    public virtual void BuildUpdate(BuildingBase source)
+    {
+        
+    }
+
+    public void NotifySurrounding()
+    {
+        var surroundingBuildings = Utils.GetBuildingSurrounding(Position.X, Position.Y);
+        foreach (var buildingSlot in surroundingBuildings)
+        {
+            buildingSlot?.GetBuilding()?.BuildUpdate(this);
+        }
+    }
+
+    public virtual void Awake()
+    {
+        
     }
 }

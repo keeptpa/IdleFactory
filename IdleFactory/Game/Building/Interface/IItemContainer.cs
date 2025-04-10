@@ -8,4 +8,6 @@ public interface IItemContainer
 {
     public void ApplyContainerSetting(BuildingSetting buildSetting);
     public Container GetMachineContainer();
+
+    public BuildingBase GetBuilding();
 }

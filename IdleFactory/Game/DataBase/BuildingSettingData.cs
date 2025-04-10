@@ -63,6 +63,14 @@ public class BuildingSettingData : DataBaseBase
                 }
             }
         },
+        {
+            "building.pipe", new BuildingSetting()
+            {
+                ID = "building.pipe",
+                Description = "building.pipe.description",
+                DetailSubPath = "PipeDetail"
+            }
+        },
         
     };
 

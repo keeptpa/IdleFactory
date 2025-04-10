@@ -93,7 +93,7 @@ public class GameStateHolder : SingletonBase
 
     #region Building
 
-    public void AddBuilding(BuildingBase building)
+    private void AddBuilding(BuildingBase building)
     {
         if (_buildings.ContainsKey(building.Position))
         {
@@ -121,19 +121,26 @@ public class GameStateHolder : SingletonBase
     {
         return _buildings.GetValueOrDefault(pos)?.GetBuilding();
     }
-    public BuildingSlot GetBuildingSlot(Position pos)
+    public BuildingSlot GetBuildingSlot(Position pos, bool forceCreate = false)
     {
-        _buildings[pos] = _buildings.TryGetValue(pos, out var building) ? building : new BuildingSlot();
-        return _buildings.GetValueOrDefault(pos);
+        if (forceCreate)
+        {
+            _buildings[pos] = _buildings.TryGetValue(pos, out var building) ? building : new BuildingSlot();
+            return _buildings.GetValueOrDefault(pos);
+        }
+        else
+        {
+            return _buildings.TryGetValue(pos, out var building) ? building : null;
+        }
     }
-    public BuildingSlot GetBuildingSlot(int X, int Y)
+    public BuildingSlot GetBuildingSlot(int x, int y, bool forceCreate = false)
     {
         var pos = new Position()
         {
-            X = X,
-            Y = Y
+            X = x,
+            Y = y
         };
-        return GetBuildingSlot(pos);
+        return GetBuildingSlot(pos, forceCreate);
     }
     public bool TryBuild(ResourceItemBase buildingItem, Position position)
     {
@@ -144,7 +151,9 @@ public class GameStateHolder : SingletonBase
             building.Position = position;
             state.AddBuilding(building);
             state.AddResource(buildingItem.ID, -1);
+            building.NotifySurrounding();
             
+            building.Awake();
             
             return true;
         }

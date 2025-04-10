@@ -49,7 +49,10 @@
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        curPlayerName = await cookie.GetValue("id");
+        if (firstRender)
+        {
+            curPlayerName = await cookie.GetValue("id");
+        }
     }
 
     [Parameter] public Position contextMenuPos { get; set; }

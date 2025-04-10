@@ -21,4 +21,9 @@ public class Chest : BuildingBase, IItemContainer
     {
         return _container;
     }
+
+    public BuildingBase GetBuilding()
+    {
+        return  this;
+    }
 }

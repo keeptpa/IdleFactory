@@ -1,0 +1,49 @@
+﻿@page "/PipeDetail/{buildingIndex}"
+@using IdleFactory.Game.Building
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+
+@inject IStringLocalizer<Resources> Localizer
+@inject NavigationManager NavigationManager
+
+<h3>Localizer["str.pipeDetail"]</h3>
+<div>
+    <div>Pipe Network Guid: @building.Network.Guid</div>
+    <div>Network Members: @building.Network.GetMemberList().Count</div>
+    <div>Network Nodes: @building.Network.GetNodeList().Count</div>
+    <div class="form-group">
+        <select multiple class="form-control">
+            @foreach (var member in building.Network.GetMemberList())
+            {
+                <option>@member.GetBuilding().ID</option>
+            }
+        </select>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string buildingIndex { get; set; }
+
+    private Pipe? building;
+
+    protected override void OnInitialized()
+    {
+        StartTimer(1);
+        building = Utils.GetBuildingWithIndex(int.Parse(buildingIndex)) as Pipe;
+        base.OnInitialized();
+    }
+
+    protected override void OnTimer(object? state)
+    {
+        base.OnTimer(state);
+        SafeStateHasChanged();
+    }
+
+    protected void GoBack()
+    {
+        NavigationManager.NavigateTo("/Surface");
+    }
+    
+}

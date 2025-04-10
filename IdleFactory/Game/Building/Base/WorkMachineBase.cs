@@ -90,6 +90,7 @@ public class WorkMachineBase : BuildingBase, IItemContainer
     public void SetRecipe(Recipe recipe = null)
     {
         selectedRecipe = recipe;
+        cookProgress = 0;
     }
 
     public Recipe? GetNowRecipe()
@@ -126,5 +127,10 @@ public class WorkMachineBase : BuildingBase, IItemContainer
     {
         if (selectedRecipe == null) return 0;
         return (float)cookProgress / selectedRecipe.TimeToCook;
+    }
+    
+    public BuildingBase GetBuilding()
+    {
+        return  this;
     }
 }

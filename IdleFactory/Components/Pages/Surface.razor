@@ -204,7 +204,7 @@
 
     private BuildingSlot GetBuilding(int cellX, int cellY)
     {
-        return SingletonHolder.GetSingleton<GameStateHolder>().GetBuildingSlot(cellX, cellY);
+        return SingletonHolder.GetSingleton<GameStateHolder>().GetBuildingSlot(cellX, cellY, true);
     }
 
     private void PageClick()
