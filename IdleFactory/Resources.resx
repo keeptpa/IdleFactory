@@ -129,4 +129,19 @@
     <data name="str.filter" xml:space="preserve">
         <value>Filter</value>
     </data>
+    <data name="str.networkMembers" xml:space="preserve">
+        <value>Network members</value>
+    </data>
+    <data name="str.networkNodes" xml:space="preserve">
+        <value>Network nodes</value>
+    </data>
+    <data name="str.networkID" xml:space="preserve">
+        <value>Network ID</value>
+    </data>
+    <data name="building.pipe.description" xml:space="preserve">
+        <value>Pipe is used for transport items and fluid</value>
+    </data>
+    <data name="item.pipe" xml:space="preserve">
+        <value>Pipe</value>
+    </data>
 </root>

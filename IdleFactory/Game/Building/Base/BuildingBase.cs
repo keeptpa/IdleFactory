@@ -2,6 +2,7 @@
 using IdleFactory.Game.DataBase;
 using IdleFactory.State;
 using IdleFactory.Util;
+using Microsoft.AspNetCore.Components;
 
 namespace IdleFactory.Game.Building.Base;
 
@@ -58,5 +59,12 @@ public class BuildingBase
     public virtual void Awake()
     {
         
+    }
+
+    public virtual MarkupString GetBuildingGridHtml()
+    {
+        var buildingSymbol = Utils.GetNameFromId(ID)[0];
+        var defaultHtml = $"<div class=\".building-grid-item\" style=\"font-size: xx-small\">{buildingSymbol}</div>";
+        return new MarkupString(defaultHtml);
     }
 }

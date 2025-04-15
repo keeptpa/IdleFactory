@@ -8,20 +8,41 @@
 @inject IStringLocalizer<Resources> Localizer
 @inject NavigationManager NavigationManager
 
-<h3>Localizer["str.pipeDetail"]</h3>
-<div>
-    <div>Pipe Network Guid: @building.Network.Guid</div>
-    <div>Network Members: @building.Network.GetMemberList().Count</div>
-    <div>Network Nodes: @building.Network.GetNodeList().Count</div>
-    <div class="form-group">
-        <select multiple class="form-control">
-            @foreach (var member in building.Network.GetMemberList())
+@if (building != null)
+{
+    <hr class="hr"/>
+    <button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
+    <p>@Utils.GetNameFromId(building.ID)</p>
+    <p>@Localizer[building.Description]</p>
+    <hr/>
+    <div>
+        <div>@Localizer["str.networkID"]: @building.Network.Guid</div>
+        <div>@Localizer["str.networkNodes"]: @building.Network.GetNodeList().Count</div>
+
+        <div>
+            <div class="d-flex align-items-center" style="cursor: ns-resize;">
+                <span style="text-decoration: underline" @onclick="ToggleNetworkMembersVisibility"> @Localizer["str.networkMembers"]:@building.Network.GetMemberList().Count@(showNetworkMembers ? "▼" : "►") </span>
+            </div>
+            @if (showNetworkMembers)
             {
-                <option>@member.GetBuilding().ID</option>
+                <div class="form-group">
+                    <select multiple class="form-control">
+                        @foreach (var member in building.Network.GetMemberList())
+                        {
+                            <option>@Utils.GetNameFromId(member.GetBuilding().ID) (@member.GetBuilding().Position.X, @member.GetBuilding().Position.Y)</option>
+                        }
+                    </select>
+                </div>
             }
-        </select>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <p>Building not found.</p>
+}
+<hr class="hr"/>
+<button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
 
 @code {
     [Parameter] public string buildingIndex { get; set; }
@@ -45,5 +66,12 @@
     {
         NavigationManager.NavigateTo("/Surface");
     }
-    
+
+    private bool showNetworkMembers = false;
+
+    private void ToggleNetworkMembersVisibility()
+    {
+        showNetworkMembers = !showNetworkMembers;
+    }
+
 }

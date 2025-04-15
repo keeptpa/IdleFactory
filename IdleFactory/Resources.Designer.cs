@@ -105,6 +105,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pipe is used for transport items and fluid.
+        /// </summary>
+        internal static string building_pipe_description {
+            get {
+                return ResourceManager.GetString("building.pipe.description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basic workbench. You could do some simple job here..
         /// </summary>
         internal static string building_workbench_description {
@@ -164,6 +173,15 @@ namespace IdleFactory {
         internal static string item_ironOre {
             get {
                 return ResourceManager.GetString("item.ironOre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pipe.
+        /// </summary>
+        internal static string item_pipe {
+            get {
+                return ResourceManager.GetString("item.pipe", resourceCulture);
             }
         }
         
@@ -317,6 +335,33 @@ namespace IdleFactory {
         internal static string str_input {
             get {
                 return ResourceManager.GetString("str.input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network ID.
+        /// </summary>
+        internal static string str_networkID {
+            get {
+                return ResourceManager.GetString("str.networkID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network members.
+        /// </summary>
+        internal static string str_networkMembers {
+            get {
+                return ResourceManager.GetString("str.networkMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network nodes.
+        /// </summary>
+        internal static string str_networkNodes {
+            get {
+                return ResourceManager.GetString("str.networkNodes", resourceCulture);
             }
         }
         

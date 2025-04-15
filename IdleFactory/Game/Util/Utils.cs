@@ -152,8 +152,8 @@ public class Utils
         var state =  SingletonHolder.GetSingleton<GameStateHolder>();
         result[0] = state.GetBuildingSlot(x, y + 1);
         result[1] = state.GetBuildingSlot(x, y - 1);
-        result[2] = state.GetBuildingSlot(x + 1, y);
-        result[3] = state.GetBuildingSlot(x - 1, y);
+        result[2] = state.GetBuildingSlot(x - 1, y);
+        result[3] = state.GetBuildingSlot(x + 1, y);
         return result;
     }
     

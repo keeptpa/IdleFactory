@@ -188,3 +188,8 @@ h1:focus {
     width: 200px;
     height: 300px;
 }
+
+.building-grid-item {
+    text-align: center;
+    position: relative; bottom: -8px;
+}

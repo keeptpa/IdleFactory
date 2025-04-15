@@ -8,7 +8,10 @@
 
 @if (_building.IsValid)
 {
-    <div class="text-black" style="font-size: xx-small">@(@Utils.GetNameFromId(_building.GetBuilding().ID)[0])</div>
+    @if (!string.IsNullOrEmpty(_building.GetBuilding().GetBuildingGridHtml().Value))
+    {
+        @(_building.GetBuilding().GetBuildingGridHtml());
+    }
 }
 
 @code {

@@ -122,4 +122,19 @@
     <data name="str.filter" xml:space="preserve">
         <value>过滤</value>
     </data>
+    <data name="str.networkID" xml:space="preserve">
+        <value>网络ID</value>
+    </data>
+    <data name="str.networkMembers" xml:space="preserve">
+        <value>网络成员</value>
+    </data>
+    <data name="str.networkNodes" xml:space="preserve">
+        <value>网络节点</value>
+    </data>
+    <data name="building.pipe.description" xml:space="preserve">
+        <value>管道被用于传输物品和流体</value>
+    </data>
+    <data name="item.pipe" xml:space="preserve">
+        <value>管道</value>
+    </data>
 </root>
