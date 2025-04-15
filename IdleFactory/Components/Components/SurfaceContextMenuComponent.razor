@@ -85,7 +85,15 @@
     {
         if (!string.IsNullOrEmpty(BuildingSelection))
         {
-            SingletonHolder.GetSingleton<GameStateHolder>().TryBuild(new ResourceItemBase() { ID = BuildingSelection, Quantity = 1 }, contextMenuPos);
+            var isSuccess = SingletonHolder.GetSingleton<GameStateHolder>().TryBuild(new ResourceItemBase() { ID = BuildingSelection, Quantity = 1 }, contextMenuPos);
+            if (isSuccess)
+            {
+                Utils.GetModule<NotificationModule>().SetNotify(new NotifyItem()
+                {
+                    notifyString = "notify.build",
+                    parameters = new string[] { curPlayerName, BuildingSelection}
+                });
+            }
         }
 
         SafeStateHasChanged();
