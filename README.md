@@ -2,6 +2,9 @@
 ## What?
 It's a web idle game(?) which's idea based on gregtech mod from minecraft and cookie clicker  
 **It's still highly WIP.**
+---
+<details>
+<summary>Some gifs tell you what is it looks like</summary>  
   
 **A resource menu**  
 ![Snipaste_2025-04-02_12-08-07](https://github.com/user-attachments/assets/3d52aebf-b56d-4acc-8b53-55d07fb4dbed)  
@@ -11,6 +14,7 @@ It's a web idle game(?) which's idea based on gregtech mod from minecraft and co
   
 **Exchange a workbench with your resources, then use it to make a furnance to make charcoal**
 ![20250415-180554](https://github.com/user-attachments/assets/b1708f7a-0887-4a31-8aa9-45a23eb41355)
+</details>
 
 ##Roadmap  
 ✔ Basic system(Database, SingletonHolder, ModuleHolder...etc.)  
