@@ -9,8 +9,8 @@ It's a web idle game(?) which's idea based on gregtech mod from minecraft and co
 **A machine's interface**  
 ![Snipaste_2025-04-02_12-08-27](https://github.com/user-attachments/assets/051df5bf-81bf-4131-8224-d2377babed41)  
   
-**Simplest example of machine crafting**  
-![20250402-120908](https://github.com/user-attachments/assets/1b64eb68-c5ab-4a0b-b507-043c6b0f0e30)  
+**Exchange a workbench with your resources, then use it to make a furnance to make charcoal**
+![20250415-180554](https://github.com/user-attachments/assets/b1708f7a-0887-4a31-8aa9-45a23eb41355)
 
 ##Roadmap  
 ✔ Basic system(Database, SingletonHolder, ModuleHolder...etc.)  
