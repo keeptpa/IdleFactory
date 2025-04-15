@@ -366,11 +366,29 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nickname.
+        /// </summary>
+        internal static string str_nickName {
+            get {
+                return ResourceManager.GetString("str.nickName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output.
         /// </summary>
         internal static string str_output {
             get {
                 return ResourceManager.GetString("str.output", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This pipe connects to.
+        /// </summary>
+        internal static string str_pipeConnectNeighbor {
+            get {
+                return ResourceManager.GetString("str.pipeConnectNeighbor", resourceCulture);
             }
         }
         

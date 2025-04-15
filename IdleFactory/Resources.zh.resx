@@ -137,4 +137,10 @@
     <data name="item.pipe" xml:space="preserve">
         <value>管道</value>
     </data>
+    <data name="str.pipeConnectNeighbor" xml:space="preserve">
+        <value>此管道与以下相连</value>
+    </data>
+    <data name="str.nickName" xml:space="preserve">
+        <value>昵称</value>
+    </data>
 </root>

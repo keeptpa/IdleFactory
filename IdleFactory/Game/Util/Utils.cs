@@ -112,15 +112,17 @@ public class Utils
                 ObjectCreationHandling = ObjectCreationHandling.Replace,
                 TypeNameHandling = TypeNameHandling.All
             });
-
-            foreach (var machine in newState.GetAllBuildingsPlaced())
+            
+            SingletonHolder.GetSingleton<GameStateHolder>().ReplaceData(newState);
+            foreach (var building in SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced())
             {
-                if (machine is WorkMachineBase workMachine)
+                if (building is WorkMachineBase workMachine)
                 {
                     GetModule<UpdateModule>().Update += workMachine.Tick;
                 }
+                
+                building.Awake();
             }
-            SingletonHolder.GetSingleton<GameStateHolder>().ReplaceData(newState);
         }
     }
 

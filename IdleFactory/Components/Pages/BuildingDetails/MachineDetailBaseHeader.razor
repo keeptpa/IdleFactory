@@ -4,10 +4,8 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> Localizer
 
-<p>@Utils.GetNameFromId(machine.ID)</p>
-<p>@Localizer[machine.Description]</p>
-<hr class="hr" />
 
+<BuildingBaseHead Building="_machine"/>
 <div>@Localizer["str.selectRecipe"]</div>
 <select @bind="selectedRecipe" class="form-select" style="width: 200px">
     <option value=""></option>

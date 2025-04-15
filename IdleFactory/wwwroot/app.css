@@ -193,3 +193,10 @@ h1:focus {
     text-align: center;
     position: relative; bottom: -8px;
 }
+
+.text-area {
+    width: 100px;
+    height: 35px;
+    resize: none;
+    border-radius: 6px;
+}

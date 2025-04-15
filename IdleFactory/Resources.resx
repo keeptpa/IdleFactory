@@ -144,4 +144,10 @@
     <data name="item.pipe" xml:space="preserve">
         <value>Pipe</value>
     </data>
+    <data name="str.pipeConnectNeighbor" xml:space="preserve">
+        <value>This pipe connects to</value>
+    </data>
+    <data name="str.nickName" xml:space="preserve">
+        <value>Nickname</value>
+    </data>
 </root>

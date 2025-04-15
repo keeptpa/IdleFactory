@@ -47,9 +47,9 @@ public class BuildingItemAdapterModule : ModuleBase
                 
             }
 
-            if (result is WorkMachineBase workMachine)
+            if (result is ITickable tickableMachine)
             {
-                Utils.GetModule<UpdateModule>().Update += workMachine.Tick;
+                Utils.GetModule<UpdateModule>().Update += tickableMachine.Tick;
             }
         }
         return result;

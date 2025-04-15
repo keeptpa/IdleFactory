@@ -1,0 +1,26 @@
+﻿@using IdleFactory.Game.Building.Base
+@using IdleFactory.Game.DataBase
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> Localizer
+
+<p>@Utils.GetNameFromId(_building.ID)</p>
+<p>@Localizer[_building.Description]</p>
+<div>
+    <div>@Localizer["str.nickName"]</div>
+    <textarea @bind="_building.NickName" class="text-area"></textarea>
+</div>
+<hr class="hr"/>
+
+@code {
+
+    private BuildingBase _building;
+
+    [Parameter]
+    public BuildingBase Building
+    {
+        get => _building;
+        set => _building = value;
+    }
+
+}

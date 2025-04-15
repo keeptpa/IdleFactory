@@ -22,6 +22,7 @@
             <textarea style="resize: none; width: 80%;height: 30px;" @bind="SearchStr"></textarea>
             <select class="form-select" style="width: 160px; position: relative;"
                     @bind="BuildingSelection" @onfocus="RefreshData">
+                <option value="" selected="@true"></option>
                 @foreach (var item in _buildingAvailable)
                 {
                     <option value="@item.ID">@Utils.GetNameFromId(item.ID)</option>

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace IdleFactory.Game.Building.Base;
 [Serializable]
-public class WorkMachineBase : BuildingBase, IItemContainer
+public class WorkMachineBase : BuildingBase, IItemContainer, ITickable
 {
     [JsonProperty]
     private Recipe? selectedRecipe;
@@ -66,7 +66,6 @@ public class WorkMachineBase : BuildingBase, IItemContainer
     public override bool Retrieve()
     {
         machineContainer.Clear();
-        Utils.GetModule<UpdateModule>().Update -= Tick;
         return base.Retrieve();
     }
 

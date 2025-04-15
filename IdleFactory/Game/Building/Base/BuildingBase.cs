@@ -1,5 +1,6 @@
 ﻿using IdleFactory.ContainerSystem;
 using IdleFactory.Game.DataBase;
+using IdleFactory.Game.Modules;
 using IdleFactory.State;
 using IdleFactory.Util;
 using Microsoft.AspNetCore.Components;
@@ -12,7 +13,8 @@ public class BuildingBase
     public string ID { get; set; }
     public string Description { get; set; }
     public string DetailSubPath { get; set; }
-
+    
+    public string NickName { get; set; }
     public Guid UUID { get; set; }
     public Position Position { get; set; }  
     public virtual void ApplyBuildingSetting(BuildingSetting setting)
@@ -39,6 +41,10 @@ public class BuildingBase
             return true;
         }
 
+        if (this is ITickable tickable)
+        {
+            Utils.GetModule<UpdateModule>().Update -= tickable.Tick;
+        }
         return false;
     }
 
@@ -64,7 +70,7 @@ public class BuildingBase
     public virtual MarkupString GetBuildingGridHtml()
     {
         var buildingSymbol = Utils.GetNameFromId(ID)[0];
-        var defaultHtml = $"<div class=\".building-grid-item\" style=\"font-size: xx-small\">{buildingSymbol}</div>";
+        var defaultHtml = $"<div class=\"building-grid-item\" style=\"font-size: xx-small\">{buildingSymbol}</div>";
         return new MarkupString(defaultHtml);
     }
 }

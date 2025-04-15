@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using IdleFactory.Game.Building;
 using IdleFactory.Game.Building.Base;
+using Newtonsoft.Json;
 
 namespace IdleFactory.LogisticSystem;
 
 public class LogisticNetwork
 {
+    
     private Dictionary<Guid, PipeConnector> _nodes = new();
-
+    
     private List<IItemContainer> _cachedMembers = new();
     public Guid Guid { get; set; }
     public LogisticNetwork()
@@ -42,7 +44,6 @@ public class LogisticNetwork
     {
         PurgeNodeCache(pipe);
         _nodes.Remove(pipe.UUID);
-
     }
 
     public void ResetPipeConnector(PipeConnector pipeConnector)

@@ -2,19 +2,26 @@
 using IdleFactory.LogisticSystem;
 using IdleFactory.Util;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 
 namespace IdleFactory.Game.Building;
 
 [BaseBuildingInfo("building.pipe")]
-public class Pipe : BuildingBase
+public class Pipe : BuildingBase, ITickable
 {
     private BuildingSlot[] _neighbors = new BuildingSlot[4];
-    public LogisticNetwork Network { get; set; }
+    [JsonIgnore] public LogisticNetwork Network { get; set; }
+    [JsonProperty]
     private string _symbol = "•";
     private void SearchBuild()
     {
         _neighbors = Utils.GetBuildingSurrounding(Position.X, Position.Y);
         _symbol = GetPipeChar();
+    }
+
+    public List<IItemContainer> GetAttachedContainers()
+    {
+        return _neighbors.Where(b => b is {IsValid: true} && b.GetBuilding() is IItemContainer).ToList().ConvertAll(b => b.GetBuilding() as IItemContainer);
     }
     
     private void NetworkProcess()
@@ -23,7 +30,7 @@ public class Pipe : BuildingBase
         {
             if (buildingSlot is { IsValid: true })
             {
-                if (buildingSlot.GetBuilding() is Pipe pipe && pipe.Network != Network)
+                if (buildingSlot.GetBuilding() is Pipe pipe && pipe.Network != null && pipe.Network != Network)
                 {
                     Network ??= pipe.Network;
                     Network = Network.JoinOther(pipe.Network);
@@ -59,6 +66,11 @@ public class Pipe : BuildingBase
         base.Awake();
     }
 
+    public void ReCreateNetwork()
+    {
+        BfsCreate(this, Network, []);
+    }
+    
     public override bool Retrieve()
     {
         Network.RemoveNode(this);
@@ -147,6 +159,11 @@ public class Pipe : BuildingBase
     {
         var html = $"<div class=\"building-grid-item\">{_symbol}</div>";
         return new MarkupString(html);
+    }
+
+    public void Tick()
+    {
+        
     }
 }
 
