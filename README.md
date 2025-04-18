@@ -36,6 +36,7 @@ So I did, it indeed difficult, to use blazor to make a game(?)
 I'm not sure how far I could go.
 ## It looks bad
 Sorry, I'm not good at either programming and web design, but at least I would check these thing could work as intend.  
+Currently I'm focusing on feature and logic, so sorry for the web UI for now.
   
   
   
