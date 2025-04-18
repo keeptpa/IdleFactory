@@ -73,4 +73,9 @@ public class BuildingBase
         var defaultHtml = $"<div class=\"building-grid-item\" style=\"font-size: xx-small\">{buildingSymbol}</div>";
         return new MarkupString(defaultHtml);
     }
+
+    public virtual String GetBuildingIdentityInfo()
+    {
+        return $"{Utils.GetNameFromId(ID)} \"{NickName}\" ({Position.X}, {Position.Y})";
+    }
 }

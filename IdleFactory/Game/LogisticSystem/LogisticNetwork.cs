@@ -10,7 +10,7 @@ public class LogisticNetwork
     
     private Dictionary<Guid, PipeConnector> _nodes = new();
     
-    private List<IItemContainer> _cachedMembers = new();
+    private Dictionary<Guid, IItemContainer> _cachedMembers = new();
     public Guid Guid { get; set; }
     public LogisticNetwork()
     {
@@ -29,8 +29,10 @@ public class LogisticNetwork
         var neighbors = member.Neighbors;
         var validContainerNeighborsSlots = neighbors.Where(b => b is { IsValid: true } && b.GetBuilding() is IItemContainer).ToList();
         var validContainerNeighbors = validContainerNeighborsSlots.ConvertAll(s => s.GetBuilding() as IItemContainer);
-        _cachedMembers.AddRange(validContainerNeighbors);
-        _cachedMembers = _cachedMembers.Distinct().ToList();
+        foreach (var container in validContainerNeighbors)
+        {
+            _cachedMembers[container.GetBuilding().UUID] = container;
+        }
 
         //Console.WriteLine($"Member added to LogisticNetwork with Guid: {Guid}");
     }
@@ -58,22 +60,16 @@ public class LogisticNetwork
         {
             if (neighbor is { IsValid: true } && neighbor.GetBuilding() is IItemContainer container)
             {
-                _cachedMembers.Remove(container);
+                _cachedMembers.Remove(container.GetBuilding().UUID);
             }
         }
     }
-    
-    private void ReCache()
-    {
-        var allNeighbors = _nodes.Values.ToList().ConvertAll(m => m.Neighbors).SelectMany(m => m).ToList();
-        var containerNeighbors = allNeighbors.Where(b => b is { IsValid: true} && b.GetBuilding() is IItemContainer).ToList();
-        _cachedMembers = containerNeighbors.ConvertAll(b => b.GetBuilding() as IItemContainer);
-    }
-
     public LogisticNetwork JoinOther(LogisticNetwork otherNetwork) //Join other network with current network's member
     {
-        otherNetwork._cachedMembers.AddRange(_cachedMembers);
-        otherNetwork._cachedMembers = otherNetwork._cachedMembers.Distinct().ToList();
+        foreach (var member in _cachedMembers)
+        {
+            otherNetwork._cachedMembers[member.Key] = member.Value;
+        }
         
         foreach (var member in _nodes.Values)
         {
@@ -90,10 +86,22 @@ public class LogisticNetwork
 
     public List<IItemContainer> GetMemberList()
     {
-        return _cachedMembers;
+        return _cachedMembers.Values.ToList();
     }
     public List<PipeConnector> GetNodeList()
     {
         return _nodes.Values.ToList();
+    }
+
+    public int SendPackage(ExtractAction action)
+    {
+        var packageItem = action.Content;
+        var target = GetItemContainer(action.TargetContainerGuid);
+        return target == null ? 0 : target.GetMachineContainer().TryAddItem(packageItem);
+    }
+
+    public IItemContainer? GetItemContainer(Guid guid)
+    {
+        return _cachedMembers.TryGetValue(guid, out var member) ? member : null;
     }
 }

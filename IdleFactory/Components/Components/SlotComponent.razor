@@ -7,13 +7,13 @@
 @inject IStringLocalizer<Resources> localizer;
 
 
-<input class="input-group-sm" @bind="Quantity" style="width:50px">
+<input class="input-group-sm" type="number" @bind="Quantity" style="width:70px" min="0" step="1" >
 
 <select @onfocus="RefreshData" @bind="Id" class="form-select" style="width: 120px; background-color: @GetSlotColor()">
     <option value="" selected="@(slot.GetItem() == null || slot.GetItem().Quantity == 0)"></option>
     @foreach (var item in inventoryItems)
     {
-        <option value="@item.ID" selected="@(Id == item.ID)">@localizer[item.ID] * @item.Quantity</option>
+        <option value="@item.ID" selected="@(Id == item.ID)">@localizer[item.ID] (@item.Quantity)</option>
     }
     
 </select>
@@ -130,9 +130,17 @@
         else
         {
             var state = SingletonHolder.GetSingleton<GameStateHolder>();
-            inventoryItems = state.GetAllResources(slot.TagFilter).Values.ToList();
+            inventoryItems = state.GetAllResources(slot.TagFilter, true).Values.ToList();
             
             if (slot.GetItem()?.IsValid() == true && state.GetResource(slot.GetItem().ID) == null)// if all the item is selected we need to add it to list so it can show up
+            {
+                var fakeItem = new ResourceItemBase();
+                fakeItem.ID = slot.GetItem().ID;
+                fakeItem.Quantity = 0;
+                inventoryItems.Add(fakeItem);
+            }
+
+            if (slot.IsValid && !inventoryItems.Any(i => i.ID == slot.GetItem().ID))
             {
                 var fakeItem = new ResourceItemBase();
                 fakeItem.ID = slot.GetItem().ID;

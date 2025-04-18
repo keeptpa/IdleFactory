@@ -150,4 +150,25 @@
     <data name="str.nickName" xml:space="preserve">
         <value>Nickname</value>
     </data>
+    <data name="str.pipeActions" xml:space="preserve">
+        <value>Pipe actions</value>
+    </data>
+    <data name="str.add" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="str.remove" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="str.takeFrom" xml:space="preserve">
+        <value>Taken from</value>
+    </data>
+    <data name="str.sendTo" xml:space="preserve">
+        <value>Send to</value>
+    </data>
+    <data name="str.extractFromInput" xml:space="preserve">
+        <value>Extract from input</value>
+    </data>
+    <data name="str.enable" xml:space="preserve">
+        <value>Enable</value>
+    </data>
 </root>

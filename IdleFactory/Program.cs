@@ -1,12 +1,7 @@
-using System.Globalization;
 using IdleFactory;
 using IdleFactory.Components;
-using IdleFactory.State;
 using IdleFactory.Util;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Server;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Options;
+using MudBlazor.Services;
 
 //CultureInfo.CurrentCulture = new CultureInfo("zh");
 
@@ -25,6 +20,7 @@ builder.Services.AddControllersWithViews()
     .AddDataAnnotationsLocalization();
 builder.Services.AddScoped<ICookie, Cookie>();
 builder.Services.AddControllers();
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

@@ -9,10 +9,13 @@ namespace IdleFactory.Game.Building;
 [BaseBuildingInfo("building.pipe")]
 public class Pipe : BuildingBase, ITickable
 {
+    public int PumpSpeed { get; set; } = 1;
+    public List<ExtractAction> ActionList = [];
+
     private BuildingSlot[] _neighbors = new BuildingSlot[4];
     [JsonIgnore] public LogisticNetwork Network { get; set; }
-    [JsonProperty]
-    private string _symbol = "•";
+    [JsonProperty] private string _symbol = "•";
+
     private void SearchBuild()
     {
         _neighbors = Utils.GetBuildingSurrounding(Position.X, Position.Y);
@@ -21,9 +24,10 @@ public class Pipe : BuildingBase, ITickable
 
     public List<IItemContainer> GetAttachedContainers()
     {
-        return _neighbors.Where(b => b is {IsValid: true} && b.GetBuilding() is IItemContainer).ToList().ConvertAll(b => b.GetBuilding() as IItemContainer);
+        return _neighbors.Where(b => b is { IsValid: true } && b.GetBuilding() is IItemContainer).ToList()
+            .ConvertAll(b => b.GetBuilding() as IItemContainer);
     }
-    
+
     private void NetworkProcess()
     {
         foreach (var buildingSlot in _neighbors) // Check other pipe that connects
@@ -44,20 +48,25 @@ public class Pipe : BuildingBase, ITickable
             Network = new();
             Network.AddNode(new PipeConnector(this, _neighbors));
         }
-        
     }
-    
+
     public override void BuildUpdate(BuildingBase source)
     {
         base.BuildUpdate(source);
-        
+
         SearchBuild();
         if (source is not Pipe)
         {
             Network.ResetPipeConnector(new PipeConnector(this, _neighbors));
         }
+
+        foreach (var action in ActionList.ToList()
+                     .Where(action => Network.GetItemContainer(action.SourceContainerGuid) == null))
+        {
+            ActionList.Remove(action);
+        }
     }
-    
+
     public override void Awake()
     {
         SearchBuild();
@@ -70,7 +79,7 @@ public class Pipe : BuildingBase, ITickable
     {
         BfsCreate(this, Network, []);
     }
-    
+
     public override bool Retrieve()
     {
         Network.RemoveNode(this);
@@ -85,6 +94,7 @@ public class Pipe : BuildingBase, ITickable
                 pipe.BfsCreate(this, Network, [this]);
             }
         }
+
         return base.Retrieve();
     }
 
@@ -100,15 +110,15 @@ public class Pipe : BuildingBase, ITickable
     {
         if (Network == originalNetwork) //if a new network has not been assigned
         {
-            var newNetwork = new LogisticNetwork(); 
-            Network = newNetwork; 
+            var newNetwork = new LogisticNetwork();
+            Network = newNetwork;
             //Console.WriteLine($"Pipe on {Position.X}, {Position.Y} is split into a new network {newNetwork.Guid}");
         }
         else
         {
             Network = sourceNode.Network;
         }
-        
+
         Network.AddNode(new PipeConnector(this, _neighbors));
         visited.Add(this);
         //start next search
@@ -116,7 +126,7 @@ public class Pipe : BuildingBase, ITickable
         foreach (var buildingSlot in validPipes)
         {
             var pipe = buildingSlot.GetBuilding() as Pipe;
-            if( visited.Contains(pipe)) continue;
+            if (visited.Contains(pipe)) continue;
             pipe.Network = Network;
             pipe.BfsCreate(this, originalNetwork, visited);
         }
@@ -124,11 +134,16 @@ public class Pipe : BuildingBase, ITickable
 
     private string GetPipeChar()
     {
-        var connectionCount = _neighbors.Count(b => b is { IsValid: true } && b.GetBuilding() is Pipe or IItemContainer);
-        var connectUp = _neighbors.ElementAtOrDefault(0)?.IsValid == true && _neighbors.ElementAtOrDefault(0)?.GetBuilding() is Pipe or IItemContainer;
-        var connectDown = _neighbors.ElementAtOrDefault(1)?.IsValid == true && _neighbors.ElementAtOrDefault(1)?.GetBuilding() is Pipe or IItemContainer;
-        var connectLeft = _neighbors.ElementAtOrDefault(2)?.IsValid == true && _neighbors.ElementAtOrDefault(2)?.GetBuilding() is Pipe or IItemContainer;
-        var connectRight = _neighbors.ElementAtOrDefault(3)?.IsValid == true && _neighbors.ElementAtOrDefault(3)?.GetBuilding() is Pipe or IItemContainer;
+        var connectionCount =
+            _neighbors.Count(b => b is { IsValid: true } && b.GetBuilding() is Pipe or IItemContainer);
+        var connectUp = _neighbors.ElementAtOrDefault(0)?.IsValid == true &&
+                        _neighbors.ElementAtOrDefault(0)?.GetBuilding() is Pipe or IItemContainer;
+        var connectDown = _neighbors.ElementAtOrDefault(1)?.IsValid == true &&
+                          _neighbors.ElementAtOrDefault(1)?.GetBuilding() is Pipe or IItemContainer;
+        var connectLeft = _neighbors.ElementAtOrDefault(2)?.IsValid == true &&
+                          _neighbors.ElementAtOrDefault(2)?.GetBuilding() is Pipe or IItemContainer;
+        var connectRight = _neighbors.ElementAtOrDefault(3)?.IsValid == true &&
+                           _neighbors.ElementAtOrDefault(3)?.GetBuilding() is Pipe or IItemContainer;
 
         switch (connectionCount)
         {
@@ -155,6 +170,7 @@ public class Pipe : BuildingBase, ITickable
 
         return "?"; // Default case if no match is found
     }
+
     public override MarkupString GetBuildingGridHtml()
     {
         var html = $"<div class=\"building-grid-item\">{_symbol}</div>";
@@ -163,7 +179,32 @@ public class Pipe : BuildingBase, ITickable
 
     public void Tick()
     {
-        
+        foreach (var extract in ActionList.Where(extract => extract.IsVaild))
+        {
+            var sourceContainer = Network.GetItemContainer(extract.SourceContainerGuid);
+            if(sourceContainer == null) continue;
+            if (extract.ExtractFromInput)
+            {
+                if (!sourceContainer.GetMachineContainer().InputContainsItem(extract.Content, true))
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (!sourceContainer.GetMachineContainer().OutputContainsItem(extract.Content, true))
+                {
+                    continue;
+                }
+            }
+
+            var count = Network.SendPackage(extract);
+            sourceContainer.GetMachineContainer().TryRemoveItem(new ResourceItemBase()
+            {
+                ID = extract.Content.ID,
+                Quantity = count
+            }, extract.ExtractFromInput);
+        }
     }
 }
 
@@ -179,7 +220,7 @@ public struct PipeConnector : IEquatable<PipeConnector>
 
     public Guid Guid => Pipe.UUID;
     public Pipe Pipe { get; set; }
-    public BuildingSlot[] Neighbors  { get; set; }
+    public BuildingSlot[] Neighbors { get; set; }
 
     public bool Equals(PipeConnector other)
     {
@@ -195,4 +236,23 @@ public struct PipeConnector : IEquatable<PipeConnector>
     {
         return Guid.GetHashCode();
     }
+}
+
+public class ExtractAction
+{
+    public ExtractAction()
+    {
+        Enabled = false;
+        Content = new ResourceItemBase();
+    }
+
+    public Guid SourceContainerGuid { get; set; }
+    public Guid TargetContainerGuid { get; set; }
+    public ResourceItemBase Content { get; set; }
+
+    public bool ExtractFromInput { get; set; }
+    public bool Enabled { get; set; }
+
+    public bool IsVaild => Content.IsValid() && TargetContainerGuid != Guid.Empty &&
+                           SourceContainerGuid != Guid.Empty && Enabled;
 }

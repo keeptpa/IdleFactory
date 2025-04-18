@@ -258,6 +258,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string str_add {
+            get {
+                return ResourceManager.GetString("str.add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         internal static string str_back {
@@ -308,6 +317,24 @@ namespace IdleFactory {
         internal static string str_crafting {
             get {
                 return ResourceManager.GetString("str.crafting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable.
+        /// </summary>
+        internal static string str_enable {
+            get {
+                return ResourceManager.GetString("str.enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract from input.
+        /// </summary>
+        internal static string str_extractFromInput {
+            get {
+                return ResourceManager.GetString("str.extractFromInput", resourceCulture);
             }
         }
         
@@ -384,6 +411,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pipe actions.
+        /// </summary>
+        internal static string str_pipeActions {
+            get {
+                return ResourceManager.GetString("str.pipeActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This pipe connects to.
         /// </summary>
         internal static string str_pipeConnectNeighbor {
@@ -420,6 +456,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string str_remove {
+            get {
+                return ResourceManager.GetString("str.remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resources.
         /// </summary>
         internal static string str_resources {
@@ -438,11 +483,29 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send to.
+        /// </summary>
+        internal static string str_sendTo {
+            get {
+                return ResourceManager.GetString("str.sendTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Grid Border.
         /// </summary>
         internal static string str_showGrid {
             get {
                 return ResourceManager.GetString("str.showGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taken from.
+        /// </summary>
+        internal static string str_takeFrom {
+            get {
+                return ResourceManager.GetString("str.takeFrom", resourceCulture);
             }
         }
         

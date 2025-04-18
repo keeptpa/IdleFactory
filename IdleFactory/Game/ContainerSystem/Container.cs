@@ -52,7 +52,7 @@ public class Container
                 }
             }
         }
-        
+
         return quantityToaAdd;
     }
 
@@ -76,6 +76,26 @@ public class Container
     {
         var availiableQuantity = 0;
         foreach (var itemSlot in _inputSlots)
+        {
+            if (itemSlot.GetItem() == null || (itemSlot.Tag?.HasTagFilter("notInRecipe") == true)) continue;
+            if (itemSlot.GetItem().ID == item.ID)
+            {
+                if (!checkQuantity)
+                {
+                    return true;
+                }
+
+                availiableQuantity += itemSlot.GetItem().Quantity;
+            }
+        }
+
+        return availiableQuantity >= item.Quantity;
+    }
+
+    public bool OutputContainsItem(ResourceItemBase item, bool checkQuantity = false)
+    {
+        var availiableQuantity = 0;
+        foreach (var itemSlot in _outputSlots)
         {
             if (itemSlot.GetItem() == null || (itemSlot.Tag?.HasTagFilter("notInRecipe") == true)) continue;
             if (itemSlot.GetItem().ID == item.ID)
@@ -152,7 +172,8 @@ public class Container
         return _inputSlots;
     }
 
-    public ItemSlot[] GetOutputSlots(){
+    public ItemSlot[] GetOutputSlots()
+    {
         return _outputSlots;
     }
 

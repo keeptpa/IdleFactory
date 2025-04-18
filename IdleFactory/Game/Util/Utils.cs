@@ -116,9 +116,9 @@ public class Utils
             SingletonHolder.GetSingleton<GameStateHolder>().ReplaceData(newState);
             foreach (var building in SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsPlaced())
             {
-                if (building is WorkMachineBase workMachine)
+                if (building is ITickable tickable)
                 {
-                    GetModule<UpdateModule>().Update += workMachine.Tick;
+                    GetModule<UpdateModule>().Update += tickable.Tick;
                 }
                 
                 building.Awake();

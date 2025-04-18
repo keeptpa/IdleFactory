@@ -143,4 +143,25 @@
     <data name="str.nickName" xml:space="preserve">
         <value>昵称</value>
     </data>
+    <data name="str.pipeActions" xml:space="preserve">
+        <value>管道操作</value>
+    </data>
+    <data name="str.add" xml:space="preserve">
+        <value>添加</value>
+    </data>
+    <data name="str.remove" xml:space="preserve">
+        <value>移除</value>
+    </data>
+    <data name="str.enable" xml:space="preserve">
+        <value>启用</value>
+    </data>
+    <data name="str.extractFromInput" xml:space="preserve">
+        <value>自输入栏提取</value>
+    </data>
+    <data name="str.sendTo" xml:space="preserve">
+        <value>发送到</value>
+    </data>
+    <data name="str.takeFrom" xml:space="preserve">
+        <value>提取自</value>
+    </data>
 </root>
