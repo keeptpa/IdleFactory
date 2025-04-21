@@ -6,7 +6,7 @@ public class ItemSlot
 {
     [JsonProperty]
     private ResourceItemBase? item;
-    public static int MAX_QUANTITY = 64;
+    public int MaxQuantity { get; set; } = 64;
     public ItemTagFilter? TagFilter; // allowed item tags
     public ItemTagFilter? Tag; // slot specific tag
     
@@ -18,7 +18,7 @@ public class ItemSlot
         // If slot is empty, create new item
         if (this.item?.IsValid() != true)
         {
-            addedQuantity = Math.Min(item.Quantity, MAX_QUANTITY);
+            addedQuantity = Math.Min(item.Quantity, MaxQuantity);
             this.item = new ResourceItemBase()
             {
                 ID = item.ID,
@@ -34,7 +34,7 @@ public class ItemSlot
         }
         
         // Add to existing item
-        int spaceLeft = MAX_QUANTITY - this.item.Quantity;
+        int spaceLeft = MaxQuantity - this.item.Quantity;
         addedQuantity = Math.Min(item.Quantity, spaceLeft);
         this.item.Quantity += addedQuantity;
         return addedQuantity;
@@ -92,7 +92,7 @@ public class ItemSlot
     
     public int GetMaxQuantity()
     {
-        return MAX_QUANTITY;
+        return MaxQuantity;
     }
 
     public void SetItem(ResourceItemBase item)

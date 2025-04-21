@@ -11,19 +11,21 @@ public class Container
     [JsonProperty] private ItemSlot[] _inputSlots;
     [JsonProperty] private ItemSlot[] _outputSlots;
 
-    public Container(int inputSlotsCount, int outputSlotsCount)
+    public Container(List<int> inputSlots, List<int> outputSlots)
     {
-        _inputSlots = new ItemSlot[inputSlotsCount];
-        _outputSlots = new ItemSlot[outputSlotsCount];
+        _inputSlots = new ItemSlot[inputSlots.Count];
+        _outputSlots = new ItemSlot[outputSlots.Count];
 
-        for (int i = 0; i < inputSlotsCount; i++)
+        for (int i = 0; i < inputSlots.Count; i++)
         {
             _inputSlots[i] = new ItemSlot();
+            _inputSlots[i].MaxQuantity = inputSlots[i];
         }
 
-        for (int i = 0; i < outputSlotsCount; i++)
+        for (int i = 0; i < outputSlots.Count; i++)
         {
             _outputSlots[i] = new ItemSlot();
+            _outputSlots[i].MaxQuantity = outputSlots[i];
         }
     }
 
@@ -62,7 +64,7 @@ public class Container
         var quantityToRemove = item.Quantity;
         foreach (var slot in slots)
         {
-            quantityToRemove -= slot.TryRemoveItem(item);
+            quantityToRemove -= slot.TryRemoveItem(quantityToRemove, false);
             if (quantityToRemove <= 0)
             {
                 return item.Quantity;
@@ -205,8 +207,8 @@ public class Container
 
 public struct ContainerSetting
 {
-    public int InputSlotsCount;
-    public int OutputSlotsCount;
+    public List<int> InputSlot;
+    public List<int> OutputSlot;
     public Dictionary<int, ItemTagFilter>? SlotsTagFilter; //Set the slot to accept specific tagged item only
     public Dictionary<int, ItemTagFilter>? SlotsTag; //Set the slot tag, e.g. only provides fuel instead of crafting
 }

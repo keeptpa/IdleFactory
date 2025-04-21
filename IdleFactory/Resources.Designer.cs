@@ -159,6 +159,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chest.
+        /// </summary>
+        internal static string item_chest {
+            get {
+                return ResourceManager.GetString("item.chest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Furnace.
         /// </summary>
         internal static string item_furnace {

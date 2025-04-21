@@ -174,4 +174,7 @@
     <data name="str.showRelatedPipeAction" xml:space="preserve">
         <value>Show related</value>
     </data>
+    <data name="item.chest" xml:space="preserve">
+        <value>Chest</value>
+    </data>
 </root>

@@ -25,8 +25,8 @@ public class BuildingSettingData : DataBaseBase
                 DetailSubPath = "WorkbenchDetail",
                 ContainerSetting = new()
                 {
-                    InputSlotsCount = 4,
-                    OutputSlotsCount = 1
+                    InputSlot = [64, 64, 64, 64],
+                    OutputSlot = [64]
                 }
             }
         },
@@ -38,8 +38,8 @@ public class BuildingSettingData : DataBaseBase
                 DetailSubPath = "FurnaceDetail",
                 ContainerSetting = new()
                 {
-                    InputSlotsCount = 2,
-                    OutputSlotsCount = 1,
+                    InputSlot = [64, 64],
+                    OutputSlot = [64],
                     SlotsTagFilter = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["fuel"] }} },
                     SlotsTag = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["notInRecipe"] }} },
                 },
@@ -59,7 +59,7 @@ public class BuildingSettingData : DataBaseBase
                 DetailSubPath = "ChestDetail",
                 ContainerSetting = new()
                 {
-                    InputSlotsCount = 24,
+                    InputSlot = GetBulkSlotSetting(27,64),
                 }
             }
         },
@@ -82,5 +82,16 @@ public class BuildingSettingData : DataBaseBase
     public BuildingSetting? GetBuildingSettingByItemID(string itemID)
     {
         return BuildingSettings.TryGetValue(itemID.Replace("item", "building"), out var setting) ? setting : null;
+    }
+
+    private static List<int> GetBulkSlotSetting(int count, int maxQuantity)
+    {
+        var result = new List<int>();
+        for (int i = 0; i < count; i++)
+        {
+            result.Add(maxQuantity);
+        }
+
+        return result;
     }
 }

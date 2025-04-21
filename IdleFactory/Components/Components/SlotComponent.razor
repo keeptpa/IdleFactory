@@ -88,7 +88,7 @@
         {
             return null;
         }
-        var quantityAvailable = state.GetResource(item.ID).Quantity;
+        var quantityAvailable = Math.Min(state.GetResource(item.ID).Quantity, slot.MaxQuantity);
         var quantityRequested = Quantity;
         var quantityToTake = Math.Min(quantityAvailable, quantityRequested);
         item.Quantity = quantityToTake;

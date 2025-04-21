@@ -13,7 +13,7 @@ public class Chest : BuildingBase, IItemContainer
         if (buildSetting.ContainerSetting.HasValue)
         {
             var setting = buildSetting.ContainerSetting.Value;
-            _container = new(setting.InputSlotsCount, 0);
+            _container = new(setting.InputSlot, []);
         }
     }
 
