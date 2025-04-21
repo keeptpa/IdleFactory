@@ -31,7 +31,7 @@
                                         <MudSelectItem Value="Guid.Empty"> None</MudSelectItem>
                                         @foreach (var container in building.GetAttachedContainers())
                                         {
-                                            if (container.GetBuilding().UUID == @context.Item.SourceContainerGuid) continue;
+                                            if (container.GetBuilding().UUID == @context.Item.TargetContainerGuid) continue;
                                             <MudSelectItem
                                                 Value="@container.GetBuilding().UUID"> @container.GetBuilding().GetBuildingIdentityInfo()</MudSelectItem>
                                         }
@@ -59,16 +59,10 @@
                                 <MudStack Row>
                                     <MudSelect @bind-Value="@context.Item.Content.ID" Style="width: 50px;">
                                         <MudSelectItem Value="@string.Empty"> None</MudSelectItem>
-                                        @foreach (var container in building.GetAttachedContainers())
+                                        @foreach (var content in GetAttachedContainerContent(@context.Item))
                                         {
-                                            @foreach (var itemSlot in (@context.Item.ExtractFromInput ? container.GetMachineContainer().GetInputSlots() : container.GetMachineContainer().GetOutputSlots()))
-                                            {
-                                                if (itemSlot.IsValid)
-                                                {
-                                                    <MudSelectItem
-                                                        Value="itemSlot.GetItem().ID"> @Utils.GetNameFromId(itemSlot.GetItem().ID) </MudSelectItem>
-                                                }
-                                            }
+                                            <MudSelectItem
+                                                Value="content.ID"> @Utils.GetNameFromId(content.ID) </MudSelectItem>
                                         }
                                     </MudSelect>
                                     *
@@ -372,8 +366,28 @@ else
         base.OnTimer(state);
         SafeStateHasChanged();
     }
-    
-    
+
+    private List<ResourceItemBase> GetAttachedContainerContent(ExtractAction action)
+    {
+        var result = new List<ResourceItemBase>();
+        foreach (var container in building.GetAttachedContainers())
+        {
+            foreach (var itemSlot in (action.ExtractFromInput ? container.GetMachineContainer().GetInputSlots() : container.GetMachineContainer().GetOutputSlots()))
+            {
+                if (itemSlot.IsValid)
+                {
+                    result.Add(itemSlot.GetItem());
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(action.Content.ID) && result.All(i => i.ID != action.Content.ID))
+        {
+            result.Add(action.Content);
+        }
+        
+        return result;
+    }
     
     /*
 
