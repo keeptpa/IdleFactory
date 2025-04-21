@@ -1,9 +1,10 @@
 ﻿@using IdleFactory.Game.Building.Base
 @using IdleFactory.Game.DataBase
+@using IdleFactory.Game.Modules
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> Localizer
-
+@inherits BaseRefreshablePage
 
 <BuildingBaseHead Building="_machine"/>
 <div>@Localizer["str.selectRecipe"]</div>
@@ -18,13 +19,18 @@
     }
 </select>
 <div>@Localizer["str.progress"]</div>
-<div class="progress">
+@*<div class="progress">
     <div class="progress-bar-animated progress-bar-striped bg-info" role="progressbar" style="width: @(machine.GetProgress() * 100)%"></div>
-</div>
+</div>*@
+<MudProgressLinear @ref="_progressBar" Color="Color.Primary" Value="cookProgress"/>
 @code {
     private WorkMachineBase _machine;
     private string _selectedRecipe;
-    
+    private MudProgressLinear _progressBar;
+    private bool highRefreshRateNeeded => machine.GetNowRecipe() != null && machine.GetNowRecipe().TimeToCook <= 20;
+
+    private double cookProgress => machine.GetProgress() * 100;
+
     [Parameter]
     public WorkMachineBase machine
     {
@@ -49,7 +55,14 @@
     protected override void OnInitialized()
     {
         _selectedRecipe = machine.GetNowRecipe() != null ? machine.GetNowRecipe().ID : "";
+        StartTimer((float)1 / UpdateModule.TickRate);
         base.OnInitialized();
     }
 
+    protected override void OnTimer(object? state)
+    {
+        if(!highRefreshRateNeeded) return;
+        SafeStateHasChanged();
+        base.OnTimer(state);
+    }
 }

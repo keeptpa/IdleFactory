@@ -17,7 +17,7 @@ public class ActionBase
     {
         //Actions uses update to broadcast player actions, so no need to be called every tick
         timer++;
-        if (timer >= 5)
+        if (timer >= UpdateModule.TickRate * 5)
         {
             timer = 0;
             Update();

@@ -19,10 +19,10 @@ public abstract class BaseRefreshablePage : ComponentBase, IDisposable
         }
     }
 
-    protected void StartTimer(int interval)
+    protected void StartTimer(float interval)
     {        
         interval *= 1000; // Convert interval from seconds to milliseconds
-        _timer ??= new Timer(OnTimer, null, interval, interval);
+        _timer ??= new Timer(OnTimer, null, (int)interval, (int)interval);
     }
 
     protected virtual void OnTimer(object? state)

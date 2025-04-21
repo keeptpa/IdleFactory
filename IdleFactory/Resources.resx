@@ -171,4 +171,7 @@
     <data name="str.enable" xml:space="preserve">
         <value>Enable</value>
     </data>
+    <data name="str.showRelatedPipeAction" xml:space="preserve">
+        <value>Show related</value>
+    </data>
 </root>

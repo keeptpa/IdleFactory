@@ -45,9 +45,9 @@ public class BuildingSettingData : DataBaseBase
                 },
                 BurnChamerSetting = new BurnChamberSetting()
                 {
-                    BurnRate = 1000000,
-                    HeatCapacity = 100000,
-                    CoolDownRate = 100000
+                    BurnRate = 50000,
+                    HeatCapacity = 5000,
+                    CoolDownRate = 5000
                 }
             }
         },

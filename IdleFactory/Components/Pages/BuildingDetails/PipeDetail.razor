@@ -9,26 +9,117 @@
 @inherits BaseRefreshablePage
 
 @inject IStringLocalizer<Resources> Localizer
-@inject NavigationManager NavigationManager
 
 @if (building != null)
 {
-    @* Required *@
-    <MudThemeProvider/>
-    <MudPopoverProvider/>
-
-    @* Needed for dialogs *@
-    <MudDialogProvider/>
-
-    @* Needed for snackbars *@
-    <MudSnackbarProvider/>
     <BuildingBaseHead Building="building"/>
     @*<button class="btn btn-primary" @onclick="building.ReCreateNetwork">TEST RECREATE</button>*@
     <div>
         <div>@Localizer["str.networkID"]: @building.Network.Guid</div>
         <div>@Localizer["str.networkNodes"]: @building.Network.GetNodeList().Count</div>
 
-        <div>
+        <MudExpansionPanels MultiExpansion="true">
+            <MudExpansionPanel Text=@($"{Localizer["str.pipeActions"]}: {building.ActionList.Count}")>
+                @*<MudCheckBox @bind-Value="showRelatedActions">@Localizer["str.showRelatedPipeAction"]</MudCheckBox>*@
+                <button class="btn btn-primary" @onclick="() => { building.ActionList.Add(new ExtractAction()); }"> @Localizer["str.add"] </button>
+                <MudDataGrid Items="_actions">
+                    <Columns>
+                        <TemplateColumn Title="@Localizer["str.takeFrom"]" HeaderStyle="width: 250px;">
+                            <CellTemplate>
+                                <MudStack Row>
+                                    <MudSelect @bind-Value="@context.Item.SourceContainerGuid" Style="width: 250px;">
+                                        <MudSelectItem Value="Guid.Empty"> None</MudSelectItem>
+                                        @foreach (var container in building.GetAttachedContainers())
+                                        {
+                                            if (container.GetBuilding().UUID == @context.Item.SourceContainerGuid) continue;
+                                            <MudSelectItem
+                                                Value="@container.GetBuilding().UUID"> @container.GetBuilding().GetBuildingIdentityInfo()</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <TemplateColumn Title="@Localizer["str.sendTo"]" HeaderStyle="width: 250px;">
+                            <CellTemplate>
+                                <MudStack Row>
+                                    <MudSelect @bind-Value="@context.Item.TargetContainerGuid" Style="width: 250px;">
+                                        <MudSelectItem Value="Guid.Empty"> None</MudSelectItem>
+                                        @foreach (var container in building.Network.GetMemberList())
+                                        {
+                                            if (container.GetBuilding().UUID == @context.Item.SourceContainerGuid) continue;
+                                            <MudSelectItem
+                                                Value="@container.GetBuilding().UUID"> @container.GetBuilding().GetBuildingIdentityInfo()</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <TemplateColumn Title="@Localizer["str.resources"]" HeaderStyle="width: 150px;">
+                            <CellTemplate>
+                                <MudStack Row>
+                                    <MudSelect @bind-Value="@context.Item.Content.ID" Style="width: 50px;">
+                                        <MudSelectItem Value="@string.Empty"> None</MudSelectItem>
+                                        @foreach (var container in building.GetAttachedContainers())
+                                        {
+                                            @foreach (var itemSlot in (@context.Item.ExtractFromInput ? container.GetMachineContainer().GetInputSlots() : container.GetMachineContainer().GetOutputSlots()))
+                                            {
+                                                if (itemSlot.IsValid)
+                                                {
+                                                    <MudSelectItem
+                                                        Value="itemSlot.GetItem().ID"> @Utils.GetNameFromId(itemSlot.GetItem().ID) </MudSelectItem>
+                                                }
+                                            }
+                                        }
+                                    </MudSelect>
+                                    *
+                                    <MudNumericField HideSpinButtons="true" Style="width: 40px"
+                                                     @bind-Value="@context.Item.Content.Quantity" Min="0"
+                                                     Max="@building.PumpSpeed"/>
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <TemplateColumn Title="@Localizer["str.extractFromInput"]" HeaderStyle="width: 50px;">
+                            <CellTemplate>
+                                <MudCheckBox @bind-Value="@context.Item.ExtractFromInput"></MudCheckBox>
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <TemplateColumn Title="@Localizer["str.enable"]" HeaderStyle="width: 50px;">
+                            <CellTemplate>
+                                <MudCheckBox @bind-Value="@context.Item.Enabled"></MudCheckBox>
+                            </CellTemplate>
+                        </TemplateColumn>
+
+                        <TemplateColumn Title="@Localizer["str.pipeActions"]" HeaderStyle="width: 100px;">
+                            <CellTemplate>
+                                <MudButton Variant="Variant.Filled" OnClick="() => { building.ActionList.Remove(context.Item); }">@Localizer["str.remove"]</MudButton>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </MudDataGrid>
+            </MudExpansionPanel>
+            <MudExpansionPanel Text=@($"{Localizer["str.pipeConnectNeighbor"]}: {building.GetAttachedContainers().Count}")>
+                <div class="form-group">
+                    <select multiple class="form-control">
+                        @foreach (var member in building.GetAttachedContainers())
+                        {
+                            <option>@member.GetBuilding().GetBuildingIdentityInfo())</option>
+                        }
+                    </select>
+                </div>
+            </MudExpansionPanel>
+            <MudExpansionPanel Text=@($"{Localizer["str.networkMembers"]}: {building.Network.GetMemberList().Count}") >
+                <div class="form-group">
+                    <select multiple class="form-control">
+                        @foreach (var member in building.Network.GetMemberList())
+                        {
+                            <option>@member.GetBuilding().GetBuildingIdentityInfo()</option>
+                        }
+                    </select>
+                </div>
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+        
+        @*<div>
             <div class="d-flex align-items-center" style="cursor: ns-resize;">
                 <span style="text-decoration: underline"
                       @onclick="ToggleActionVisibility"> @Localizer["str.pipeActions"]:@building.ActionList.Count@(showActionList ? "▼" : "►") </span>
@@ -37,7 +128,7 @@
             {
                 <button class="btn btn-primary"
                         @onclick="() => { building.ActionList.Add(new ExtractAction()); }"> @Localizer["str.add"] </button>
-                @*<div class="container">
+                $1$<div class="container">
                     <div class="row">
                         <div class="col">@Localizer["str.takeFrom"]</div>
                         <div class="col">@Localizer["str.sendTo"]</div>
@@ -127,7 +218,7 @@
                             </div>
                         </div>
                     }
-                </div>*@
+                </div>#1#
                 <MudDataGrid Items="building.ActionList">
                     <Columns>
                         <TemplateColumn Title="@Localizer["str.takeFrom"]" HeaderStyle="width: 250px;">
@@ -137,6 +228,7 @@
                                         <MudSelectItem Value="Guid.Empty"> None</MudSelectItem>
                                         @foreach (var container in building.GetAttachedContainers())
                                         {
+                                            if (container.GetBuilding().UUID == @context.Item.SourceContainerGuid) continue;
                                             <MudSelectItem
                                                 Value="@container.GetBuilding().UUID"> @container.GetBuilding().GetBuildingIdentityInfo()</MudSelectItem>
                                         }
@@ -151,6 +243,7 @@
                                         <MudSelectItem Value="Guid.Empty"> None</MudSelectItem>
                                         @foreach (var container in building.Network.GetMemberList())
                                         {
+                                            if (container.GetBuilding().UUID == @context.Item.SourceContainerGuid) continue;
                                             <MudSelectItem
                                                 Value="@container.GetBuilding().UUID"> @container.GetBuilding().GetBuildingIdentityInfo()</MudSelectItem>
                                         }
@@ -237,7 +330,7 @@
                     </select>
                 </div>
             }
-        </div>
+        </div>*@
     </div>
 }
 else
@@ -245,13 +338,28 @@ else
     <p>Building not found.</p>
 }
 <hr class="hr"/>
-<button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
 
 @code {
     [Parameter] public string buildingIndex { get; set; }
 
     private Pipe? building;
+    private bool showRelatedActions;
 
+    private IEnumerable<ExtractAction> _actions
+    {
+        get
+        {
+            if (showRelatedActions)
+            {
+                return building.Network.GetRelatedActions(building);
+            }
+            else
+            {
+                return building.ActionList;
+            }
+        }
+    }
+    
     protected override void OnInitialized()
     {
         StartTimer(1);
@@ -264,11 +372,10 @@ else
         base.OnTimer(state);
         SafeStateHasChanged();
     }
-
-    protected void GoBack()
-    {
-        NavigationManager.NavigateTo("/Surface");
-    }
+    
+    
+    
+    /*
 
     private bool showNetworkMembers = false;
 
@@ -290,5 +397,5 @@ else
     private void ToggleActionVisibility()
     {
         showActionList = !showActionList;
-    }
+    }*/
 }

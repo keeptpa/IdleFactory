@@ -41,10 +41,11 @@ public class DataBaseModule : ModuleBase
     {
         if(_dataBase.Count > 0){return;}
         
-        var dataList = Assembly.GetAssembly(typeof(DataBaseModule))?.GetTypes().Where(t => t is { Namespace: "IdleFactory.Game.DataBase", IsClass: true }).ToList();
+        var dataList = Assembly.GetAssembly(typeof(DataBaseModule))?.GetTypes().Where(t => !t.Name.Contains("<>c") && t is { Namespace: "IdleFactory.Game.DataBase", IsClass: true  }).ToList();
         foreach (var data in dataList)
         {
              _dataBase[data.Name] = CreateOrLoadDataFile(data);
+             _dataBase[data.Name].OnValildate();
         }
     }
 

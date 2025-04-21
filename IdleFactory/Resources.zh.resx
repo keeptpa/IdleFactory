@@ -164,4 +164,7 @@
     <data name="str.takeFrom" xml:space="preserve">
         <value>提取自</value>
     </data>
+    <data name="str.showRelatedPipeAction" xml:space="preserve">
+        <value>显示相关</value>
+    </data>
 </root>

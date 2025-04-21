@@ -84,15 +84,16 @@ public class GameStateHolder : SingletonBase
         }
     }
 
-    public Dictionary<string, ResourceItemBase> GetAllBuildingsNotPlaced()
-    {
-        return _resources.Where(x => x.Value.IsBuilding()).ToDictionary();
-    }
+ 
 
     #endregion
 
     #region Building
 
+    public Dictionary<string, ResourceItemBase> GetAllBuildingsNotPlaced()
+    {
+        return _resources.Where(x => x.Value.IsBuilding()).ToDictionary();
+    }
     private void AddBuilding(BuildingBase building)
     {
         if (_buildings.ContainsKey(building.Position))

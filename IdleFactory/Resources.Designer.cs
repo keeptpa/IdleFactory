@@ -501,6 +501,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show related.
+        /// </summary>
+        internal static string str_showRelatedPipeAction {
+            get {
+                return ResourceManager.GetString("str.showRelatedPipeAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Taken from.
         /// </summary>
         internal static string str_takeFrom {

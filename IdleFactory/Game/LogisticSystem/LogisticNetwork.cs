@@ -104,4 +104,17 @@ public class LogisticNetwork
     {
         return _cachedMembers.TryGetValue(guid, out var member) ? member : null;
     }
+
+    public IEnumerable<ExtractAction> GetRelatedActions(Pipe pipe)
+    {
+        var result = new List<ExtractAction>();
+        var neighbors = pipe.GetAttachedContainers();
+        foreach (var connector in _nodes.Values)
+        {
+            result.AddRange(connector.Pipe.ActionList.Where(a => neighbors.ConvertAll(n => n.GetBuilding().UUID).Contains(a.SourceContainerGuid)));
+            result.AddRange(connector.Pipe.ActionList.Where(a => neighbors.ConvertAll(n => n.GetBuilding().UUID).Contains(a.TargetContainerGuid)));
+        }
+
+        return result;
+    }
 }

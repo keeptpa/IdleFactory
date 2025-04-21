@@ -9,7 +9,8 @@ namespace IdleFactory.Game.Building.Base;
 [Serializable]
 public class WorkMachineBase : BuildingBase, IItemContainer, ITickable
 {
-    [JsonProperty]
+    public string RecipeID { get; set; } = "";
+    [JsonIgnore]
     private Recipe? selectedRecipe;
     private List<Recipe>? availableRecipes;
     [JsonProperty]
@@ -89,6 +90,7 @@ public class WorkMachineBase : BuildingBase, IItemContainer, ITickable
     public void SetRecipe(Recipe recipe = null)
     {
         selectedRecipe = recipe;
+        RecipeID = selectedRecipe != null ? selectedRecipe.ID : "";
         cookProgress = 0;
     }
 
@@ -131,5 +133,11 @@ public class WorkMachineBase : BuildingBase, IItemContainer, ITickable
     public BuildingBase GetBuilding()
     {
         return  this;
+    }
+
+    public override void Awake()
+    {
+        selectedRecipe = string.IsNullOrEmpty(RecipeID) ? null : Utils.GetData<RecipeData>().GetRecipe(RecipeID);
+        base.Awake();
     }
 }

@@ -33,7 +33,7 @@ public class RecipeData : DataBaseBase
                                 "item.furnace", 1
                             }
                         },
-                        TimeToCook = 5
+                        TimeToCook = 100
                     },
                     new Recipe()
                     {
@@ -48,7 +48,7 @@ public class RecipeData : DataBaseBase
                         {
                             {"item.chest", 1}
                         },
-                        TimeToCook = 10
+                        TimeToCook = 200
                     },
                     new Recipe()
                     {
@@ -63,7 +63,7 @@ public class RecipeData : DataBaseBase
                         {
                             {"item.pipe", 1}
                         },
-                        TimeToCook = 1
+                        TimeToCook = 20
                     }
                 }
             }
@@ -84,7 +84,7 @@ public class RecipeData : DataBaseBase
                         {
                             {"item.charcoal", 1}
                         },
-                        TimeToCook = 3,
+                        TimeToCook = 60,
                         ExtraRequirements = "{\"temperatureRequirement\":100}"
                     }
                 }
@@ -95,5 +95,15 @@ public class RecipeData : DataBaseBase
     public List<Recipe> GetRecipes(string machineID)
     {
         return allRecipes[machineID]?.Recipes ?? new List<Recipe>();
+    }
+    
+    public Recipe GetRecipe(string recipeID)
+    {
+        return allRecipes.Values.SelectMany(recipes => recipes.Recipes).First(recipe => recipe.ID == recipeID);
+    }
+
+    public override void OnValildate()
+    {
+        
     }
 }

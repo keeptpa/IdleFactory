@@ -30,7 +30,6 @@ else
     <p>Building not found.</p>
 }
 <hr class="hr" />
-<button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
 @code {
     [Parameter] public string buildingIndex { get; set; }
 
@@ -47,11 +46,6 @@ else
     {
         base.OnTimer(state);
         SafeStateHasChanged();
-    }
-
-    protected void GoBack()
-    {
-        NavigationManager.NavigateTo("/Surface");
     }
     
 }

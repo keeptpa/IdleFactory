@@ -3,14 +3,25 @@
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> Localizer
+@* Required *@
+<MudThemeProvider/>
+<MudPopoverProvider/>
 
+@* Needed for dialogs *@
+<MudDialogProvider/>
+
+@* Needed for snackbars *@
+<MudSnackbarProvider/>
 <p>@Utils.GetNameFromId(_building.ID)</p>
 <p>@Localizer[_building.Description]</p>
 <div>
     <div>@Localizer["str.nickName"]</div>
     <textarea @bind="_building.NickName" class="text-area"></textarea>
 </div>
+<button class="btn btn-primary" onclick="@GoBack">@Localizer["str.back"]</button>
+
 <hr class="hr"/>
+@inject NavigationManager NavigationManager
 
 @code {
 
@@ -22,5 +33,8 @@
         get => _building;
         set => _building = value;
     }
-
+    protected void GoBack()
+    {
+        NavigationManager.NavigateTo("/Surface");
+    }
 }
