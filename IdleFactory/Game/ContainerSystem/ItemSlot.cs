@@ -78,6 +78,5 @@ public class ItemSlot
         this.item = item;
     }
     
-    public delegate void OnItemChangeDelegate(ResourceItemBase? item);
-    public event OnItemChangeDelegate OnItemChanged;
+    public static string NOT_IN_RECIPE_TAG = "notInRecipe";
 }

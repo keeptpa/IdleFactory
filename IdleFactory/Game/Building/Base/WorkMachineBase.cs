@@ -98,7 +98,7 @@ public class WorkMachineBase : BuildingBase, IItemContainer, ITickable
     {
         return selectedRecipe;
     }
-    public void CookOnce()
+    public virtual void CookOnce()
     {
         foreach (var ingredient in selectedRecipe.Ingredients)
         {

@@ -4,11 +4,11 @@ namespace IdleFactory.ContainerSystem;
 [Serializable]
 public class ItemTagFilter
 {
-    public List<string> _allowedTags;
+    public List<string> _tags;
     public bool IsAllowItem(ResourceItemBase item)
     {
-        if(_allowedTags == null || _allowedTags.Count == 0) return true;
-        foreach (var allowedTag in _allowedTags)
+        if(_tags == null || _tags.Count == 0) return true;
+        foreach (var allowedTag in _tags)
         {
             if (!item.HasTag(allowedTag))
             {
@@ -20,6 +20,11 @@ public class ItemTagFilter
 
     public bool HasTagFilter(string filterTagStr)
     {
-        return _allowedTags?.Contains(filterTagStr) == true;
+        return _tags?.Contains(filterTagStr) == true;
+    }
+
+    public bool HasTagCollision(ItemTagFilter other)
+    {
+        return _tags.Intersect(other._tags).Any();
     }
 }

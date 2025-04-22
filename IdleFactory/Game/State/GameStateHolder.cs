@@ -72,7 +72,7 @@ public class GameStateHolder : SingletonBase
             return GetAllResources(includeBuilding);
         }
 
-        var filterTags = filter._allowedTags;
+        var filterTags = filter._tags;
         if (!includeBuilding)
         {
             return _resources.Where(x => { return !x.Value.IsBuilding() && x.Value.Allowed(filterTags); })

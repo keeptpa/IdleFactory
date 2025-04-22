@@ -40,14 +40,14 @@ public class BuildingSettingData : DataBaseBase
                 {
                     InputSlot = [100, 100],
                     OutputSlot = [100],
-                    SlotsTagFilter = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["fuel"] }} },
-                    SlotsTag = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["notInRecipe"] }} },
+                    SlotsTagFilter = new(){ { 0, new ItemTagFilter(){ _tags = ["fuel"] }} },
+                    SlotsTag = new(){ { 0, new ItemTagFilter(){ _tags = [ItemSlot.NOT_IN_RECIPE_TAG] }} },
                 },
                 BurnChamerSetting = new BurnChamberSetting()
                 {
                     BurnRate = 50000,
                     HeatCapacity = 100000,
-                    CoolDownRate = 100000
+                    CoolDownRate = 5000
                 }
             }
         },

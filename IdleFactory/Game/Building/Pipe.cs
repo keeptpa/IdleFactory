@@ -203,7 +203,7 @@ public class Pipe : BuildingBase, ITickable
             {
                 ID = extract.Content.ID,
                 Quantity = count
-            }, extract.ExtractFromInput);
+            }, null, extract.ExtractFromInput);
         }
     }
 }

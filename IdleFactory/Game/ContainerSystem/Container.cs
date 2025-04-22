@@ -59,12 +59,13 @@ public class Container
         return quantityToaAdd;
     }
 
-    public int TryRemoveItem(ResourceItemBase item, bool fromInput = true)
+    public int TryRemoveItem(ResourceItemBase item, ItemTagFilter avoidSlotTags = null, bool fromInput = true)
     {
         var slots = fromInput ? _inputSlots : _outputSlots;
         var quantityToRemove = item.Quantity;
         foreach (var slot in slots)
         {
+            if(slot.Tag?.HasTagCollision(avoidSlotTags) == true) continue;
             quantityToRemove -= slot.TryRemoveItem(quantityToRemove, false);
             if (quantityToRemove <= 0)
             {
@@ -80,7 +81,7 @@ public class Container
         var availiableQuantity = 0;
         foreach (var itemSlot in _inputSlots)
         {
-            if (itemSlot.GetItem() == null || (itemSlot.Tag?.HasTagFilter("notInRecipe") == true)) continue;
+            if (itemSlot.GetItem() == null || (itemSlot.Tag?.HasTagFilter(ItemSlot.NOT_IN_RECIPE_TAG) == true)) continue;
             if (itemSlot.GetItem().ID == item.ID)
             {
                 if (!checkQuantity)
@@ -100,7 +101,7 @@ public class Container
         var availiableQuantity = 0;
         foreach (var itemSlot in _outputSlots)
         {
-            if (itemSlot.GetItem() == null || (itemSlot.Tag?.HasTagFilter("notInRecipe") == true)) continue;
+            if (itemSlot.GetItem() == null || (itemSlot.Tag?.HasTagFilter(ItemSlot.NOT_IN_RECIPE_TAG) == true)) continue;
             if (itemSlot.GetItem().ID == item.ID)
             {
                 if (!checkQuantity)

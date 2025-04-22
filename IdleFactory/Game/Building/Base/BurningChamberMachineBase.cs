@@ -1,4 +1,6 @@
-﻿using IdleFactory.Game.DataBase;
+﻿using IdleFactory.ContainerSystem;
+using IdleFactory.Game.DataBase;
+using IdleFactory.RecipeSystem;
 using IdleFactory.Util;
 using Newtonsoft.Json;
 
@@ -6,7 +8,7 @@ namespace IdleFactory.Game.Building.Base;
 
 public class BurningChamberMachineBase : WorkMachineBase
 {
-    public int Temperature { get; private set; } = 0;
+    public float Temperature { get; private set; } = 0;
     public int RemainFuelValue { get; private set; } = 0;
 
     [JsonProperty] private List<ItemSlot> _fuelSlots;
@@ -25,10 +27,35 @@ public class BurningChamberMachineBase : WorkMachineBase
         base.Tick();
     }
 
+    public override void CookOnce()
+    {
+        foreach (var ingredient in GetNowRecipe().Ingredients)
+        {
+            var filter = new ItemTagFilter()
+            {
+                _tags = [ItemSlot.NOT_IN_RECIPE_TAG]
+            };
+            GetMachineContainer().TryRemoveItem(new ResourceItemBase()
+            {
+                ID = ingredient.Key,
+                Quantity = ingredient.Value
+            }, filter);
+        }
+
+        foreach (var product  in GetNowRecipe().Outputs)
+        {
+            GetMachineContainer().TryAddItem(new ResourceItemBase()
+            {
+                ID = product.Key,
+                Quantity = product.Value
+            }, false);
+        }
+    }
+
     public override bool CanCookRecipe()
     {
         if (GetNowRecipe() == null) return false;
-        var recipeTemperature = int.Parse(GetNowRecipe().TryGetExtraRequirements("temperatureRequirement"));
+        var recipeTemperature = int.Parse(GetNowRecipe().TryGetExtraRequirements(Recipe.TEMPERATURE_REQUIREMENT_KEY));
         return base.CanCookRecipe() && Temperature >= recipeTemperature;
     }
 
@@ -64,11 +91,11 @@ public class BurningChamberMachineBase : WorkMachineBase
 
         if (RemainFuelValue >= _burningChamberSetting.BurnRate)
         {
-            Temperature += _burningChamberSetting.BurnRate / _burningChamberSetting.HeatCapacity;
+            Temperature += (float)_burningChamberSetting.BurnRate / _burningChamberSetting.HeatCapacity;
             RemainFuelValue -= _burningChamberSetting.BurnRate;
         }
         
-        Temperature = Math.Max(0, Temperature - _burningChamberSetting.CoolDownRate / _burningChamberSetting.HeatCapacity);
+        Temperature = Math.Max(0, Temperature - (float)_burningChamberSetting.CoolDownRate / _burningChamberSetting.HeatCapacity);
     }
 }
 
