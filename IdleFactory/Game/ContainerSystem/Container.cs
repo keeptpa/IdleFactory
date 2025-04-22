@@ -13,6 +13,7 @@ public class Container
 
     public Container(List<int> inputSlots, List<int> outputSlots)
     {
+        if (inputSlots == null || outputSlots == null) return;
         _inputSlots = new ItemSlot[inputSlots.Count];
         _outputSlots = new ItemSlot[outputSlots.Count];
 

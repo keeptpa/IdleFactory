@@ -17,6 +17,8 @@ public class Recipe
         extraRequirementsObject ??= Newtonsoft.Json.Linq.JObject.Parse(ExtraRequirements);
         return extraRequirementsObject[key] != null ? extraRequirementsObject[key].ToString() : null;
     }
+    
+    public static string TEMPERATURE_REQUIREMENT_KEY = "temperatureRequirement";
 }
 
 public class MachineRecipes

@@ -16,7 +16,7 @@ public class GameStateHolder : SingletonBase
     [JsonProperty] 
     private Dictionary<string, ResourceItemBase> _resources = new Dictionary<string, ResourceItemBase>()
     {
-        {"item.workbench" ,new ResourceItemBase { ID = "item.workbench", Quantity = 100 }},
+        //{"item.workbench" ,new ResourceItemBase { ID = "item.workbench", Quantity = 100 }},
     };
     [JsonProperty]
     private Dictionary<Position, BuildingSlot> _buildings = new (){};

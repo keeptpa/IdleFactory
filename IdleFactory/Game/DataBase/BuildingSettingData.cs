@@ -25,8 +25,8 @@ public class BuildingSettingData : DataBaseBase
                 DetailSubPath = "WorkbenchDetail",
                 ContainerSetting = new()
                 {
-                    InputSlot = [64, 64, 64, 64],
-                    OutputSlot = [64]
+                    InputSlot = [100, 100, 100, 100],
+                    OutputSlot = [100]
                 }
             }
         },
@@ -38,16 +38,16 @@ public class BuildingSettingData : DataBaseBase
                 DetailSubPath = "FurnaceDetail",
                 ContainerSetting = new()
                 {
-                    InputSlot = [64, 64],
-                    OutputSlot = [64],
+                    InputSlot = [100, 100],
+                    OutputSlot = [100],
                     SlotsTagFilter = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["fuel"] }} },
                     SlotsTag = new(){ { 0, new ItemTagFilter(){ _allowedTags = ["notInRecipe"] }} },
                 },
                 BurnChamerSetting = new BurnChamberSetting()
                 {
                     BurnRate = 50000,
-                    HeatCapacity = 5000,
-                    CoolDownRate = 5000
+                    HeatCapacity = 100000,
+                    CoolDownRate = 100000
                 }
             }
         },
@@ -59,7 +59,7 @@ public class BuildingSettingData : DataBaseBase
                 DetailSubPath = "ChestDetail",
                 ContainerSetting = new()
                 {
-                    InputSlot = GetBulkSlotSetting(27,64),
+                    InputSlot = GetBulkSlotSetting(27,100),
                 }
             }
         },

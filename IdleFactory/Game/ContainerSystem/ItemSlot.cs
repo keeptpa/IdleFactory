@@ -6,7 +6,7 @@ public class ItemSlot
 {
     [JsonProperty]
     private ResourceItemBase? item;
-    public int MaxQuantity { get; set; } = 64;
+    public int MaxQuantity { get; set; } = 100;
     public ItemTagFilter? TagFilter; // allowed item tags
     public ItemTagFilter? Tag; // slot specific tag
     
@@ -39,29 +39,7 @@ public class ItemSlot
         this.item.Quantity += addedQuantity;
         return addedQuantity;
     }
-
-    public int TryRemoveItem(ResourceItemBase item, bool requireFullfill = false)
-    {
-        if (this.item?.IsValid() != true || !this.item.ID.Equals(item.ID))
-        {
-            return 0;
-        }
-
-        if (requireFullfill && this.item.Quantity < item.Quantity)
-        {
-            return 0;
-        }
-        
-        int decrementedQuantity = Math.Min(this.item.Quantity, item.Quantity);
-        this.item.Quantity -= decrementedQuantity;
-        
-        if (this.item.Quantity <= 0)
-        {
-            this.item = null;
-        }
-        
-        return decrementedQuantity;
-    }
+    
     public int TryRemoveItem(int itemCount, bool requireFullfill = false)
     {
         if (item?.IsValid() != true)
