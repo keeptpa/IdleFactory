@@ -23,22 +23,7 @@ public class WorkMachineBase : BuildingBase, IItemContainer, ITickable
         if (buildSetting.ContainerSetting.HasValue)
         {
             var setting = buildSetting.ContainerSetting.Value;
-            machineContainer = new(setting.InputSlot, setting.OutputSlot);
-            if (setting.SlotsTagFilter != null)
-            {
-                foreach (var filterSetting in setting.SlotsTagFilter)
-                {
-                    machineContainer.GetInputSlots()[filterSetting.Key].TagFilter = filterSetting.Value;
-                }
-            }
-            
-            if (setting.SlotsTag != null)
-            {
-                foreach (var tagSetting in setting.SlotsTag)
-                {
-                    machineContainer.GetInputSlots()[tagSetting.Key].Tag = tagSetting.Value;
-                }
-            }
+            machineContainer = new(setting);
         }
     }
 

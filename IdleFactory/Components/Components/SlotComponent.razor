@@ -1,4 +1,5 @@
 ﻿@using System.Drawing
+@using IdleFactory.Game.DataBase
 @using IdleFactory.State
 @using IdleFactory.Util
 @using Microsoft.Extensions.Localization
@@ -114,7 +115,8 @@
 
     private string GetSlotColor()
     {
-        if (slot.Tag?.HasTagFilter(ItemSlot.NOT_IN_RECIPE_TAG) == true) return "#1a7009";
+        if (slot.SlotsAcceptFilter?.HasTagFilter(ItemTagsData.FUEL_TAG) == true) return "#1a7009";
+        if (slot.SlotsAcceptFilter?.HasTagFilter(ItemTagsData.FLUID_TAG) == true) return "#097ce1";
         return "";
     }
 
@@ -130,7 +132,7 @@
         else
         {
             var state = SingletonHolder.GetSingleton<GameStateHolder>();
-            inventoryItems = state.GetAllResources(slot.TagFilter, true).Values.ToList();
+            inventoryItems = state.GetAllResources(slot.SlotsAcceptFilter, true).Values.ToList();
             
             if (slot.GetItem()?.IsValid() == true && state.GetResource(slot.GetItem().ID) == null)// if all the item is selected we need to add it to list so it can show up
             {

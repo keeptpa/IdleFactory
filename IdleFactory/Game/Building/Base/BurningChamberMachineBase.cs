@@ -11,8 +11,8 @@ public class BurningChamberMachineBase : WorkMachineBase
     public float Temperature { get; private set; } = 0;
     public int RemainFuelValue { get; private set; } = 0;
 
-    [JsonProperty] private List<ItemSlot> _fuelSlots;
-    [JsonProperty] private BurnChamberSetting _burningChamberSetting;
+    private List<ItemSlot> _fuelSlots;
+    private BurnChamberSetting _burningChamberSetting;
     public void ApplyBurnChamberComponentSetting(BuildingSetting setting)
     {
         if (setting.BurnChamerSetting != null)
@@ -33,7 +33,7 @@ public class BurningChamberMachineBase : WorkMachineBase
         {
             var filter = new ItemTagFilter()
             {
-                _tags = [ItemSlot.NOT_IN_RECIPE_TAG]
+                _tags = [ItemTagsData.NOT_IN_RECIPE_TAG]
             };
             GetMachineContainer().TryRemoveItem(new ResourceItemBase()
             {
@@ -58,13 +58,18 @@ public class BurningChamberMachineBase : WorkMachineBase
         var recipeTemperature = int.Parse(GetNowRecipe().TryGetExtraRequirements(Recipe.TEMPERATURE_REQUIREMENT_KEY));
         return base.CanCookRecipe() && Temperature >= recipeTemperature;
     }
+    
+    public virtual bool CanHeatNow()
+    {
+        return Temperature <= _burningChamberSetting.MaxTemperature;
+    }
 
     private void UpdateBurningState()
     {
 
         if (_fuelSlots == null || _fuelSlots.Count == 0)
         {
-            _fuelSlots = GetMachineContainer().GetInputSlots().Where(slot => slot.TagFilter?.HasTagFilter("fuel") == true).ToList();
+            _fuelSlots = GetMachineContainer().GetInputSlots().Where(slot => slot.SlotsAcceptFilter?.HasTagFilter(ItemTagsData.FUEL_TAG) == true).ToList();
         }
 
         var safeBreak = 0;
@@ -89,7 +94,7 @@ public class BurningChamberMachineBase : WorkMachineBase
             }
         }
 
-        if (RemainFuelValue >= _burningChamberSetting.BurnRate)
+        if (RemainFuelValue >= _burningChamberSetting.BurnRate && CanHeatNow())
         {
             Temperature += (float)_burningChamberSetting.BurnRate / _burningChamberSetting.HeatCapacity;
             RemainFuelValue -= _burningChamberSetting.BurnRate;

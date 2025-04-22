@@ -120,6 +120,11 @@ public class Utils
                 {
                     GetModule<UpdateModule>().Update += tickable.Tick;
                 }
+
+                if (building is BurningChamberMachineBase burningChamberMachineBase)
+                {
+                    burningChamberMachineBase.ApplyBurnChamberComponentSetting(Utils.GetData<BuildingSettingData>().GetBuildingSettingByItemID(building.ID).Value);
+                }
                 
                 building.Awake();
             }

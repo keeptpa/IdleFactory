@@ -7,13 +7,13 @@ public class ItemSlot
     [JsonProperty]
     private ResourceItemBase? item;
     public int MaxQuantity { get; set; } = 100;
-    public ItemTagFilter? TagFilter; // allowed item tags
-    public ItemTagFilter? Tag; // slot specific tag
+    public ItemTagFilter? SlotsAcceptFilter; // allowed item tags
+    public ItemTagFilter? SlotsSelfTag; // slot specific tag
     
     public bool IsValid => item != null && item.IsValid();
     public int TryAddItem(ResourceItemBase item)
     {
-        if (TagFilter != null && !TagFilter.IsAllowItem(item)) return 0;
+        if (SlotsAcceptFilter != null && !SlotsAcceptFilter.IsAllowItem(item)) return 0;
         int addedQuantity = 0;
         // If slot is empty, create new item
         if (this.item?.IsValid() != true)
@@ -77,6 +77,4 @@ public class ItemSlot
     {
         this.item = item;
     }
-    
-    public static string NOT_IN_RECIPE_TAG = "notInRecipe";
 }

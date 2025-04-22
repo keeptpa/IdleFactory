@@ -89,6 +89,28 @@ public class RecipeData : DataBaseBase
                     }
                 }
             }
+        },
+        {
+            "building.ironBoiler", new MachineRecipes()
+            {
+                Recipes = new List<Recipe>()
+                {
+                    new Recipe
+                    {
+                        ID = "recipe.ironBoiler.boil",
+                        Ingredients = new()
+                        {
+                            {"fluid.water", 10}
+                        },
+                        Outputs = new()
+                        {
+                            {"fluid.steam", 20}
+                        },
+                        TimeToCook = 60,
+                        ExtraRequirements = $"{{\"{Recipe.TEMPERATURE_REQUIREMENT_KEY}\":100}}"
+                    }
+                }
+            }
         }
     };
 
