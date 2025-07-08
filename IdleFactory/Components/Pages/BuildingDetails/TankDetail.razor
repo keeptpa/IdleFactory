@@ -1,0 +1,58 @@
+﻿@page "/TankDetail/{buildingIndex}"
+@using IdleFactory.Game.Building
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@using IdleFactory.Components.Components
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+
+@inject IStringLocalizer<Resources> Localizer
+@inject NavigationManager NavigationManager
+
+<BuildingBaseHead Building="building"/>
+
+@if (building != null)
+{
+    <div class="container">
+        <div class="row">
+            @for (int i = 0; i < building.GetMachineContainer().GetInputSlots().Length; i++)
+            {
+                <div class="row">
+                    <TankComponent slot="@(building.GetMachineContainer().GetInputSlots()[i])"/>
+                </div>
+            }
+        </div>
+    </div>
+    //<MudButton OnClick="() => {test();}">Test</MudButton>
+
+}
+else
+{
+    <p>Building not found.</p>
+}
+<hr class="hr"/>
+
+@code {
+    [Parameter] public string buildingIndex { get; set; }
+
+    private Tank? building;
+
+    protected override void OnInitialized()
+    {
+        StartTimer(1);
+        building = Utils.GetBuildingWithIndex(int.Parse(buildingIndex)) as Tank;
+        base.OnInitialized();
+    }
+
+    protected override void OnTimer(object? state)
+    {
+        base.OnTimer(state);
+        SafeStateHasChanged();
+    }
+
+    private void test()
+    {
+        building.GetMachineContainer().TryAddItem(new ResourceItemBase() { ID = "fluid.water", Quantity = 100 });
+    }
+
+}

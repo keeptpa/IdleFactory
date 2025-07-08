@@ -321,6 +321,15 @@ namespace IdleFactory {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bulk Retrive.
+        /// </summary>
+        internal static string str_bulkDestroy {
+            get {
+                return ResourceManager.GetString("str.bulkDestroy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crafting.
         /// </summary>
         internal static string str_crafting {

@@ -10,17 +10,27 @@
 @rendermode InteractiveServer
 @inherits BaseRefreshablePage
 @inject IStringLocalizer<Resources> localizer;
+@* Required *@
+<MudThemeProvider/>
+<MudPopoverProvider/>
 
-<div class="surface-container" 
-     @onmousedown="StartDragging" 
-     @onmouseup="StopDragging" 
+@* Needed for dialogs *@
+<MudDialogProvider/>
+
+@* Needed for snackbars *@
+<MudSnackbarProvider/>
+
+<div class="surface-container"
+     @onmousedown="StartDragging"
+     @onmouseup="StopDragging"
      @onmousemove="OnMouseMove"
      @onmouseleave="StopDragging"
      @onwheel="OnMouseWheel"
      @onclick="PageClick"
      style="overflow: hidden; position: relative; width: 100%; height: 600px; background-color: #f0f0f0; cursor: @(_isDragging ? "grabbing" : "grab")">
-    
-    <div class="surface-grid" style="position: absolute; transform: translate(@(_offsetX)px, @(_offsetY)px) scale(@_zoomLevel); transform-origin: center; @(_isDragging ? "" : "transition: transform 0.1s ease-out;")">
+
+    <div class="surface-grid"
+         style="position: absolute; transform: translate(@(_offsetX)px, @(_offsetY)px) scale(@_zoomLevel); transform-origin: center; @(_isDragging ? "" : "transition: transform 0.1s ease-out;")">
         @for (int y = _maxY; y >= _minY; y--)
         {
             <div class="grid-row" style="display: flex; flex-direction: row;">
@@ -28,24 +38,25 @@
                 {
                     int cellX = x;
                     int cellY = y;
-                    
+
                     <div class="grid-cell"
                          @onclick="() => CellClicked(cellX, cellY)"
                          @oncontextmenu="() => CellRightClicked(cellX, cellY)"
                          @oncontextmenu:preventDefault="true"
                          style="width: @(_cellSize)px; height: @(_cellSize)px; @(_showGridLines ? "border: 1px solid #ccc;" : "");">
-                        <GridComponent X="x" Y="y" _building="@GetBuilding(cellX, cellY)" />
+                        <GridComponent X="x" Y="y" _building="@GetBuilding(cellX, cellY)"/>
                     </div>
                 }
             </div>
         }
         @if (_showContextMenu)
         {
-            <SurfaceContextMenuComponent contextMenuPos="@_contextMenuCellPos" />
+            <SurfaceContextMenuComponent contextMenuPos="@_contextMenuCellPos"/>
         }
     </div>
 
-    <div class="control-panel" style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background-color: white; padding: 10px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+    <div class="control-panel"
+         style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background-color: white; padding: 10px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
         @*<div class="mb-2">
             <button @onclick="ExpandGridRight" class="btn btn-sm btn-primary mr-1">Expand Right</button>
             <button @onclick="ExpandGridDown" class="btn btn-sm btn-primary mr-1">Expand Down</button>
@@ -58,11 +69,15 @@
             <button @onclick="ResetZoom" class="btn btn-sm btn-secondary">Reset Zoom (1:1)</button>
         </div>*@
         <div>
-            <label>
-                <input type="checkbox" @bind="_showGridLines" />
-                @localizer["str.showGrid"]
-            </label>
-            <div><select class="form-select" style="width: 160px; position: relative;"
+            <MudCheckBox @bind-Value="_showGridLines" Label="@localizer["str.showGrid"]"></MudCheckBox>
+            <MudSelect @onfocus="RefreshData"  _showGridLines @bind-Value="BuildingSelection">
+                @foreach (var item in _buildingAvailable)
+                {
+                    <MudSelectItem Value="@item.ID">@Utils.GetNameFromId(item.ID)</MudSelectItem>
+                }
+            </MudSelect>
+            <MudCheckBox @bind-Value="BulkDestroy" Label="@localizer["str.bulkDestroy"]"></MudCheckBox>
+            @*<div><select class="form-select" style="width: 160px; position: relative;"
                          @bind="BuildingSelection" @onfocus="RefreshData">
                 <option value="" selected="@true"></option>
                 @foreach (var item in _buildingAvailable)
@@ -71,35 +86,37 @@
                 }
             </select>
                 <input type="checkbox" @bind="BulkDestroy" />
-            </div>
-            
+            </div>*@
+
         </div>
     </div>
 </div>
 
 @code {
+
     private enum MouseState
     {
         None,
         BulkBuilding,
         BulkDelete
     }
+
     //Mouse state
     private MouseState _mouseState = MouseState.None;
-    
+
     // Grid properties
     private int _minX = -5;
     private int _maxX = 5;
     private int _minY = -5;
     private int _maxY = 5;
-    
+
     private int _cellSize = 40;
     private bool _showGridLines = true;
-    
+
     // Context menu properties
     private bool _showContextMenu = false;
     private Position _contextMenuCellPos;
-    
+
     //bulk building & destroy
     private bool _bulkDestroy;
 
@@ -117,6 +134,7 @@
     }
 
     private string _bulkBuildingId = "";
+
     private string BuildingSelection
     {
         get => _bulkBuildingId;
@@ -129,13 +147,15 @@
             SafeStateHasChanged();
         }
     }
+
     private List<ResourceItemBase> _buildingAvailable = new();
+
     private void RefreshData()
     {
         _buildingAvailable = SingletonHolder.GetSingleton<GameStateHolder>().GetAllBuildingsNotPlaced().Values.ToList();
         SafeStateHasChanged();
     }
-    
+
     private void CellClicked(int cellX, int cellY)
     {
         if (!_isDragging && _mouseState != MouseState.None)
@@ -148,7 +168,8 @@
                     RefreshData();
                     SafeStateHasChanged();
                 }
-            }else if (_mouseState == MouseState.BulkBuilding)
+            }
+            else if (_mouseState == MouseState.BulkBuilding)
             {
                 if (GetBuilding(cellX, cellY).IsEmpty)
                 {
@@ -156,10 +177,11 @@
                     {
                         SingletonHolder.GetSingleton<GameStateHolder>().TryBuild(new ResourceItemBase() { ID = BuildingSelection, Quantity = 1 }, new Position(cellX, cellY));
                         RefreshData();
-                        if(_buildingAvailable.All(i => i.ID != BuildingSelection))
+                        if (_buildingAvailable.All(i => i.ID != BuildingSelection))
                         {
                             BuildingSelection = "";
                         }
+
                         SafeStateHasChanged();
                     }
                 }
@@ -173,9 +195,8 @@
                 }
             }
         }
-
     }
-    
+
     // Cell interaction
     private void CellRightClicked(int x, int y)
     {
@@ -193,42 +214,43 @@
     }
 
     #region Dragging
+
     // Dragging functionality
     private bool _isDragging = false;
     private double _offsetX = 0;
     private double _offsetY = 0;
     private double _lastX = 0;
     private double _lastY = 0;
-    
+
     // Dragging handlers
     private void StartDragging(MouseEventArgs e)
     {
-        if(_mouseState != MouseState.None) return;
+        if (_mouseState != MouseState.None) return;
         _isDragging = true;
         _lastX = e.ClientX;
         _lastY = e.ClientY;
     }
-    
+
     private void StopDragging()
-    {        
-        if(_mouseState != MouseState.None) return;
+    {
+        if (_mouseState != MouseState.None) return;
         _isDragging = false;
     }
-    
+
     private void OnMouseMove(MouseEventArgs e)
     {
-        if(_mouseState != MouseState.None) return;
+        if (_mouseState != MouseState.None) return;
         if (_isDragging)
         {
             var deltaX = e.ClientX - _lastX;
             var deltaY = e.ClientY - _lastY;
-            
+
             _offsetX += deltaX;
             _offsetY += deltaY;
-            
+
             _lastX = e.ClientX;
             _lastY = e.ClientY;
-            
+
             SafeStateHasChanged();
         }
     }
@@ -236,6 +258,7 @@
     #endregion
 
     #region Zoom
+
     // Zoom properties
     private double _zoomLevel = 1.0;
     private const double ZoomIncrement = 0.1;
@@ -247,40 +270,39 @@
     {
         // Negative deltaY means scroll up/zoom in, positive means scroll down/zoom out
         double zoomDelta = -Math.Sign(e.DeltaY) * ZoomIncrement;
-        
+
         // Calculate new zoom level
         double newZoom = Math.Clamp(_zoomLevel + zoomDelta, MinZoom, MaxZoom);
-        
+
         // Get mouse position relative to grid center
         // For more advanced zoom, you would calculate this relative to the container
-        
+
         // Apply new zoom
         _zoomLevel = newZoom;
-        
+
         SafeStateHasChanged();
     }
-    
+
     private void ZoomIn()
     {
         _zoomLevel = Math.Min(_zoomLevel + ZoomIncrement, MaxZoom);
         SafeStateHasChanged();
     }
-    
+
     private void ZoomOut()
     {
         _zoomLevel = Math.Max(_zoomLevel - ZoomIncrement, MinZoom);
         SafeStateHasChanged();
     }
-    
+
     private void ResetZoom()
     {
         _zoomLevel = 1.0;
         SafeStateHasChanged();
     }
-    
 
     #endregion
-    
+
     #region Expanison
 
     // Grid expansion methods
@@ -289,13 +311,13 @@
         _maxX += 10;
         SafeStateHasChanged();
     }
-    
+
     private void ExpandGridDown()
     {
         _minY -= 10;
         SafeStateHasChanged();
     }
-    
+
     private void ExpandGridLeft()
     {
         // When expanding left, we need to adjust the offset to keep visible area in view
@@ -303,7 +325,7 @@
         _minX -= 10;
         SafeStateHasChanged();
     }
-    
+
     private void ExpandGridUp()
     {
         // When expanding up, we need to adjust the offset to keep visible area in view
@@ -311,10 +333,9 @@
         _maxY += 10;
         SafeStateHasChanged();
     }
-    
 
     #endregion
-    
+
     private BuildingSlot GetBuilding(int cellX, int cellY)
     {
         return SingletonHolder.GetSingleton<GameStateHolder>().GetBuildingSlot(cellX, cellY, true);
@@ -325,4 +346,17 @@
         _showContextMenu = false;
         SafeStateHasChanged();
     }
+
+    protected override void OnInitialized()
+    {
+        StartTimer(1);
+        base.OnInitialized();
+    }
+
+    protected override void OnTimer(object? state)
+    {
+        SafeStateHasChanged();
+        base.OnTimer(state);
+    }
+
 }

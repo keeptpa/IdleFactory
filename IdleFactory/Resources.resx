@@ -177,4 +177,7 @@
     <data name="item.chest" xml:space="preserve">
         <value>Chest</value>
     </data>
+    <data name="str.bulkDestroy" xml:space="preserve">
+        <value>Bulk Retrive</value>
+    </data>
 </root>

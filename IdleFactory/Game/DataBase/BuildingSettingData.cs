@@ -66,6 +66,19 @@ public class BuildingSettingData : DataBaseBase
             }
         },
         {
+            "building.tank", new BuildingSetting()
+            {
+                ID = "building.tank",
+                Description = "building.tank.description",
+                DetailSubPath = "TankDetail",
+                ContainerSetting = new()
+                {
+                    InputSlot = [1000],
+                    SlotsAcceptFilter = new Dictionary<int, ItemTagFilter>(){{0, new ItemTagFilter(){_tags = [ItemTagsData.FLUID_TAG]}}}
+                }
+            }
+        },
+        {
             "building.pipe", new BuildingSetting()
             {
                 ID = "building.pipe",

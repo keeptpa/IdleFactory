@@ -170,4 +170,7 @@
     <data name="item.chest" xml:space="preserve">
         <value>储存箱</value>
     </data>
+    <data name="str.bulkDestroy" xml:space="preserve">
+        <value>批量拆除</value>
+    </data>
 </root>

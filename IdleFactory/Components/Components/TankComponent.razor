@@ -1,0 +1,49 @@
+﻿@using System.Drawing
+@using IdleFactory.Game.DataBase
+@using IdleFactory.State
+@using IdleFactory.Util
+@using System;
+@using System.Threading;
+
+@implements IDisposable
+@using Microsoft.Extensions.Localization
+@using Size = MudBlazor.Size
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+@inject IStringLocalizer<Resources> localizer;
+
+@if (slot.IsValid)
+{
+    <MudStack>
+        <MudText>@(100 * GetPercent()) % of @(Utils.GetNameFromId(slot.GetItem().ID))</MudText>
+        <MudText>@(slot.GetItem().Quantity)</MudText>
+    </MudStack>
+}
+else
+{
+    <MudText>Empty</MudText>
+}
+<MudProgressCircular
+    Max="1" Size="Size.Large" Color="MudBlazor.Color.Primary" Value="@(GetPercent())">
+</MudProgressCircular>
+
+@code {
+    [Parameter] public ItemSlot slot { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private float GetPercent()
+    {
+        if (slot.IsValid)
+        {
+            return (float)(slot.GetItem()?.Quantity) / slot.MaxQuantity;
+        }
+
+        return 0;
+    }
+
+}
