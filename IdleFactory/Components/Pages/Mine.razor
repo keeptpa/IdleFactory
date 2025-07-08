@@ -1,0 +1,44 @@
+﻿@page "/Mine"
+
+@using System.Collections.Generic
+@using IdleFactory.Game.Building.Base
+@using Microsoft.AspNetCore.Components.Web
+@using IdleFactory.Components.Components
+@using IdleFactory.State
+@using IdleFactory.Util
+@using Microsoft.Extensions.Localization
+@using Position = IdleFactory.Game.Building.Base.Position
+@rendermode InteractiveServer
+@inherits BaseRefreshablePage
+@inject IStringLocalizer<Resources> localizer;
+
+@* Required *@
+<MudThemeProvider/>
+<MudPopoverProvider/>
+
+@* Needed for dialogs *@
+<MudDialogProvider/>
+
+@* Needed for snackbars *@
+<MudSnackbarProvider/>
+
+<MudContainer Fixed="true" MaxWidth="MaxWidth.Medium">
+    <MudGrid>
+        @for (var x = -10; x <= 10; x++)
+        {
+            @for (var y = -10; y <= 10; y++)
+            {
+                <MudItem>5</MudItem>
+            }
+        }
+    </MudGrid>
+</MudContainer>
+@code {
+    // Grid properties
+    private int _minX = -5;
+    private int _maxX = 5;
+    private int _minY = -5;
+    private int _maxY = 5;
+
+    private int _cellSize = 40;
+}

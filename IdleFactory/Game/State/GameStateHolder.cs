@@ -17,6 +17,10 @@ public class GameStateHolder : SingletonBase
     private Dictionary<string, ResourceItemBase> _resources = new Dictionary<string, ResourceItemBase>()
     {
         //{"item.workbench" ,new ResourceItemBase { ID = "item.workbench", Quantity = 100 }},
+        //{"item.ironBoiler" ,new ResourceItemBase { ID = "item.ironBoiler", Quantity = 100 }},
+        //{"item.tank" ,new ResourceItemBase { ID = "item.tank", Quantity = 100 }},
+        //{"item.pipe" ,new ResourceItemBase { ID = "item.pipe", Quantity = 100 }},
+        //{"item.woodlog" ,new ResourceItemBase { ID = "item.woodlog", Quantity = 100 }},
     };
     [JsonProperty]
     private Dictionary<Position, BuildingSlot> _buildings = new (){};
@@ -31,7 +35,7 @@ public class GameStateHolder : SingletonBase
 
     public void AddResource(string id, int count)
     {
-        id.Replace("building", "item"); //Ensure item is added, not it's building form.
+        id = id.Replace("building", "item"); //Ensure item is added, not it's building form.
         _resources.TryGetValue(id, out var resource);
         if (resource == null)
         {
